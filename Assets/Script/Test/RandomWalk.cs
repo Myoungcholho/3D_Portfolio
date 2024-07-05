@@ -23,7 +23,7 @@ public class RandomWalk : MonoBehaviour
 
     private void Update()
     {
-        if (characterState.GetType() != StateType.Idle)
+        if (characterState.GetStateType() != TestStateType.Idle)
             return;
 
         if (bCanMove == false)

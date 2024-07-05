@@ -1,22 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-    public enum StateType
+    public enum TestStateType
     {
         Idle,Attack,Max
     }
 
 public class CharacterState : MonoBehaviour
 {
-    public StateType type;
+    public TestStateType type;
 
     private void Start()
     {
-        type = StateType.Idle;
+        type = TestStateType.Idle;
     }
 
-    public void SetIdle() {  type = StateType.Idle; }
-    public void SetAttack() { type = StateType.Attack; }
+    public void SetIdle() {  type = TestStateType.Idle; }
+    public void SetAttack() { type = TestStateType.Attack; }
 
-    public StateType GetType() { return type; }
+    public TestStateType GetStateType() { return type; }
 }

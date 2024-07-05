@@ -24,7 +24,7 @@ public class SectorScan90 : MonoBehaviour
 
     void Update()
     {
-        if (characterState.GetType() != StateType.Idle)
+        if (characterState.GetStateType() != TestStateType.Idle)
             return;
 
 

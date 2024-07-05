@@ -23,7 +23,7 @@ public class RandomAttack : MonoBehaviour
         // 거리가 좁아졌다면
         if(Vector3.Distance(transform.position, sectorScan.target.transform.position) < 1.0f)
         {
-            if (characterState.GetType() == StateType.Attack)
+            if (characterState.GetStateType() == TestStateType.Attack)
                 return;
 
             int attackType = Random.Range(0, 3);
