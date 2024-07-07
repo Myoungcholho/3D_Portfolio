@@ -2,25 +2,12 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Animator))]
-[RequireComponent(typeof(StateComponent))]
-[RequireComponent(typeof(PlayerMovingComponent))]
-public class Player : MonoBehaviour
+public class Player : Character, IDamagable
 {
-    private Animator animator;
-    private StateComponent state;
-    private WeaponComponent weapon;
 
-    /// <summary>
-    /// Evade시 변경된 회전 값을 복구하기 위한 prev 값 저장
-    /// </summary>
-
-    private void Awake()
+    protected override void Awake()
     {
-        animator = GetComponent<Animator>();
-        state = GetComponent<StateComponent>();
-        weapon = GetComponent<WeaponComponent>();
-
+        base.Awake();
 
         PlayerInput input = GetComponent<PlayerInput>();
         InputActionMap actionMap = input.actions.FindActionMap("Player");
@@ -40,6 +27,11 @@ public class Player : MonoBehaviour
             weapon.SetDualSwordMode();
         };
 
+        actionMap.FindAction("Action").started += context =>
+        {
+            weapon.DoAction();
+        };
+
         actionMap.FindAction("Evade").started += context =>
         {
             /*if (weapon.UnarmedMode == false)
@@ -49,7 +41,9 @@ public class Player : MonoBehaviour
 
             state.SetEvadeMode();
         };
-
-
+    }
+    public void OnDamage(GameObject attacker, Weapon causer, Vector3 hitPoint, DoActionData data)
+    {
+        
     }
 }

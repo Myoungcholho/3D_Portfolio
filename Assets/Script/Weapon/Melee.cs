@@ -8,14 +8,19 @@ public class Melee : Weapon
     private int index;
 
     protected Collider[] colliders;
-    private List<GameObject> hittedList;
+    private List<string> hittedList;
+    private GameObject attacker;
+    public void Attacker(GameObject attacker)
+    {
+        this.attacker = attacker;
+    }
 
     protected override void Awake()
     {
         base.Awake();
 
         colliders = GetComponentsInChildren<Collider>();
-        hittedList = new List<GameObject>();
+        hittedList = new List<string>();
     }
 
     protected override void Start()
@@ -29,12 +34,16 @@ public class Melee : Weapon
     {
         foreach (Collider collider in colliders)
             collider.enabled = true;
+
+
     }
 
     public virtual void End_Collision()
     {
         foreach (Collider collider in colliders)
             collider.enabled = false;
+
+
 
         hittedList.Clear();
     }
@@ -98,16 +107,28 @@ public class Melee : Weapon
         bEnable = false;
     }
 
+    public string CreateHashCode(Collider other,GameObject obj)
+    {
+        if (other == null)
+            return string.Empty;
+
+        if (obj == null)
+            obj = gameObject;
+
+        return $"{other.name}_{obj.name}";
+    }
+
     protected void OnTriggerEnter(Collider other)
     {
         if (other.gameObject == rootObject)
             return;
 
+        string hashCode = CreateHashCode(other, attacker);
 
-        if (hittedList.Contains(other.gameObject) == true)
+        if (hittedList.Contains(hashCode) == true)
             return;
 
-        hittedList.Add(other.gameObject);
+        hittedList.Add(hashCode);
 
 
         IDamagable damage = other.gameObject.GetComponent<IDamagable>();
@@ -121,7 +142,7 @@ public class Melee : Weapon
         Collider enabledCollider = null;
         foreach (Collider collider in colliders)
         {
-            if (collider.enabled == true)
+            if (collider.name.Equals(attacker.name) == true)
             {
                 enabledCollider = collider;
 
@@ -129,19 +150,8 @@ public class Melee : Weapon
             }
         }
 
-
         hitPoint = enabledCollider.ClosestPoint(other.transform.position);
         hitPoint = other.transform.InverseTransformPoint(hitPoint);
-
-
-        //GameObject temp = Instantiate<GameObject>(GameObject.CreatePrimitive(PrimitiveType.Sphere), other.transform, false);
-        //temp.transform.localPosition = hitPoint;
-        //temp.transform.localScale = new Vector3(0.25f, 0.25f, 0.25f);
-
-        //print(temp.transform.localPosition);
-        //print(temp.transform.position);
-
-        //print(other.gameObject.name);
 
         damage.OnDamage(rootObject, this, hitPoint, doActionDatas[index]);
     }
