@@ -183,7 +183,7 @@ MonoBehaviour:
     HitParticleScaleOffset: {x: 1, y: 1, z: 1}
   - bCanMove: 0
     Power: 1
-    Distance: 12
+    Distance: 8
     StopFrame: 5
     Particle: {fileID: 0}
     ParticlePositionOffset: {x: 0, y: 0, z: 0}

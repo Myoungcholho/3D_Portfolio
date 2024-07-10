@@ -14,9 +14,8 @@ public class WeaponComponent : MonoBehaviour
 
 
     private Animator animator;
-
     private StateComponent state;
-
+    private TargetComponent target;
 
     private WeaponType type = WeaponType.Unarmed;
 
@@ -35,8 +34,8 @@ public class WeaponComponent : MonoBehaviour
     private void Awake()
     {
         animator = GetComponent<Animator>();
-
         state = GetComponent<StateComponent>();
+        target = GetComponent<TargetComponent>();
     }
 
     private Dictionary<WeaponType, Weapon> weaponTable;
@@ -177,7 +176,7 @@ public class WeaponComponent : MonoBehaviour
 
 
         animator.SetBool("IsAction", true);
-
+        target.TargetSearch();
         weaponTable[type].DoAction();
     }
 
@@ -189,7 +188,7 @@ public class WeaponComponent : MonoBehaviour
     private void End_DoAction()
     {
         animator.SetBool("IsAction", false);
-
+        target.EndTargeting();
         weaponTable[type].End_DoAction();
         OnEndDoAction?.Invoke();
     }

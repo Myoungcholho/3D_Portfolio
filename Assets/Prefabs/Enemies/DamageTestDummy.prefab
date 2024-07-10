@@ -1461,7 +1461,7 @@ GameObject:
   - component: {fileID: 3358054857022274827}
   - component: {fileID: 4085256639525494304}
   - component: {fileID: 5216696215117941711}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: DamageTestDummy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
