@@ -176,7 +176,10 @@ public class WeaponComponent : MonoBehaviour
 
 
         animator.SetBool("IsAction", true);
-        target.TargetSearch();
+        target.TargetSearch();              // Å¸°Ù ¼­Äª
+
+
+
         weaponTable[type].DoAction();
     }
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,12 +9,19 @@ public class HealthPointComponent : MonoBehaviour
     private float maxHealth = 100.0f;
     private float currentHealth;
 
+    public Action lowHpAction;
 
     public bool Dead { get => currentHealth <= 0.0f; }
 
     void Start()
     {
         currentHealth = maxHealth;
+    }
+
+    private void Update()
+    {
+        if(currentHealth <= 20f)
+            lowHpAction?.Invoke();
     }
 
     public void Damage(float damage)

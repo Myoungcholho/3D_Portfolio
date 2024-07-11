@@ -16,7 +16,9 @@ public class PlayerMovingComponent : MonoBehaviour
     [SerializeField]
     private float runSpeed = 4.0f;
     [SerializeField]
-    private float sensitivity = 10.0f;
+    private float fastSpeed = 2f;
+    [SerializeField]
+    private float sensitivity = 100.0f;
     [SerializeField]
     private float deadZone = 0.001f;
     [SerializeField]
@@ -88,7 +90,11 @@ public class PlayerMovingComponent : MonoBehaviour
     {
         bRun = false;
     }
+
     Vector3 newPosition;
+
+    private float yIncreaseTime = 0.0f; // Y축 값이 4일 때의 지속 시간을 추적
+    private float yIncreaseInterval = 1.0f; // 값을 증가시키는 간격 (초 단위)
     private void Update()
     {
         currInputMove = Vector2.SmoothDamp(currInputMove, inputMove, ref velocity, 1.0f / sensitivity);
@@ -98,12 +104,36 @@ public class PlayerMovingComponent : MonoBehaviour
 
         Vector3 direction = Vector3.zero;
 
+
         float speed = bRun ? runSpeed : walkSpeed;
         if (currInputMove.magnitude > deadZone)
         {
             direction = (Vector3.right * currInputMove.x) + (Vector3.forward * currInputMove.y);
             direction = direction.normalized * speed;
         }
+
+        // 앞대쉬 지속 시 점점 더 빠르게
+        if (direction.z >= 4.0f)
+        {
+            yIncreaseTime += Time.deltaTime;
+            if (yIncreaseTime >= yIncreaseInterval)
+            {
+                yIncreaseTime = Mathf.Clamp(yIncreaseTime, 0.0f, 2.0f);
+                direction.z += (yIncreaseTime* (fastSpeed));
+            }
+        }
+        else if(direction.z >= 0.0f)
+        {
+            yIncreaseTime -= Time.deltaTime;
+            yIncreaseTime = Mathf.Clamp(yIncreaseTime, 0.0f, 2.0f);
+            direction.z -= (yIncreaseTime / (fastSpeed));
+        }
+        else
+        {
+            yIncreaseTime = 0f;
+        }
+
+
 
         transform.Translate(direction * Time.deltaTime);
         
@@ -115,7 +145,7 @@ public class PlayerMovingComponent : MonoBehaviour
         }
 
         animator.SetFloat("SpeedX", currInputMove.x * speed);
-        animator.SetFloat("SpeedY", currInputMove.y * speed);
+        animator.SetFloat("SpeedY", currInputMove.y * speed + yIncreaseTime);
     }
 
 
