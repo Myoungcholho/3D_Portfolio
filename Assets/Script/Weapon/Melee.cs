@@ -5,7 +5,7 @@ public class Melee : Weapon
 {
     private bool bEnable;
     private bool bExist;
-    private int index;
+    protected int index;
 
     protected Collider[] colliders;
     private List<string> hittedList;
@@ -118,11 +118,13 @@ public class Melee : Weapon
         return $"{other.name}_{obj.name}";
     }
 
-    protected void OnTriggerEnter(Collider other)
+    protected virtual void OnTriggerEnter(Collider other)
     {
         if (other.gameObject == rootObject)
             return;
 
+        if (attacker == null)
+            attacker = gameObject;
         string hashCode = CreateHashCode(other, attacker);
 
         if (hittedList.Contains(hashCode) == true)
@@ -151,8 +153,9 @@ public class Melee : Weapon
         }
 
         hitPoint = enabledCollider.ClosestPoint(other.transform.position);
+        Debug.Log(hitPoint + " " + enabledCollider);
         hitPoint = other.transform.InverseTransformPoint(hitPoint);
-
+        Debug.Log(hitPoint + " " + enabledCollider);
         damage.OnDamage(rootObject, this, hitPoint, doActionDatas[index]);
     }
 }

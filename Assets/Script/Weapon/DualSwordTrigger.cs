@@ -10,7 +10,7 @@ public class DualSwordTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("gameObject :" + gameObject.name);
+        //Debug.Log("gameObject :" + gameObject.name);
         OnAttacker?.Invoke(gameObject);
         OnTrigger?.Invoke(other);
     }

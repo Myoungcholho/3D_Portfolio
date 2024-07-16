@@ -15,7 +15,6 @@ public class FadeEffect : MonoBehaviour
     private float randomTime = 0.5f;                    // 랜덤 시간 범위
     private float elapsedTime = 0f;                     // 누적 시간
     private float totalTime;
-    float t;
 
     void Start()
     {
@@ -23,25 +22,21 @@ public class FadeEffect : MonoBehaviour
         playerHealth.lowHpAction += FadePanel;
 
         totalTime = baseTime + Random.Range(-randomTime, +randomTime);
-
     }
 
     // HealthComponent의 update에서 호출함.
     private void FadePanel()
     {
-        if (t > 1)
+        if (elapsedTime / totalTime > 1)
         {
-            t = 0;
             elapsedTime = 0;
-
             tempColor = beginColor;
             beginColor = endColor;
             endColor = tempColor;
             totalTime = baseTime + Random.Range(-randomTime, +randomTime);
         }
         elapsedTime += Time.deltaTime;
-        t = elapsedTime / totalTime;
 
-        panelImage.color = Color.Lerp(beginColor, endColor, t);
+        panelImage.color = Color.Lerp(beginColor, endColor, elapsedTime / totalTime);
     }
 }

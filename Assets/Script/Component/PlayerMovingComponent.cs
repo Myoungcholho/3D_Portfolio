@@ -1,4 +1,5 @@
 using System.Collections;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,7 +7,7 @@ using StateType = StateComponent.StateType;
 
 public enum EvadeDirection
 {
-    Forward, Backward, Left, Right,
+    Forward, Backward, Left, Right, ForwardLeft, ForwardRight, BackwardLeft, BackwardRight
 }
 
 public class PlayerMovingComponent : MonoBehaviour
@@ -40,6 +41,8 @@ public class PlayerMovingComponent : MonoBehaviour
     private bool bRun;
     private Vector2 velocity;
     private Quaternion? evadeRotation = null;
+    
+    private float yIncreaseTime = 0.0f; // Y축 값이 4일 때의 지속 시간을 추적
 
     private void Awake()
     {
@@ -93,8 +96,6 @@ public class PlayerMovingComponent : MonoBehaviour
 
     Vector3 newPosition;
 
-    private float yIncreaseTime = 0.0f; // Y축 값이 4일 때의 지속 시간을 추적
-    private float yIncreaseInterval = 1.0f; // 값을 증가시키는 간격 (초 단위)
     private void Update()
     {
         currInputMove = Vector2.SmoothDamp(currInputMove, inputMove, ref velocity, 1.0f / sensitivity);
@@ -112,21 +113,19 @@ public class PlayerMovingComponent : MonoBehaviour
             direction = direction.normalized * speed;
         }
 
-        // 앞대쉬 지속 시 점점 더 빠르게
-        if (direction.z >= 4.0f)
+        if (direction.z >= 0.0f)
         {
-            yIncreaseTime += Time.deltaTime;
-            if (yIncreaseTime >= yIncreaseInterval)
+            if (direction.z >= 1.0f * runSpeed)
             {
-                yIncreaseTime = Mathf.Clamp(yIncreaseTime, 0.0f, 2.0f);
-                direction.z += (yIncreaseTime* (fastSpeed));
+                yIncreaseTime += Time.deltaTime;
             }
-        }
-        else if(direction.z >= 0.0f)
-        {
-            yIncreaseTime -= Time.deltaTime;
+            else
+            {
+                yIncreaseTime -= Time.deltaTime;
+            }
+
             yIncreaseTime = Mathf.Clamp(yIncreaseTime, 0.0f, 2.0f);
-            direction.z -= (yIncreaseTime / (fastSpeed));
+            direction.z += (yIncreaseTime * fastSpeed);
         }
         else
         {
@@ -165,61 +164,76 @@ public class PlayerMovingComponent : MonoBehaviour
     private void ExecuteEvade()
     {
         Vector2 value = inputMove;
-        EvadeDirection direction = EvadeDirection.Forward;
-
+        EvadeDirection aniDirection = EvadeDirection.Forward;
+        EvadeDirection Direction = EvadeDirection.Forward;
 
 
         // 키 입력이 없는 경우
         if (value.y == 0.0f)
         {
-            direction = EvadeDirection.Forward;
+            aniDirection = EvadeDirection.Forward;
+            Direction = aniDirection;
 
             if (value.x < 0.0f)
             {
-                direction = EvadeDirection.Left;
+                aniDirection = EvadeDirection.Left;
+                Direction = aniDirection;
             }
             else if (value.x > 0.0f)
             {
-                direction = EvadeDirection.Right;
+                aniDirection = EvadeDirection.Right;
+                Direction = aniDirection;
             }
         }
+
         // 앞 입력 시
         else if (value.y >= 0.0f)
         {
-            direction = EvadeDirection.Forward;
+            aniDirection = EvadeDirection.Forward;
+            Direction = aniDirection;
+            // 왼쪽 대각선
             if (value.x < 0.0f)
             {
+                Direction = EvadeDirection.ForwardLeft;
                 evadeRotation = transform.rotation;
                 transform.Rotate(Vector3.up, -45.0f);
             }
+            // 오른쪽 대각선
             else if (value.x > 0.0f)
             {
+                Direction = EvadeDirection.ForwardRight;
                 evadeRotation = transform.rotation;
                 transform.Rotate(Vector3.up, 45.0f);
             }
         }
         else
         {
-            direction = EvadeDirection.Backward;
+            aniDirection = EvadeDirection.Backward;
+            Direction = aniDirection;
+            // 왼쪽 뒤 대각선
             if (value.x < 0.0f)
             {
+                Direction = EvadeDirection.BackwardLeft;
                 evadeRotation = transform.rotation;
                 transform.Rotate(Vector3.up, 45.0f);
             }
+            // 오른쪽 뒤 대각선
             else if (value.x > 0.0f)
             {
+                Direction = EvadeDirection.BackwardRight;
                 evadeRotation = transform.rotation;
                 transform.Rotate(Vector3.up, -45.0f);
             }
         }
-        animator.SetInteger("Direction", (int)direction);
+        animator.SetInteger("Direction", (int)aniDirection);
         animator.SetTrigger("Evade");
+
+        Debug.Log("direction :" + Direction.ToString());
 
         if (animator.GetInteger("WeaponType") == (int)WeaponType.FireBall)
         {
-            StaffEvade(direction);
+            StaffEvade(Direction);
         }
-
     }
 
     private void StaffEvade(EvadeDirection direction)
@@ -256,7 +270,35 @@ public class PlayerMovingComponent : MonoBehaviour
                     Vector3 distance = transform.position + new Vector3(teleportDistance, 0, 0);
                     StartCoroutine(MoveToPosition(distance));
                 }
-            break;
+                break;
+            case EvadeDirection.ForwardLeft:
+                {
+                    //transform.Translate(new Vector3(5f, 0, 0));
+                    Vector3 distance = transform.position + new Vector3(-teleportDistance, 0, teleportDistance);
+                    StartCoroutine(MoveToPosition(distance));
+                }
+                break;
+            case EvadeDirection.ForwardRight:
+                {
+                    //transform.Translate(new Vector3(5f, 0, 0));
+                    Vector3 distance = transform.position + new Vector3(teleportDistance, 0, teleportDistance);
+                    StartCoroutine(MoveToPosition(distance));
+                }
+                break;
+            case EvadeDirection.BackwardLeft:
+                {
+                    //transform.Translate(new Vector3(5f, 0, 0));
+                    Vector3 distance = transform.position + new Vector3(-teleportDistance, 0, -teleportDistance);
+                    StartCoroutine(MoveToPosition(distance));
+                }
+                break;
+            case EvadeDirection.BackwardRight:
+                {
+                    //transform.Translate(new Vector3(5f, 0, 0));
+                    Vector3 distance = transform.position + new Vector3(teleportDistance, 0, -teleportDistance);
+                    StartCoroutine(MoveToPosition(distance));
+                }
+                break;
         }
 
         Debug.Assert(StaffParticlePrefab != null);
@@ -282,9 +324,8 @@ public class PlayerMovingComponent : MonoBehaviour
         }
 
         foreach (Renderer rd in renderer)
-        {
             rd.enabled = true;
-        }
+        
         animator.SetTrigger("TestExit");
         Move();
         End_Evade();

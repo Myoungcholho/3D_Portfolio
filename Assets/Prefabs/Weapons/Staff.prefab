@@ -97,9 +97,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 4
-  doActionDatas: []
+  doActionDatas:
+  - bCanMove: 1
+    Power: 1
+    Distance: 1
+    StopFrame: 0
+    Particle: {fileID: 1232470965182556, guid: 0a9ef93f74ff5bd42a39f89e61fac272, type: 3}
+    ParticlePositionOffset: {x: 0, y: 0, z: 0}
+    ParticleScaleOffset: {x: 0, y: 0, z: 0}
+    HitImpactIndex: 0
+    HitParticle: {fileID: 1183852268493988, guid: 524e1f348f3798444b3623e8b326561f, type: 3}
+    HitParticlePositionOffset: {x: 0, y: 0, z: 0}
+    HitParticleScaleOffset: {x: 1, y: 1, z: 1}
   staffTransformName: Hand_FireBall_Staff
   flameTransformName: Hand_FireBall_Flame
   muzzleTransformName: Hand_FireBall_Muzzle
-  flameParticleOrigin: {fileID: 0}
-  projectilePrefab: {fileID: 0}
+  flameParticleOrigin: {fileID: 1566213217834711123, guid: 6ca4ae9b04b1c394eaf8ed7db4d2fa8f, type: 3}
+  projectilePrefab: {fileID: 7696975489357542014, guid: 503854693a180c146b344b8fc22471ca, type: 3}

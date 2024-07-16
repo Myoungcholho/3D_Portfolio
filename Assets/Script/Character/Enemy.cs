@@ -5,7 +5,7 @@ public class Enemy : Character, IDamagable
 {
 
     [SerializeField]
-    private Color damageColor = Color.red;
+    private Color damageColor;
 
     [SerializeField]
     private float changeColorTime = 0.15f;
@@ -53,11 +53,14 @@ public class Enemy : Character, IDamagable
         {
             state.SetDamagedMode(); // 이 부분이 변경되고 바로 애니 이벤트로 변경되어 씹힘.
 
+            animator.SetInteger("ImpactType", (int)causer.Type);
             animator.SetInteger("ImpactIndex", (int)data.HitImpactIndex);
             animator.SetTrigger("Impact");
 
             rigidbody.isKinematic = false;
             float launch = rigidbody.drag * data.Distance * 10.0f;
+            Debug.Log(launch);
+            rigidbody.velocity = Vector3.zero;
             rigidbody.AddForce(-transform.forward * launch);
 
             StartCoroutine(Change_IsKinemetics(5));
@@ -78,9 +81,7 @@ public class Enemy : Character, IDamagable
     private IEnumerator Change_Color(float time)
     {
         skinMaterial.color = damageColor;
-
         yield return new WaitForSeconds(time);
-
         skinMaterial.color = originColor;
     }
 

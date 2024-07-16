@@ -662,14 +662,14 @@ ModelImporter:
       - time: 0.52476233
         functionName: Begin_Equip
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 19258ca2dc896864fa81698eb1e1b15c, type: 3}
+        objectReferenceParameter: {fileID: 11500000, guid: 26f4075ce74b0904e8c381d6f4941341, type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
       - time: 0.9491249
         functionName: End_Equip
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 19258ca2dc896864fa81698eb1e1b15c, type: 3}
+        objectReferenceParameter: {fileID: 11500000, guid: 26f4075ce74b0904e8c381d6f4941341, type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0

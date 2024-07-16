@@ -70,7 +70,6 @@ public class TargetComponent : MonoBehaviour
             }
 
             float distance = Vector3.Distance(transform.position, transform.position + direction);
-            Debug.Log("Object :" + candidate.name + "distance" + distance);
 
             if (minDistance > distance)
             {

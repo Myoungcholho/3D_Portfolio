@@ -172,23 +172,12 @@ MonoBehaviour:
     HitParticleScaleOffset: {x: 1, y: 1, z: 1}
   - bCanMove: 0
     Power: 1
-    Distance: 7
+    Distance: 3
     StopFrame: 3
     Particle: {fileID: 0}
     ParticlePositionOffset: {x: 0, y: 0, z: 0}
     ParticleScaleOffset: {x: 0, y: 0, z: 0}
-    HitImpactIndex: 0
-    HitParticle: {fileID: 5024009746357069194, guid: 0d468d30d277fde4287e5e4010c7913a, type: 3}
-    HitParticlePositionOffset: {x: 0, y: 0, z: 0}
-    HitParticleScaleOffset: {x: 1, y: 1, z: 1}
-  - bCanMove: 0
-    Power: 1
-    Distance: 8
-    StopFrame: 5
-    Particle: {fileID: 0}
-    ParticlePositionOffset: {x: 0, y: 0, z: 0}
-    ParticleScaleOffset: {x: 0, y: 0, z: 0}
-    HitImpactIndex: 0
+    HitImpactIndex: 1
     HitParticle: {fileID: 5024009746357069194, guid: 0d468d30d277fde4287e5e4010c7913a, type: 3}
     HitParticlePositionOffset: {x: 0, y: 0, z: 0}
     HitParticleScaleOffset: {x: 1, y: 1, z: 1}
@@ -199,7 +188,18 @@ MonoBehaviour:
     Particle: {fileID: 0}
     ParticlePositionOffset: {x: 0, y: 0, z: 0}
     ParticleScaleOffset: {x: 0, y: 0, z: 0}
-    HitImpactIndex: 0
+    HitImpactIndex: 1
+    HitParticle: {fileID: 5024009746357069194, guid: 0d468d30d277fde4287e5e4010c7913a, type: 3}
+    HitParticlePositionOffset: {x: 0, y: 0, z: 0}
+    HitParticleScaleOffset: {x: 1, y: 1, z: 1}
+  - bCanMove: 0
+    Power: 1
+    Distance: 0
+    StopFrame: 5
+    Particle: {fileID: 0}
+    ParticlePositionOffset: {x: 0, y: 0, z: 0}
+    ParticleScaleOffset: {x: 0, y: 0, z: 0}
+    HitImpactIndex: 2
     HitParticle: {fileID: 5024009746357069194, guid: 0d468d30d277fde4287e5e4010c7913a, type: 3}
     HitParticlePositionOffset: {x: 0, y: 0, z: 0}
     HitParticleScaleOffset: {x: 1, y: 1, z: 1}
