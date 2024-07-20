@@ -3,15 +3,13 @@ using UnityEngine;
 
 public class PerceptionComponent : MonoBehaviour
 {
+    [Header("---감지 기능 스크립트---")]
     [SerializeField]
     private float distance = 5.0f;          // 탐지 거리
-
     [SerializeField]
     private float angle = 45.0f;            // 탐지 각도
-
     [SerializeField]
     private float lostTime = 2.0f;          // 범위 바깥에 나가도 탐지 가능한 시간
-
     [SerializeField]
     private LayerMask layerMask;            // 탐지할 Layer
 
@@ -19,13 +17,16 @@ public class PerceptionComponent : MonoBehaviour
 
     private void Reset()
     {
-        layerMask = 1 << LayerMask.NameToLayer("Character");
+        layerMask = 1 << LayerMask.NameToLayer("Player");
     }
     private void Awake()
     {
         percievedTable = new Dictionary<GameObject, float>();
     }
 
+    // percievedTable에 감지된 객체를 저장하는 기능
+    // 전체적으로 (전체 콜라이더 -> 후보자 리스트 ->
+    // 탐지 리스트, 탐지 첫 시간 기록 -> 삭제 리스트) 가 반복된다.
     private void Update()
     {
         // 1. 탐지된 대상을 List에 등록 , 매 프레임 감지 대상을 List에 계속 등록함
@@ -34,6 +35,7 @@ public class PerceptionComponent : MonoBehaviour
         Vector3 forward = transform.forward;
         List<Collider> candidateList = new List<Collider>();
 
+        // 1-1. 탐지된 오브젝트 중 각도 내에 있다면 후보자로 등록함.
         foreach (Collider collider in colliders)
         {
             Vector3 direction = collider.transform.position - transform.position;
@@ -75,7 +77,7 @@ public class PerceptionComponent : MonoBehaviour
         removeList.RemoveAll(remove => percievedTable.Remove(remove));
     }
 
-
+    // 감지된 객체 중 Tag : Player를 얻어온다.
     public GameObject GetPercievedPlayer()
     {
         foreach (var item in percievedTable)
@@ -83,9 +85,9 @@ public class PerceptionComponent : MonoBehaviour
             if (item.Key.CompareTag("Player"))
                 return item.Key;
         }
-
         return null;
     }
+
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {
@@ -123,8 +125,6 @@ public class PerceptionComponent : MonoBehaviour
 
         Gizmos.DrawLine(position, playerPosition);
         Gizmos.DrawWireSphere(playerPosition, 0.25f);
-
-
     }
 #endif
 }

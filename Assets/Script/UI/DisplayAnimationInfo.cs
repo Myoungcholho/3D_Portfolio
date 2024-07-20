@@ -24,6 +24,8 @@ public class DisplayAnimationInfo : MonoBehaviour
 
     void Update()
     {
+        transform.rotation = Camera.main.transform.rotation;
+
         string infoText = "";
 
         foreach (int layerIndex in layerIndices)

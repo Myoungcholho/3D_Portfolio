@@ -14,12 +14,13 @@ public class DoActionData
     public Vector3 ParticlePositionOffset;
     public Vector3 ParticleScaleOffset = Vector3.one;
 
-
     public int HitImpactIndex;
-
     public GameObject HitParticle;
     public Vector3 HitParticlePositionOffset;
     public Vector3 HitParticleScaleOffset = Vector3.one;
+
+    public Vector3 ImpulseDirection;
+    public Cinemachine.NoiseSettings ImpulseSettings;
 }
 
 public abstract class Weapon : MonoBehaviour
@@ -29,6 +30,11 @@ public abstract class Weapon : MonoBehaviour
 
     [SerializeField]
     protected DoActionData[] doActionDatas;
+
+
+    protected bool bEquipped;                       // 장착을 하고 있는지
+    protected bool bEquipping;                      // 장착이 진행 중인지
+    public bool Equipping { get => bEquipping; }
 
 
     public WeaponType Type { get => type; }
@@ -69,17 +75,20 @@ public abstract class Weapon : MonoBehaviour
 
     public virtual void Begin_Equip()
     {
-
+        bEquipping = true;
     }
 
     public virtual void End_Equip()
     {
+        bEquipping = false;
+        bEquipped = true;
+
         state.SetIdleMode();
     }
 
     public virtual void UnEquip()
     {
-
+        bEquipped = false;
     }
 
     public virtual void DoAction()

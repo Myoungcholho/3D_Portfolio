@@ -310,6 +310,37 @@ Transform:
   m_Father: {fileID: 3559523072494718327}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1210410359
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1210410360}
+  m_Layer: 6
+  m_Name: FollowTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1210410360
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1210410359}
+  m_LocalRotation: {x: 0.13052616, y: 0, z: 0, w: 0.9914449}
+  m_LocalPosition: {x: 0, y: 1.813, z: -1.096}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3412289081370760532}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 15, y: 0, z: 0}
 --- !u!1 &1549189292
 GameObject:
   m_ObjectHideFlags: 0
@@ -1490,11 +1521,13 @@ GameObject:
   - component: {fileID: 2881375550781392316}
   - component: {fileID: 1360738280}
   - component: {fileID: 1360738282}
+  - component: {fileID: 1937690483}
   - component: {fileID: 1360738281}
   - component: {fileID: 9208893161754479891}
   - component: {fileID: 2019338164092805677}
   - component: {fileID: 3670448462202217793}
   - component: {fileID: 5422450176226359373}
+  - component: {fileID: 1937690482}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -1520,6 +1553,7 @@ Transform:
   - {fileID: 753110273}
   - {fileID: 1187844358}
   - {fileID: 1549189293}
+  - {fileID: 1210410360}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1605,6 +1639,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 0bd5e584-85b2-48fa-adaf-28e9104209c8
     m_ActionName: Player/Hammer[/Keyboard/3]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 3e2f5ec1-77cd-480d-a85b-96054c7f4607
+    m_ActionName: Player/Look[/Mouse/delta]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: PC
   m_DefaultActionMap: Player
@@ -1618,13 +1656,13 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2598913966998294510}
   serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 10
+  m_Mass: 10
+  m_Drag: 1
   m_AngularDrag: 0
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 116
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!136 &1360738280
 CapsuleCollider:
@@ -1652,6 +1690,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11781ab7ceedeff41ae49aea5956b26e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1937690483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2598913966998294510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 644f324ce96611f44aff1ec883e2a3f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsMouseRotation: 1
+  followTargetName: FollowTarget
+  mouseSensitivity: {x: 0.5, y: 0.5}
+  limitPitchAngle: {x: 20, y: 340}
+  mouseRotationLerp: 0.25
 --- !u!114 &1360738281
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1671,6 +1726,12 @@ MonoBehaviour:
   deadZone: 0.001
   teleportDistance: 5
   StaffParticlePrefab: {fileID: 3744133877081091469, guid: c6b5609412e940545b8bc8a4c134a853, type: 3}
+  checkSphereRadius: 0.1
+  groundLayers:
+    serializedVersion: 2
+    m_Bits: 768
+  jumpForce: 100
+  currentSpeed: 0
 --- !u!114 &9208893161754479891
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1697,6 +1758,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   currentHealth: 0
+  hpBarCanvasName: HpBarCanvas
+  hpBarImageName: PanelHp
+  hpBarPosition: {x: 0, y: 1.2}
 --- !u!114 &3670448462202217793
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1734,6 +1798,23 @@ MonoBehaviour:
   - {fileID: 1497429943179544527, guid: fb2b46ba2e2b36f4a93fa59c9692fa54, type: 3}
   - {fileID: 8457828835844764249, guid: ef7be6fe9d405084aa4fe1e745029636, type: 3}
   - {fileID: 3765008650632650752, guid: 4ac1275da83782a4ea4f559102629411, type: 3}
+--- !u!114 &1937690482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2598913966998294510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56110a66a9d78fa4da494bf677eb7a12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  distance: 0
+  weight: 1
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 768
 --- !u!1 &2791727453688110026
 GameObject:
   m_ObjectHideFlags: 0

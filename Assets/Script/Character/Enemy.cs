@@ -3,10 +3,12 @@ using UnityEngine;
 
 public class Enemy : Character, IDamagable
 {
+    [Header("Animation에 의한 발 오차 offset")]
+    [SerializeField]
+    private Vector3 footOffset = new Vector3(0f, -0.08f, 0f);
 
     [SerializeField]
     private Color damageColor;
-
     [SerializeField]
     private float changeColorTime = 0.15f;
 
@@ -27,7 +29,10 @@ public class Enemy : Character, IDamagable
     Vector3 oppositeDirection;
     public void OnDamage(GameObject attacker, Weapon causer, Vector3 hitPoint, DoActionData data)
     {
+        // Damage 처리
         healthPoint.Damage(data.Power);
+        // CameraSahking
+        HitCameraShake(causer);
 
         StartCoroutine(Change_Color(changeColorTime));
         MovableStopper.Instance.Start_Delay(data.StopFrame);
@@ -39,7 +44,6 @@ public class Enemy : Character, IDamagable
             // 적의 회전을 설정
             Quaternion lookRotation = Quaternion.LookRotation(oppositeDirection, Vector3.up);
             transform.rotation = lookRotation;
-            //transform.LookAt(attacker.transform, Vector3.up);
         }
 
         if (data.HitParticle != null)
@@ -59,7 +63,6 @@ public class Enemy : Character, IDamagable
 
             rigidbody.isKinematic = false;
             float launch = rigidbody.drag * data.Distance * 10.0f;
-            Debug.Log(launch);
             rigidbody.velocity = Vector3.zero;
             rigidbody.AddForce(-transform.forward * launch);
 
@@ -75,7 +78,13 @@ public class Enemy : Character, IDamagable
 
         animator.SetTrigger("Dead");
 
-        Destroy(gameObject, 5);
+        Destroy(gameObject, 5f);
+    }
+
+    private void HitCameraShake(Weapon causer)
+    {
+        Melee melee = causer as Melee;
+        melee?.Play_Impulse();
     }
 
     private IEnumerator Change_Color(float time)
@@ -102,9 +111,13 @@ public class Enemy : Character, IDamagable
 
     }
 
+    // Enemy의 Animator RootMotion을 직접 적용
     private void OnAnimatorMove()
     {
-        transform.position += animator.deltaPosition;
+        Vector3 pos = transform.position + footOffset;
+        transform.position = pos + animator.deltaPosition;
+
+        transform.rotation *= animator.deltaRotation;
     }
 
     private void OnDrawGizmos()

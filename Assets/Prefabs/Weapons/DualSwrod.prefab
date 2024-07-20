@@ -121,6 +121,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1497429943179544525}
   - component: {fileID: 1497429943179544526}
+  - component: {fileID: 6219695909784751584}
   m_Layer: 0
   m_Name: DualSwrod
   m_TagString: Untagged
@@ -170,6 +171,8 @@ MonoBehaviour:
     HitParticle: {fileID: 5024009746357069194, guid: 0d468d30d277fde4287e5e4010c7913a, type: 3}
     HitParticlePositionOffset: {x: 0, y: 0, z: 0}
     HitParticleScaleOffset: {x: 1, y: 1, z: 1}
+    ImpulseDirection: {x: 0, y: 0, z: 0}
+    ImpulseSettings: {fileID: 0}
   - bCanMove: 0
     Power: 1
     Distance: 3
@@ -181,6 +184,8 @@ MonoBehaviour:
     HitParticle: {fileID: 5024009746357069194, guid: 0d468d30d277fde4287e5e4010c7913a, type: 3}
     HitParticlePositionOffset: {x: 0, y: 0, z: 0}
     HitParticleScaleOffset: {x: 1, y: 1, z: 1}
+    ImpulseDirection: {x: 0, y: 0, z: 0}
+    ImpulseSettings: {fileID: 0}
   - bCanMove: 0
     Power: 1
     Distance: 4
@@ -192,6 +197,8 @@ MonoBehaviour:
     HitParticle: {fileID: 5024009746357069194, guid: 0d468d30d277fde4287e5e4010c7913a, type: 3}
     HitParticlePositionOffset: {x: 0, y: 0, z: 0}
     HitParticleScaleOffset: {x: 1, y: 1, z: 1}
+    ImpulseDirection: {x: 0, y: 0, z: 0}
+    ImpulseSettings: {fileID: 0}
   - bCanMove: 0
     Power: 1
     Distance: 0
@@ -203,7 +210,62 @@ MonoBehaviour:
     HitParticle: {fileID: 5024009746357069194, guid: 0d468d30d277fde4287e5e4010c7913a, type: 3}
     HitParticlePositionOffset: {x: 0, y: 0, z: 0}
     HitParticleScaleOffset: {x: 1, y: 1, z: 1}
+    ImpulseDirection: {x: 0, y: 0, z: 1}
+    ImpulseSettings: {fileID: 11400000, guid: b22b4d2aca3a32d41b05d6e1f0c115d3, type: 2}
   particlePrefab: {fileID: 8597731318025692521, guid: 08b46908a8f7618419f11902dffee401, type: 3}
+--- !u!114 &6219695909784751584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1497429943179544527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 180ecf9b41d478f468eb3e9083753217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ImpulseDefinition:
+    m_ImpulseChannel: 1
+    m_ImpulseShape: 1
+    m_CustomImpulseShape:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_ImpulseDuration: 0.05
+    m_ImpulseType: 0
+    m_DissipationRate: 0.25
+    m_RawSignal: {fileID: 0}
+    m_AmplitudeGain: 1
+    m_FrequencyGain: 1
+    m_RepeatMode: 0
+    m_Randomize: 1
+    m_TimeEnvelope:
+      m_AttackShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_DecayShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_AttackTime: 0
+      m_SustainTime: 0.2
+      m_DecayTime: 0.7
+      m_ScaleWithImpact: 1
+      m_HoldForever: 0
+    m_ImpactRadius: 100
+    m_DirectionMode: 0
+    m_DissipationMode: 2
+    m_DissipationDistance: 100
+    m_PropagationSpeed: 343
+  m_DefaultVelocity: {x: 0, y: -1, z: 0}
 --- !u!1 &4001409961505855057
 GameObject:
   m_ObjectHideFlags: 0

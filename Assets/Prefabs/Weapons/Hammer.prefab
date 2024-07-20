@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7345919917505119341}
   - component: {fileID: 4837450417445796384}
   - component: {fileID: 7473944606419077813}
+  - component: {fileID: -867030996205638529}
   m_Layer: 0
   m_Name: Hammer
   m_TagString: Untagged
@@ -90,10 +91,12 @@ MonoBehaviour:
     HitParticle: {fileID: 8443315704496310910, guid: 6ef35fa36e3a65043b2d800600204bdd, type: 3}
     HitParticlePositionOffset: {x: 1, y: 0, z: 0}
     HitParticleScaleOffset: {x: 1, y: 1, z: 1}
+    ImpulseDirection: {x: -0.5, y: 0, z: 0}
+    ImpulseSettings: {fileID: 11400000, guid: a3b8629d78d051d41ad2e09c3b8be726, type: 2}
   - bCanMove: 0
     Power: 1
     Distance: 3
-    StopFrame: 5
+    StopFrame: 7
     Particle: {fileID: 0}
     ParticlePositionOffset: {x: 0, y: 0, z: 0}
     ParticleScaleOffset: {x: 0, y: 0, z: 0}
@@ -101,6 +104,8 @@ MonoBehaviour:
     HitParticle: {fileID: 8443315704496310910, guid: 6ef35fa36e3a65043b2d800600204bdd, type: 3}
     HitParticlePositionOffset: {x: -1, y: 0, z: 0}
     HitParticleScaleOffset: {x: 1, y: 1, z: 1}
+    ImpulseDirection: {x: 0.5, y: 0, z: 0}
+    ImpulseSettings: {fileID: 11400000, guid: a3b8629d78d051d41ad2e09c3b8be726, type: 2}
   - bCanMove: 0
     Power: 1
     Distance: 5
@@ -112,10 +117,12 @@ MonoBehaviour:
     HitParticle: {fileID: 8443315704496310910, guid: 6ef35fa36e3a65043b2d800600204bdd, type: 3}
     HitParticlePositionOffset: {x: 0, y: 0, z: 0}
     HitParticleScaleOffset: {x: 1, y: 1, z: 1}
+    ImpulseDirection: {x: 0, y: 0, z: 0.5}
+    ImpulseSettings: {fileID: 11400000, guid: a3b8629d78d051d41ad2e09c3b8be726, type: 2}
   - bCanMove: 0
     Power: 1
     Distance: 5
-    StopFrame: 5
+    StopFrame: 10
     Particle: {fileID: 0}
     ParticlePositionOffset: {x: 0, y: 0, z: 0}
     ParticleScaleOffset: {x: 0, y: 0, z: 0}
@@ -123,9 +130,64 @@ MonoBehaviour:
     HitParticle: {fileID: 8443315704496310910, guid: 6ef35fa36e3a65043b2d800600204bdd, type: 3}
     HitParticlePositionOffset: {x: 0, y: -1, z: 0}
     HitParticleScaleOffset: {x: 1, y: 1, z: 1}
+    ImpulseDirection: {x: 0, y: 1, z: 0}
+    ImpulseSettings: {fileID: 11400000, guid: a3b8629d78d051d41ad2e09c3b8be726, type: 2}
   handName: Hand_Hammer
   particlePrefab: {fileID: 8597731318025692521, guid: f51db08a311afb84b987037763c4cce7, type: 3}
   particleTransformName: warhammer_head_low
+--- !u!114 &-867030996205638529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3765008650632650752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 180ecf9b41d478f468eb3e9083753217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ImpulseDefinition:
+    m_ImpulseChannel: 1
+    m_ImpulseShape: 2
+    m_CustomImpulseShape:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_ImpulseDuration: 0.05
+    m_ImpulseType: 0
+    m_DissipationRate: 0.25
+    m_RawSignal: {fileID: 0}
+    m_AmplitudeGain: 1
+    m_FrequencyGain: 1
+    m_RepeatMode: 0
+    m_Randomize: 1
+    m_TimeEnvelope:
+      m_AttackShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_DecayShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_AttackTime: 0
+      m_SustainTime: 0.2
+      m_DecayTime: 0.7
+      m_ScaleWithImpact: 1
+      m_HoldForever: 0
+    m_ImpactRadius: 100
+    m_DirectionMode: 0
+    m_DissipationMode: 2
+    m_DissipationDistance: 100
+    m_PropagationSpeed: 343
+  m_DefaultVelocity: {x: 0, y: -1, z: 0}
 --- !u!1 &6180777233002055385
 GameObject:
   m_ObjectHideFlags: 0

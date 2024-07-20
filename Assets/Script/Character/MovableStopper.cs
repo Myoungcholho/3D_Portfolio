@@ -8,19 +8,29 @@ public class MovableStopper : MonoBehaviour
     {
         get
         {
-            if (m_instance == null)
-            {
-                m_instance = FindObjectOfType<MovableStopper>();
-            }
             return m_instance;
         }
     }
 
     private List<IStoppable> stoppers = new List<IStoppable>();
 
+    private void Awake()
+    {
+        if(m_instance == null)
+        {
+            m_instance = this;
+        }
+        DontDestroyOnLoad(gameObject);
+    }
+
     public void Regist(IStoppable stopper)
     {
         stoppers.Add(stopper);
+    }
+
+    public void Remove(IStoppable stopper) 
+    {
+        stoppers.Remove(stopper);
     }
 
     public void Start_Delay(int frame)

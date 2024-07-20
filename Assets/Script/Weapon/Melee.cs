@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,6 +11,10 @@ public class Melee : Weapon
     protected Collider[] colliders;
     private List<string> hittedList;
     private GameObject attacker;
+
+    protected CinemachineImpulseSource impulse;
+    protected CinemachineBrain brain;
+
     public void Attacker(GameObject attacker)
     {
         this.attacker = attacker;
@@ -21,6 +26,8 @@ public class Melee : Weapon
 
         colliders = GetComponentsInChildren<Collider>();
         hittedList = new List<string>();
+        impulse = GetComponent<CinemachineImpulseSource>();
+        brain = Camera.main.GetComponent<CinemachineBrain>();
     }
 
     protected override void Start()
@@ -116,6 +123,29 @@ public class Melee : Weapon
             obj = gameObject;
 
         return $"{other.name}_{obj.name}";
+    }
+
+    public virtual void Play_Impulse()
+    {
+        if (impulse == null)
+            return;
+
+        if (doActionDatas[index].ImpulseSettings == null)
+            return;
+
+        if (doActionDatas[index].ImpulseDirection.magnitude <= 0.0f)
+            return;
+
+        //brain.m_CameraCutEvent 카메라 활성화 될때마다 콜
+        CinemachineVirtualCamera camera = brain.ActiveVirtualCamera as CinemachineVirtualCamera;
+        if (camera != null)
+        {
+            CinemachineImpulseListener listener = camera.GetComponent<CinemachineImpulseListener>();
+            listener.m_ReactionSettings.m_SecondaryNoise = doActionDatas[index].ImpulseSettings;
+
+        }
+
+        impulse.GenerateImpulse(doActionDatas[index].ImpulseDirection);
     }
 
     protected virtual void OnTriggerEnter(Collider other)

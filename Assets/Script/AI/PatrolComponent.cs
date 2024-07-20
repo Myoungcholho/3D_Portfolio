@@ -9,17 +9,14 @@ public class PatrolComponent : MonoBehaviour
 {
     [SerializeField]
     private float radius = 10;              // 순찰 반경
-
     [SerializeField]
     private float goalDelay = 1.0f;         // 도달 시 대기시간
-
     [SerializeField]
     private float goalDelayRandom = 0.25f;  // 0.75~1.25 RandomDelay
-
     [SerializeField]
     private PatrolPoints patrolPoints;      // 구역 탐색 스크립트
-    public bool HasPatrolPoints { get => patrolPoints != null; }
 
+    public bool HasPatrolPoints { get => patrolPoints != null; }
     
     private Vector3 initPosition;           // 초기 위치
     private Vector3 goalPosition;           // 목표 위치
@@ -39,10 +36,22 @@ public class PatrolComponent : MonoBehaviour
         goalPosition = transform.position;
     }
 
-    /// <summary>
-    /// 목표 지점까지 도달했는지 검사합니다.
-    /// </summary>
     private void Update()
+    {
+        CheckAtTargetUpdate();
+    }
+
+    // 경로를 새로 찾고 목표로 이동
+    public void StartMove()
+    {
+        if (navMeshPath == null)
+            navMeshPath = CreateNavMeshPath();      
+            
+        navMeshAgent.SetPath(navMeshPath);
+    }
+
+    //목표 지점까지 도달했는지 검사합니다.
+    private void CheckAtTargetUpdate()
     {
         if (navMeshPath == null)
             return;
@@ -60,9 +69,7 @@ public class PatrolComponent : MonoBehaviour
         StartCoroutine(WaitDelay(waitTime));
     }
 
-    /// <summary>
     /// 잠시 대기하고 경로를 다시 설정합니다.
-    /// </summary>
     private IEnumerator WaitDelay(float time)
     {
         yield return new WaitForSeconds(time);
@@ -72,18 +79,7 @@ public class PatrolComponent : MonoBehaviour
         bArrived = false;
     }
 
-    public void StartMove()
-    {
-        if (navMeshPath == null)
-            navMeshPath = CreateNavMeshPath();      // 초기 지점으로부터 랜덤한 목표지점의 경로를 가지는 객체 생성
-            
-
-        navMeshAgent.SetPath(navMeshPath);      // 경로대로 이동
-    }
-
-    /// <summary>
     /// 목표 지점의 경로 NavMeshPath를 생성하고 반환합니다.
-    /// </summary>
     private NavMeshPath CreateNavMeshPath()
     {
         NavMeshPath path = null;
@@ -126,7 +122,6 @@ public class PatrolComponent : MonoBehaviour
     }
 
 #if UNITY_EDITOR
-
     private void OnDrawGizmosSelected()
     {
         if (Application.isPlaying == false)

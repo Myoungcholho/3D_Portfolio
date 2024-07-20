@@ -51,6 +51,12 @@ public abstract class Character : MonoBehaviour, IStoppable
         MovableStopper.Instance.Regist(this);
     }
 
+
+    public void Remove_MovableStopper()
+    {
+        MovableStopper.Instance.Remove(this);
+    }
+
     public IEnumerator Start_FrameDelay(int frame)
     {
         animator.speed = 0.0f;
@@ -65,4 +71,10 @@ public abstract class Character : MonoBehaviour, IStoppable
     {
 
     }
+
+    protected virtual void OnDestroy()
+    {
+        Remove_MovableStopper();
+    }
+
 }

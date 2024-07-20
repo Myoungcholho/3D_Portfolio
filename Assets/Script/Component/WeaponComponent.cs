@@ -18,6 +18,7 @@ public class WeaponComponent : MonoBehaviour
     private TargetComponent target;
 
     private WeaponType type = WeaponType.Unarmed;
+    public WeaponType Type { get => type; }
 
     public event Action<WeaponType, WeaponType> OnWeaponTyeChanged;
     public event Action OnEndEquip;
@@ -113,6 +114,18 @@ public class WeaponComponent : MonoBehaviour
         ChangeType(WeaponType.Unarmed);
     }
 
+    public bool IsEquippingMode()
+    {
+        if (UnarmedMode)
+            return false;
+
+        Weapon weapon = weaponTable[type];
+        if (weapon == null)
+            return false;
+
+        return weapon.Equipping;
+    }
+
     private void SetMode(WeaponType type)
     {
         if (this.type == type)
@@ -176,7 +189,7 @@ public class WeaponComponent : MonoBehaviour
 
 
         animator.SetBool("IsAction", true);
-        target.TargetSearch();              // 타겟 서칭
+        target?.TargetSearch();              // 타겟 서칭
         weaponTable[type].DoAction();
     }
 
@@ -185,10 +198,11 @@ public class WeaponComponent : MonoBehaviour
         weaponTable[type].Begin_DoAction();
     }
 
-    private void End_DoAction()
+    // AI에서 Action 중 피격 시 강제호출 때문에 보호 수준 변경 (07.20)
+    public void End_DoAction()
     {
         animator.SetBool("IsAction", false);
-        target.EndTargeting();
+        target?.EndTargeting();
         weaponTable[type].End_DoAction();
         OnEndDoAction?.Invoke();
     }
@@ -219,6 +233,13 @@ public class WeaponComponent : MonoBehaviour
         Melee melee = weaponTable[type] as Melee;
 
         melee?.End_Collision();
+    }
+
+    // 무기의 카메라 쉐이킹 기능 호출 함수
+    private void Play_Impulse()
+    {
+        Melee melee = weaponTable[type] as Melee;
+        melee?.Play_Impulse();
     }
 
     private void Play_DoAction_Particle()

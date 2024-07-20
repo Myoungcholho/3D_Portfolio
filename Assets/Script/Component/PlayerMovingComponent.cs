@@ -27,7 +27,6 @@ public class PlayerMovingComponent : MonoBehaviour
     [SerializeField]
     private GameObject StaffParticlePrefab;
 
-
     private bool bCanMove = true;
 
     private Animator animator;
@@ -44,6 +43,11 @@ public class PlayerMovingComponent : MonoBehaviour
     
     private float yIncreaseTime = 0.0f; // Y축 값이 4일 때의 지속 시간을 추적
 
+    // IK용 변수
+    public float checkSphereRadius = 0.1f; // CheckSphere의 반경
+    public LayerMask groundLayers;
+    public float jumpForce = 5.0f;
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -51,6 +55,14 @@ public class PlayerMovingComponent : MonoBehaviour
         weapon = GetComponent<WeaponComponent>();
         state = GetComponent<StateComponent>();
 
+        Awake_BindPlayerInput();
+
+        //Evade용 등록함수
+        state.OnStateTypeChanged += OnStateTypeChanged;
+    }
+
+    private void Awake_BindPlayerInput()
+    {
         PlayerInput input = GetComponent<PlayerInput>();
         InputActionMap actionMap = input.actions.FindActionMap("Player");
 
@@ -61,41 +73,10 @@ public class PlayerMovingComponent : MonoBehaviour
         InputAction runAction = actionMap.FindAction("Run");
         runAction.started += Input_Run_Started;
         runAction.canceled += Input_Run_Cancled;
-
-        state.OnStateTypeChanged += OnStateTypeChanged;
     }
 
-    public void Move()
-    {
-        bCanMove = true;
-    }
-    public void Stop()
-    {
-        bCanMove = false;
-    }
-
-    private void Input_Move_Performed(InputAction.CallbackContext context)
-    {
-        inputMove = context.ReadValue<Vector2>();
-    }
-    
-    private void Input_Move_Cancled(InputAction.CallbackContext context) 
-    {
-        inputMove = Vector2.zero;
-    }
-
-    private void Input_Run_Started(InputAction.CallbackContext context)
-    {
-        bRun = true;
-    }
-
-    private void Input_Run_Cancled(InputAction.CallbackContext context)
-    {
-        bRun = false;
-    }
-
-    Vector3 newPosition;
-
+    [HideInInspector]
+    public float currentSpeed;
     private void Update()
     {
         currInputMove = Vector2.SmoothDamp(currInputMove, inputMove, ref velocity, 1.0f / sensitivity);
@@ -103,9 +84,19 @@ public class PlayerMovingComponent : MonoBehaviour
         if (bCanMove == false)
             return;
 
+        
+        
+        // 계단 오르기 처리
+        if(false)
+        {
+            if (IsGrounded())
+            {
+                rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            }
+        }
+
+
         Vector3 direction = Vector3.zero;
-
-
         float speed = bRun ? runSpeed : walkSpeed;
         if (currInputMove.magnitude > deadZone)
         {
@@ -133,7 +124,7 @@ public class PlayerMovingComponent : MonoBehaviour
         }
 
 
-
+        currentSpeed = direction.magnitude;
         transform.Translate(direction * Time.deltaTime);
         
         if (weapon.UnarmedMode)
@@ -331,6 +322,35 @@ public class PlayerMovingComponent : MonoBehaviour
         End_Evade();
     }
 
+    public void Move()
+    {
+        bCanMove = true;
+    }
+    public void Stop()
+    {
+        bCanMove = false;
+    }
+
+    private void Input_Move_Performed(InputAction.CallbackContext context)
+    {
+        inputMove = context.ReadValue<Vector2>();
+    }
+
+    private void Input_Move_Cancled(InputAction.CallbackContext context)
+    {
+        inputMove = Vector2.zero;
+    }
+
+    private void Input_Run_Started(InputAction.CallbackContext context)
+    {
+        bRun = true;
+    }
+
+    private void Input_Run_Cancled(InputAction.CallbackContext context)
+    {
+        bRun = false;
+    }
+
     /// <summary>
     /// 구르기 끝나면 Idle모드로 변경하고, 회전한 값을 이전 상태로 회복합니다.
     /// </summary>
@@ -362,12 +382,15 @@ public class PlayerMovingComponent : MonoBehaviour
         transform.rotation = evadeRotation.Value;
     }
 
-    private void OnGUI()
+    bool IsGrounded()
     {
-        GUI.color = Color.red;
-        GUILayout.Label("inputMove" + inputMove.ToString());
-        GUILayout.Label("newPosition" + newPosition.ToString());
-        
+        return Physics.CheckSphere(transform.position, checkSphereRadius, groundLayers);
+    }
 
+    // Gizmos를 사용하여 CheckSphere를 시각화
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, checkSphereRadius);
     }
 }
