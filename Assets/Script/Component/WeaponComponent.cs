@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum WeaponType
 {
-    Unarmed = 0, Fist, Sword, Hammer, FireBall,DualSword, Max,
+    Unarmed = 0, Fist, Sword, Hammer, FireBall,DualSword, BossHammer, Max,
 }
 
 public class WeaponComponent : MonoBehaviour
@@ -30,7 +31,7 @@ public class WeaponComponent : MonoBehaviour
     public bool SwordMode { get => type == WeaponType.Sword; }
     public bool HammerMode { get => type == WeaponType.Hammer; }
     public bool FireBallMode { get => type == WeaponType.FireBall; }
-
+    public bool DualSwordMode { get=> type == WeaponType.DualSword; }
 
     private void Awake()
     {
@@ -191,6 +192,18 @@ public class WeaponComponent : MonoBehaviour
         animator.SetBool("IsAction", true);
         target?.TargetSearch();              // Å¸°Ù ¼­Äª
         weaponTable[type].DoAction();
+    }
+
+    // Boss¿ë ..
+    public void DoAction(int pattern)
+    {
+        if (weaponTable[type] == null)
+            return;
+        if (type != WeaponType.BossHammer)
+            return;
+
+        animator.SetBool("IsAction", true);
+        animator.SetInteger("Pattern", pattern);
     }
 
     private void Begin_DoAction()

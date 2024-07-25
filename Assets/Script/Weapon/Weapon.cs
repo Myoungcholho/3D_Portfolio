@@ -116,6 +116,12 @@ public abstract class Weapon : MonoBehaviour
 
     }
 
+    //파티클 인덱스 처리용
+    public virtual void Play_Particle_Index(AnimationEvent e)
+    {
+
+    }
+
     protected void Move()
     {
         PlayerMovingComponent moving = rootObject.GetComponent<PlayerMovingComponent>();

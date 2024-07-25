@@ -30,6 +30,8 @@ public abstract class AIController : MonoBehaviour
         get => currentCoolTime;
     }
 
+    protected bool bRetreat;                    // 후퇴중인지 판단
+
     // Type 체크용 프로퍼티
     public bool WaitMode { get => type == Type.Wait; }
     public bool PatrolMode { get => type == Type.Patrol; }
@@ -87,13 +89,29 @@ public abstract class AIController : MonoBehaviour
         nav.SetDestination(player.transform.position);
     }
 
+    //private void LateUpdate_
+
+
     // Animation Speed Setting.
     private void LateUpdate_SetSpeed()
     {
         switch (type)
         {
-            case Type.Wait:
             case Type.Action:
+                {
+                    if (bRetreat)
+                        break;
+                    animator.SetFloat("SpeedY", 0.0f);
+                }
+                break;
+            case Type.Wait:
+                {
+                    if (bRetreat)
+                    {
+                        animator.SetFloat("SpeedY", -nav.velocity.magnitude);
+                    }
+                }
+                break;
             case Type.Damaged:
                 {
                     animator.SetFloat("SpeedY", 0.0f);
@@ -152,7 +170,7 @@ public abstract class AIController : MonoBehaviour
         }
     }
 
-    protected void SetActionMode()
+    protected virtual void SetActionMode()
     {
         if (ActionMode == true)
             return;
@@ -184,13 +202,13 @@ public abstract class AIController : MonoBehaviour
         // 공격 중 피격 시 추가 로직
         if(ActionMode == true)
         {
-            if (!AnimatorHelper.DoesStateExistInLayer(animator, $"{weapon.Type}.Blend Tree", 0))
-                return;
+            /*if (!AnimatorHelper.DoesStateExistInLayer(animator, $"{weapon.Type}.Blend Tree", 0))
+                return;*/
 
             animator.Play($"{weapon.Type}.Blend Tree", 0);
 
-            if (!AnimatorHelper.DoesParameterExist(animator, "IsAction"))
-                return;
+            /*if (!AnimatorHelper.DoesParameterExist(animator, "IsAction"))
+                return;*/
 
             if (animator.GetBool("IsAction") == true)
                 weapon.End_DoAction();
@@ -232,7 +250,8 @@ public abstract class AIController : MonoBehaviour
         OnAIStateTypeChanged?.Invoke(prevType, type);
     }
 
-    // 용도 파악이 안됨.
+    // 애니메이션이 End_Damaged 호출 시 같이 호출 받기 위함
+    // 피격 시 쿨타임 셋팅과 Wait모드로 변경함.
     public void End_Damge()
     {
         SetCoolTime(damageDelay, damageDelayRandom);
@@ -255,8 +274,8 @@ public abstract class AIController : MonoBehaviour
         currentCoolTime = time;
     }
 
-    // CoolTime Check
-    protected bool CheckCoolTime()
+    // CoolTime Check, WaitMode인 경우에만 CoolTime이 줄어듬.
+    protected virtual bool CheckCoolTime()
     {
         if (WaitMode == false)
             return false;
@@ -275,16 +294,5 @@ public abstract class AIController : MonoBehaviour
             return false;
         }
         return true;
-    }
-
-    // (Equip, Action, Damaged) Check
-    protected bool CheckMode()
-    {
-        bool bCheck = false;
-        bCheck |= (EquipMode == true);
-        bCheck |= (ActionMode == true);
-        bCheck |= (DamagedMode == true);
-
-        return bCheck;
     }
 }

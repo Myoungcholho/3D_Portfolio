@@ -16,12 +16,14 @@ public class Enemy : Character, IDamagable
     private Material skinMaterial;
 
     private AIController aiController;
+    private BossAIController bossAIController;
 
     protected override void Awake()
     {
         base.Awake();
 
         aiController = GetComponent<AIController>();
+        bossAIController = GetComponent<BossAIController>();
         Transform surface = transform.FindChildByName("Alpha_Surface");
         skinMaterial = surface.GetComponent<SkinnedMeshRenderer>().material;
         originColor = skinMaterial.color;
@@ -55,6 +57,9 @@ public class Enemy : Character, IDamagable
 
         if (healthPoint.Dead == false)
         {
+            aiController?.SetDamageMode();
+            bossAIController?.OnDamaged();
+
             state.SetDamagedMode(); // 이 부분이 변경되고 바로 애니 이벤트로 변경되어 씹힘.
 
             animator.SetInteger("ImpactType", (int)causer.Type);
@@ -109,25 +114,23 @@ public class Enemy : Character, IDamagable
         animator.SetInteger("ImpactIndex", 0);
         state.SetIdleMode();
 
+        aiController?.End_Damge();
     }
 
     // Enemy의 Animator RootMotion을 직접 적용
     private void OnAnimatorMove()
     {
-        Vector3 pos = transform.position + footOffset;
-        transform.position = pos + animator.deltaPosition;
+        //Vector3 pos = transform.position + footOffset;
+        //transform.position = pos + animator.deltaPosition;
 
+        transform.position += animator.deltaPosition;
         transform.rotation *= animator.deltaRotation;
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-
         Vector3 pos = transform.position + new Vector3(0, 1f, 0);
-        
-
-        // Scene에 Gizmos를 사용하여 선 그리기
         Gizmos.DrawLine(pos, pos+ oppositeDirection);
     }
 }

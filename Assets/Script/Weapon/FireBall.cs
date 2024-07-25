@@ -115,8 +115,5 @@ public class FireBall : Weapon
 
         if (doActionDatas[0].HitParticle != null)
             Instantiate<GameObject>(doActionDatas[0].HitParticle, point, rootObject.transform.rotation);
-
-
     }
-
 }

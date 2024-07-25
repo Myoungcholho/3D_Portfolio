@@ -14,7 +14,10 @@ public class HealthPointComponent : MonoBehaviour
     private string hpBarImageName = "PanelHp";
     [SerializeField]
     private Vector2 hpBarPosition = new Vector2(0, 1.2f);
+    [SerializeField]
+    private bool hpBarActive = true;
 
+    public Action<float> takeDamage;
     public Action lowHpAction;
 
     public bool Dead { get => currentHealth <= 0.0f; }
@@ -58,9 +61,13 @@ public class HealthPointComponent : MonoBehaviour
         currentHealth += (damage * -1.0f);
         currentHealth = Mathf.Clamp(currentHealth, 0.0f, maxHealth);
 
-        if(hpBarImage != null) 
+        Debug.Log(gameObject + " : " + currentHealth);
+
+        if(hpBarImage != null && hpBarActive) 
         {
             hpBarImage.fillAmount = currentHealth / maxHealth;
         }
+
+        takeDamage?.Invoke(currentHealth / maxHealth);
     }
 }

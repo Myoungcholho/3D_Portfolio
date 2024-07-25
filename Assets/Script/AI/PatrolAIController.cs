@@ -73,4 +73,14 @@ public class PatrolAIController : AIController
         patrol.StartMove();
     }
 
+    protected bool CheckMode()
+    {
+        bool bCheck = false;
+        bCheck |= (EquipMode == true);
+        bCheck |= (ActionMode == true);
+        bCheck |= (DamagedMode == true);
+
+        return bCheck;
+    }
+
 }

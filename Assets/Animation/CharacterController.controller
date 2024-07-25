@@ -17,7 +17,7 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
+  m_TransitionDuration: 0
   m_TransitionOffset: 0
   m_ExitTime: 0.77348995
   m_HasExitTime: 0
@@ -315,7 +315,7 @@ BlendTree:
     m_DirectBlendParameter: SpeedX
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: 5884af428b659a84e870d8295d298d2b, type: 3}
+    m_Motion: {fileID: 7400000, guid: ca990d0d328d31d4189532bbe6966686, type: 3}
     m_Threshold: 0.625
     m_Position: {x: 0, y: -2}
     m_TimeScale: 1
@@ -323,7 +323,7 @@ BlendTree:
     m_DirectBlendParameter: SpeedX
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: 2168c37e707edbc4185150c8f1b185d5, type: 3}
+    m_Motion: {fileID: 7400000, guid: 109c785284a820d49ab9ae1ccc1732de, type: 3}
     m_Threshold: 0.75
     m_Position: {x: -2, y: 0}
     m_TimeScale: 1
@@ -331,7 +331,7 @@ BlendTree:
     m_DirectBlendParameter: SpeedX
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: f36afd95919f12e4b826fccb682e1ec7, type: 3}
+    m_Motion: {fileID: 7400000, guid: 9ec96ff62bd10864cbb2f9eea2685c8e, type: 3}
     m_Threshold: 0.875
     m_Position: {x: 2, y: 0}
     m_TimeScale: 1
@@ -388,7 +388,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: DualSword
+  m_Name: Blend Tree
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -1723,7 +1723,7 @@ AnimatorStateTransition:
   m_ExitTime: 0.75
   m_HasExitTime: 0
   m_HasFixedDuration: 1
-  m_InterruptionSource: 3
+  m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 0
 --- !u!1102 &-3598624580215214031
@@ -2077,7 +2077,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Blend Tree_Staff
+  m_Name: Blend Tree
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -2962,7 +2962,7 @@ AnimatorStateTransition:
   m_ExitTime: 0.75
   m_HasExitTime: 0
   m_HasFixedDuration: 1
-  m_InterruptionSource: 3
+  m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 0
 --- !u!1107 &-36658772575451209
@@ -3732,7 +3732,7 @@ AnimatorStateTransition:
   m_ExitTime: 0.75
   m_HasExitTime: 0
   m_HasFixedDuration: 1
-  m_InterruptionSource: 3
+  m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 0
 --- !u!1107 &2299803780060885268
@@ -3742,7 +3742,7 @@ AnimatorStateMachine:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Staff
+  m_Name: FireBall
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: -2922302094492320563}
@@ -4106,7 +4106,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Unarmed
+  m_Name: Unarmed_None
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -4441,7 +4441,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Sword
+  m_Name: Blend Tree
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:

@@ -156,6 +156,8 @@ MonoBehaviour:
     HitParticle: {fileID: 5024009746357069194, guid: 0d468d30d277fde4287e5e4010c7913a, type: 3}
     HitParticlePositionOffset: {x: 0, y: 0, z: 0}
     HitParticleScaleOffset: {x: 1, y: 1, z: 1}
+    ImpulseDirection: {x: 0, y: 0, z: 0}
+    ImpulseSettings: {fileID: 0}
   - bCanMove: 0
     Power: 1
     Distance: 0
@@ -167,6 +169,8 @@ MonoBehaviour:
     HitParticle: {fileID: 5024009746357069194, guid: 0d468d30d277fde4287e5e4010c7913a, type: 3}
     HitParticlePositionOffset: {x: 0, y: 0, z: 0}
     HitParticleScaleOffset: {x: 1, y: 1, z: 1}
+    ImpulseDirection: {x: 0, y: 0, z: 0}
+    ImpulseSettings: {fileID: 0}
   - bCanMove: 0
     Power: 1
     Distance: 7
@@ -178,6 +182,8 @@ MonoBehaviour:
     HitParticle: {fileID: 5024009746357069194, guid: 0d468d30d277fde4287e5e4010c7913a, type: 3}
     HitParticlePositionOffset: {x: 0, y: 0, z: 0}
     HitParticleScaleOffset: {x: 1, y: 1, z: 1}
+    ImpulseDirection: {x: 0, y: 0, z: 0}
+    ImpulseSettings: {fileID: 0}
   holsterName: Holster_Sword
   handName: Hand_Sword
   slashParicle: {fileID: 6445826192643391251, guid: 9b6701af468904645b8ef67e0e326bb5, type: 3}

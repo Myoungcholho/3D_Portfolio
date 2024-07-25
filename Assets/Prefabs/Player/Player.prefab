@@ -279,37 +279,6 @@ Transform:
   m_Father: {fileID: 3412289081370760532}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 18.034, y: -31.569, z: 26.74}
---- !u!1 &1200889587
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1200889588}
-  m_Layer: 0
-  m_Name: Hand_FireBall_Staff
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1200889588
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1200889587}
-  m_LocalRotation: {x: -0.016709175, y: 0.005204898, z: 0.6217675, w: 0.7830063}
-  m_LocalPosition: {x: -0.391, y: 0.191, z: 0.025}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3559523072494718327}
-  m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1210410359
 GameObject:
   m_ObjectHideFlags: 0
@@ -911,7 +880,6 @@ Transform:
   - {fileID: 6767303434156582465}
   - {fileID: 335179129}
   - {fileID: 1904581612}
-  - {fileID: 1200889588}
   m_Father: {fileID: 811498143875155735}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

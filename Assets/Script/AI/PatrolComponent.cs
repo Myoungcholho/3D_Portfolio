@@ -1,9 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 using UnityEngine.AI;
-
 
 public class PatrolComponent : MonoBehaviour
 {
@@ -17,7 +14,7 @@ public class PatrolComponent : MonoBehaviour
     private PatrolPoints patrolPoints;      // 구역 탐색 스크립트
 
     public bool HasPatrolPoints { get => patrolPoints != null; }
-    
+
     private Vector3 initPosition;           // 초기 위치
     private Vector3 goalPosition;           // 목표 위치
 
@@ -45,12 +42,15 @@ public class PatrolComponent : MonoBehaviour
     public void StartMove()
     {
         if (navMeshPath == null)
-            navMeshPath = CreateNavMeshPath();      
-            
-        navMeshAgent.SetPath(navMeshPath);
+            StartCoroutine(CreateNavMeshPathCoroutine(path => {
+                navMeshPath = path;
+                navMeshAgent.SetPath(navMeshPath);
+            }));
+        else
+            navMeshAgent.SetPath(navMeshPath);
     }
 
-    //목표 지점까지 도달했는지 검사합니다.
+    // 목표 지점까지 도달했는지 검사합니다.
     private void CheckAtTargetUpdate()
     {
         if (navMeshPath == null)
@@ -69,22 +69,24 @@ public class PatrolComponent : MonoBehaviour
         StartCoroutine(WaitDelay(waitTime));
     }
 
-    /// 잠시 대기하고 경로를 다시 설정합니다.
+    // 잠시 대기하고 경로를 다시 설정합니다.
     private IEnumerator WaitDelay(float time)
     {
         yield return new WaitForSeconds(time);
 
-        navMeshPath = CreateNavMeshPath();
-        navMeshAgent.SetPath(navMeshPath);
-        bArrived = false;
+        StartCoroutine(CreateNavMeshPathCoroutine(path => {
+            navMeshPath = path;
+            navMeshAgent.SetPath(navMeshPath);
+            bArrived = false;
+        }));
     }
 
-    /// 목표 지점의 경로 NavMeshPath를 생성하고 반환합니다.
-    private NavMeshPath CreateNavMeshPath()
+    // 목표 지점의 경로 NavMeshPath를 생성하고 반환합니다.
+    private IEnumerator CreateNavMeshPathCoroutine(System.Action<NavMeshPath> callback)
     {
         NavMeshPath path = null;
 
-        if(HasPatrolPoints)
+        if (HasPatrolPoints)
         {
             goalPosition = patrolPoints.GetMoveToPosition();
             path = new NavMeshPath();
@@ -92,32 +94,39 @@ public class PatrolComponent : MonoBehaviour
             Debug.Assert(bCheck);
 
             patrolPoints.UpdateNextIndex();
-            return path;
+            callback(path);
+            yield break; // Exit the coroutine
         }
 
-        Vector3 prevGoalPostion = goalPosition;
+        Vector3 prevGoalPosition = goalPosition;
 
-        // Coroutine or Thread 로 변경
         while (true)
         {
             while (true)
             {
-                float x = Random.Range(-radius * 0.5f, +radius * 0.5f);
-                float z = Random.Range(-radius * 0.5f, +radius * 0.5f);
+                float x = Random.Range(-radius * 0.5f, radius * 0.5f);
+                float z = Random.Range(-radius * 0.5f, radius * 0.5f);
 
                 goalPosition = new Vector3(x, 0, z) + initPosition;
 
-                // 일정 범위 아니라면 다시 구하지 않게 25%
-                if (Vector3.Distance(goalPosition, prevGoalPostion) > radius * 0.25f)
+                if (Vector3.Distance(goalPosition, prevGoalPosition) > radius * 0.25f)
+                {
+                    prevGoalPosition = goalPosition; // Update the previous goal position
                     break;
+                }
+
+                yield return null; // Wait until the next frame before continuing
             }
 
             path = new NavMeshPath();
 
-            // path 객체에 계산된 경로의 여러 지점을 저장하고
-            // 잘 저장했다면 true 아니라면 false를 반환함.
             if (navMeshAgent.CalculatePath(goalPosition, path))
-                return path;
+            {
+                callback(path); // Return the path using the callback
+                yield break; // Exit the coroutine
+            }
+
+            yield return null; // Wait until the next frame before continuing
         }
     }
 

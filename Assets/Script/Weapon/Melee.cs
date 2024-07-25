@@ -183,9 +183,9 @@ public class Melee : Weapon
         }
 
         hitPoint = enabledCollider.ClosestPoint(other.transform.position);
-        Debug.Log(hitPoint + " " + enabledCollider);
+        //Debug.Log(hitPoint + " " + enabledCollider);
         hitPoint = other.transform.InverseTransformPoint(hitPoint);
-        Debug.Log(hitPoint + " " + enabledCollider);
+        //Debug.Log(hitPoint + " " + enabledCollider);
         damage.OnDamage(rootObject, this, hitPoint, doActionDatas[index]);
     }
 }

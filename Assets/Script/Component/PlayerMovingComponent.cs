@@ -86,14 +86,14 @@ public class PlayerMovingComponent : MonoBehaviour
 
         
         
-        // 계단 오르기 처리
+        /*// 계단 오르기 처리
         if(false)
         {
             if (IsGrounded())
             {
                 rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             }
-        }
+        }*/
 
 
         Vector3 direction = Vector3.zero;
