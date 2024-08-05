@@ -46,7 +46,7 @@ public class Fist : Melee
         //base.Begin_Collision(e);
 
         colliders[e.intParameter].enabled = true;
-        Debug.Log("colliders : " + colliders[e.intParameter].name);
+        //Debug.Log("colliders : " + colliders[e.intParameter].name);
     }
 
     public override void End_Collision()

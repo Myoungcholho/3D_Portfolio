@@ -23,8 +23,18 @@ public class CameraDistanceAdjuster : MonoBehaviour
 
     void Update()
     {
+        if (player == null || boss == null)
+            return;
+
         float distance = Vector3.Distance(player.position, boss.position);
         float t = Mathf.InverseLerp(maxDistance, minDistance, distance);
         thirdPersonFollow.CameraDistance = Mathf.Lerp(minCameraDistance, maxCameraDistance, t);
     }
+
+    public void SetObject(Transform player, Transform boss)
+    {
+        this.player = player;
+        this.boss = boss;
+    }
+
 }

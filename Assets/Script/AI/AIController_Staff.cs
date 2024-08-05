@@ -9,8 +9,7 @@ public class AIController_Staff : AIController
     private float avoidRange = 5.0f;
     [SerializeField]
     private Vector2 backDistance = new Vector2(3, 10);
-    [SerializeField]
-    private float backRange = 3.0f;
+
     [SerializeField]
     private GameObject telpoParticlePrefab;
 

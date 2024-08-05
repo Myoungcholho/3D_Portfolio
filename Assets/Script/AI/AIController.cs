@@ -18,8 +18,6 @@ public abstract class AIController : MonoBehaviour
     [SerializeField]
     protected float attackRange = 1.5f;           //무기 마다 다르므로 위치 고려
     [SerializeField]
-    private float attackDelay = 5.0f;           //공격 후 딜레이?
-    [SerializeField]
     private float damageDelay = 1.5f;           //데미지 받은 후 딜레이 시간
     [SerializeField]
     private float damageDelayRandom = 0.5f;     //기존 딜레이의 랜덤 값 추가용

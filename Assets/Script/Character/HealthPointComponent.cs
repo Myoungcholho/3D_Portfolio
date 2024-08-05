@@ -15,7 +15,7 @@ public class HealthPointComponent : MonoBehaviour
     [SerializeField]
     private Vector2 hpBarPosition = new Vector2(0, 1.2f);
     [SerializeField]
-    private bool hpBarActive = true;
+    private bool hpBarActive;
 
     public Action<float> takeDamage;
     public Action lowHpAction;
@@ -29,7 +29,8 @@ public class HealthPointComponent : MonoBehaviour
     void Start()
     {
         currentHealth = maxHealth;
-        if(GetComponent<Enemy>() != null)
+        // HpBarPrefab을 Resource에서 가져오고 셋팅
+        if(GetComponent<Enemy>() != null && hpBarActive)
         {
             GameObject prefab = Resources.Load<GameObject>(hpBarCanvasName);
             canvasObject = Instantiate<GameObject>(prefab, transform);
@@ -39,7 +40,6 @@ public class HealthPointComponent : MonoBehaviour
             hpBarImage = canvasObject.transform.FindChildByName(hpBarImageName).GetComponent<Image>();
             Debug.Assert(hpBarImage != null);
         }
-
     }
 
     private void Update()

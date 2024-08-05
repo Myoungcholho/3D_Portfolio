@@ -105,9 +105,15 @@ public abstract class Weapon : MonoBehaviour
 
     public virtual void End_DoAction()
     {
-        state.SetIdleMode();
-
         Move();
+
+        // 공격 중 데미지를 받으면 Damage로 변경되는 동시에
+        // 공격 애니메이션이 끝나서 Damage상태임에도 Idle모드로 전환되는 문제로
+        // return함.
+        if (state.DamagedMode == true)
+            return;
+
+        state.SetIdleMode();
     }
 
     // 불 쏠떄 쓸라고 만듬

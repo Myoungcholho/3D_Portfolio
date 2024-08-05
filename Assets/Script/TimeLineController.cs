@@ -5,18 +5,30 @@ public class TimeLineController : MonoBehaviour
 {
     private PlayableDirector pd;
     private BossAIController bossAI;
+    private CameraDistanceAdjuster cameraDistance;
+    private BossUICanvas bossUICanvas;
 
     private void Awake()
     {
         pd = GetComponent<PlayableDirector>();
-        bossAI = GameObject.Find("Enemy_AI_Boss").GetComponent<BossAIController>();
+
+        GameObject obj = GameObject.Find("Enemy_AI_Boss");
+        Debug.Assert(obj != null);
+        bossAI = obj.GetComponent<BossAIController>();
         Debug.Assert(bossAI != null);
+
+        GameObject virtualCamera = GameObject.Find("VirtualCamera1");
+        Debug.Assert(virtualCamera != null);
+        cameraDistance = virtualCamera.GetComponent<CameraDistanceAdjuster>();
+
+        bossUICanvas = GameObject.Find("BossCanvas").GetComponent<BossUICanvas>();
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "HammerCinemachine")
         {
+            cameraDistance.SetObject(transform, bossAI.transform);
             other.gameObject.SetActive(false);
             pd.Play();
         }
@@ -25,5 +37,6 @@ public class TimeLineController : MonoBehaviour
     public void RecevSignalBossTarget()
     {
         bossAI.SetBossTarget(gameObject);
+        bossUICanvas.SetActiveCanvas(true);
     }
 }

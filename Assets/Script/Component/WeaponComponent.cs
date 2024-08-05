@@ -129,6 +129,9 @@ public class WeaponComponent : MonoBehaviour
 
     private void SetMode(WeaponType type)
     {
+        if (state.DamagedMode == true)
+            return;
+
         if (this.type == type)
         {
             SetUnarmedMode();
@@ -183,27 +186,20 @@ public class WeaponComponent : MonoBehaviour
 
     }
 
+    // 1. 애니메이션 실행
+    // 2. 타겟팅
+    // 3. 상태를 Action으로 변경하는 메서드 호출
     public void DoAction()
     {
         if (weaponTable[type] == null)
+            return;
+        if (state.DamagedMode == true)
             return;
 
 
         animator.SetBool("IsAction", true);
         target?.TargetSearch();              // 타겟 서칭
         weaponTable[type].DoAction();
-    }
-
-    // Boss용 ..
-    public void DoAction(int pattern)
-    {
-        if (weaponTable[type] == null)
-            return;
-        if (type != WeaponType.BossHammer)
-            return;
-
-        animator.SetBool("IsAction", true);
-        animator.SetInteger("Pattern", pattern);
     }
 
     private void Begin_DoAction()

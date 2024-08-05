@@ -137,12 +137,12 @@ MonoBehaviour:
   - bCanMove: 0
     Power: 5
     Distance: 50
-    StopFrame: 0
+    StopFrame: 10
     Particle: {fileID: 1314945738539566, guid: 3bc45ae15beb0df4f909f9cebed4b4bf, type: 3}
     ParticlePositionOffset: {x: 0, y: 0, z: 0}
     ParticleScaleOffset: {x: 0, y: 0, z: 0}
     HitImpactIndex: 0
-    HitParticle: {fileID: 0}
+    HitParticle: {fileID: 5024009746357069194, guid: ec3f674830402cc45bce805cf6493db7, type: 3}
     HitParticlePositionOffset: {x: 0, y: 0, z: 0}
     HitParticleScaleOffset: {x: 0, y: 0, z: 0}
     ImpulseDirection: {x: 0, y: 0, z: 0}
@@ -163,41 +163,41 @@ MonoBehaviour:
   - bCanMove: 0
     Power: 5
     Distance: 50
-    StopFrame: 0
+    StopFrame: 10
     Particle: {fileID: 0}
     ParticlePositionOffset: {x: 0, y: 0, z: 0}
     ParticleScaleOffset: {x: 0, y: 0, z: 0}
     HitImpactIndex: 0
-    HitParticle: {fileID: 0}
+    HitParticle: {fileID: 5024009746357069194, guid: ec3f674830402cc45bce805cf6493db7, type: 3}
     HitParticlePositionOffset: {x: 0, y: 0, z: 0}
-    HitParticleScaleOffset: {x: 0, y: 0, z: 0}
-    ImpulseDirection: {x: 0, y: 0, z: 0}
+    HitParticleScaleOffset: {x: 1, y: 1, z: 1}
+    ImpulseDirection: {x: 1, y: 1, z: 1}
     ImpulseSettings: {fileID: 11400000, guid: a3b8629d78d051d41ad2e09c3b8be726, type: 2}
   - bCanMove: 0
     Power: 5
     Distance: 50
-    StopFrame: 0
+    StopFrame: 10
     Particle: {fileID: 0}
     ParticlePositionOffset: {x: 0, y: 0, z: 0}
     ParticleScaleOffset: {x: 0, y: 0, z: 0}
     HitImpactIndex: 0
-    HitParticle: {fileID: 0}
+    HitParticle: {fileID: 5024009746357069194, guid: ec3f674830402cc45bce805cf6493db7, type: 3}
     HitParticlePositionOffset: {x: 0, y: 0, z: 0}
-    HitParticleScaleOffset: {x: 0, y: 0, z: 0}
-    ImpulseDirection: {x: 0, y: 0, z: 0}
+    HitParticleScaleOffset: {x: 1, y: 1, z: 1}
+    ImpulseDirection: {x: 1, y: 1, z: 1}
     ImpulseSettings: {fileID: 11400000, guid: a3b8629d78d051d41ad2e09c3b8be726, type: 2}
   - bCanMove: 0
     Power: 5
     Distance: 50
-    StopFrame: 0
+    StopFrame: 10
     Particle: {fileID: 0}
     ParticlePositionOffset: {x: 0, y: 0, z: 0}
     ParticleScaleOffset: {x: 0, y: 0, z: 0}
     HitImpactIndex: 0
-    HitParticle: {fileID: 0}
+    HitParticle: {fileID: 5024009746357069194, guid: ec3f674830402cc45bce805cf6493db7, type: 3}
     HitParticlePositionOffset: {x: 0, y: 0, z: 0}
-    HitParticleScaleOffset: {x: 0, y: 0, z: 0}
-    ImpulseDirection: {x: 0, y: 0, z: 0}
+    HitParticleScaleOffset: {x: 1, y: 1, z: 1}
+    ImpulseDirection: {x: 1, y: 1, z: 1}
     ImpulseSettings: {fileID: 11400000, guid: a3b8629d78d051d41ad2e09c3b8be726, type: 2}
   handName: Hand_Hammer
   particlePrefab: {fileID: 0}

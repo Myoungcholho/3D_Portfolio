@@ -84,6 +84,9 @@ public class PlayerMovingComponent : MonoBehaviour
         if (bCanMove == false)
             return;
 
+        if (state.DamagedMode == true)
+            return;
+
         
         
         /*// 계단 오르기 처리

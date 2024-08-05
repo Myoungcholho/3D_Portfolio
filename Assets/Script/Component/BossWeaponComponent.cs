@@ -144,7 +144,10 @@ public class BossWeaponComponent : MonoBehaviour
 		if (type != WeaponType.BossHammer)
 			return;
 
-		animator.SetBool("IsAction", true);
+		Melee melee = weaponTable[type] as Melee;
+		melee.Index = pattern;
+
+        animator.SetBool("IsAction", true);
 		animator.SetInteger("Pattern", pattern);
 	}
 
@@ -154,11 +157,12 @@ public class BossWeaponComponent : MonoBehaviour
 	}*/
 
 
-	// 애니메이션 이벤트 호출 용
+	// 공격이 끝나는 경우 호출함.
 	public void End_DoAction_Boss()
 	{
 		animator.SetBool("IsAction", false);
 		weaponTable[type].End_DoAction();
+
 		OnEndDoAction?.Invoke();
 	}
 
@@ -182,7 +186,6 @@ public class BossWeaponComponent : MonoBehaviour
 		Melee melee = weaponTable[type] as Melee;
 		melee?.Play_Impulse();
 	}
-
 
     private void Play_DoAction_Particle(AnimationEvent e)
 	{

@@ -11,6 +11,9 @@ public class Player : Character, IDamagable
     [SerializeField]
     private Color damageColor;
     [SerializeField]
+    private Color evadeColor;
+
+    [SerializeField]
     private float changeColorTime = 0.15f;
 
     private Color originColor;
@@ -56,10 +59,9 @@ public class Player : Character, IDamagable
 
         actionMap.FindAction("Evade").started += context =>
         {
-            /*if (weapon.UnarmedMode == false)
-                return;*/
-            /*if (state.IdleMode == false)
-                return;*/
+            if (state.DamagedMode == true || state.EquipMode == true)
+                return;
+
 
             state.SetEvadeMode();
         };
@@ -70,14 +72,25 @@ public class Player : Character, IDamagable
 
     }
 
+
     public void OnDamage(GameObject attacker, Weapon causer, Vector3 hitPoint, DoActionData data)
     {
+        if(state.EvadeMode == true)
+        {
+            state.SetDodgedMode();
+            EvadeSuccess();
+            return;
+        }
+
+
         healthPoint.Damage(data.Power);
 
         HitCameraShake(causer);
 
-        StartCoroutine(Change_Color(changeColorTime));
+        StartCoroutine(Change_Color(changeColorTime,damageColor));
         MovableStopper.Instance.Start_Delay(data.StopFrame);
+
+
 
         if (healthPoint.Dead == false)
         {
@@ -87,25 +100,15 @@ public class Player : Character, IDamagable
             animator.SetInteger("ImpactIndex", (int)data.HitImpactIndex);
             animator.SetTrigger("Impact");
 
-            rigidbody.isKinematic = false;
-            float launch = rigidbody.drag * data.Distance * 10.0f;
-            rigidbody.velocity = Vector3.zero;
-            rigidbody.AddForce(-transform.forward * launch);
-
-            StartCoroutine(Change_IsKinemetics(5));
-
             return;
         }
-
         state.SetDeadMode();
 
         Collider collider = GetComponent<Collider>();
         collider.enabled = false;
 
         animator.SetTrigger("Dead");
-
         Destroy(gameObject, 5f);
-
     }
 
     private void HitCameraShake(Weapon causer)
@@ -115,18 +118,15 @@ public class Player : Character, IDamagable
 
     }
 
-    private IEnumerator Change_Color(float time)
+    private IEnumerator Change_Color(float time, Color changeColor)
     {
-        skinMaterial.color = damageColor;
+        skinMaterial.color = changeColor;
         yield return new WaitForSeconds(time);
         skinMaterial.color = originColor;
     }
 
-    private IEnumerator Change_IsKinemetics(int frame)
+    private void EvadeSuccess()
     {
-        for (int i = 0; i < frame; i++)
-            yield return new WaitForFixedUpdate();
-
-        rigidbody.isKinematic = true;
+        StartCoroutine(Change_Color(changeColorTime,evadeColor));
     }
 }

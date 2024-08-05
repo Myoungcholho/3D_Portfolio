@@ -29,6 +29,7 @@ public class BossUICanvas : MonoBehaviour
     private void Start()
     {
         SetBossObject(BossGameObject);
+        gameObject.SetActive(false);
     }
 
     void Update()
@@ -59,6 +60,11 @@ public class BossUICanvas : MonoBehaviour
     {
         curHp = hp;
         healthBarImage.fillAmount = hp;
+    }
+
+    public void SetActiveCanvas(bool active)
+    {
+        gameObject.SetActive(active);
     }
 
 }

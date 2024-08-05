@@ -112,12 +112,11 @@ public class Enemy : Character, IDamagable
         base.End_Damaged();
 
         animator.SetInteger("ImpactIndex", 0);
-        state.SetIdleMode();
 
         aiController?.End_Damge();
     }
 
-    // Enemy狼 Animator RootMotion阑 流立 利侩
+/*    // Enemy狼 Animator RootMotion阑 流立 利侩
     private void OnAnimatorMove()
     {
         //Vector3 pos = transform.position + footOffset;
@@ -125,7 +124,7 @@ public class Enemy : Character, IDamagable
 
         transform.position += animator.deltaPosition;
         transform.rotation *= animator.deltaRotation;
-    }
+    }*/
 
     private void OnDrawGizmos()
     {

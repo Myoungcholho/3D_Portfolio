@@ -7,7 +7,10 @@ public class Melee : Weapon
     private bool bEnable;
     private bool bExist;
     protected int index;
-
+    public int Index
+    {
+        set { index = value; }
+    }
     protected Collider[] colliders;
     private List<string> hittedList;
     private GameObject attacker;
@@ -88,7 +91,8 @@ public class Melee : Weapon
 
         if (bExist == false)
             return;
-
+        if (state.DamagedMode == true)
+            return;
 
         bExist = false;
 

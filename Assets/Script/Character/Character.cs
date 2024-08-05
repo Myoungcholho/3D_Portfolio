@@ -68,7 +68,7 @@ public abstract class Character : MonoBehaviour, IStoppable
 
     protected virtual void End_Damaged()
     {
-
+        state.SetIdleMode();
     }
 
     protected virtual void OnDestroy()
