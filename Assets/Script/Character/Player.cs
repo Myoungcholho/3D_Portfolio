@@ -17,12 +17,12 @@ public class Player : Character, IDamagable
     private float changeColorTime = 0.15f;
 
     private Color originColor;
-
+    private PlayerMovingComponent movingComponent;
     protected override void Awake()
     {
         base.Awake();
 
-
+        movingComponent = GetComponent<PlayerMovingComponent>();
 
         PlayerInput input = GetComponent<PlayerInput>();
         InputActionMap actionMap = input.actions.FindActionMap("Player");
@@ -54,12 +54,24 @@ public class Player : Character, IDamagable
 
         actionMap.FindAction("Action").started += context =>
         {
+            if(state.DodgedMode)
+            {
+                StartCoroutine(movingComponent.MoveToTarget(lastAttacker.transform, 1.4f));
+                weapon.DodgedDoAction();
+                return;
+            }
+
             weapon.DoAction();
         };
 
         actionMap.FindAction("Evade").started += context =>
         {
-            if (state.DamagedMode == true || state.EquipMode == true)
+            bool bCheck = false;
+            bCheck |= state.DamagedMode == true;
+            bCheck |= state.EquipMode == true;
+            bCheck |= state.DodgedMode == true;
+
+            if(bCheck)
                 return;
 
 
@@ -72,16 +84,19 @@ public class Player : Character, IDamagable
 
     }
 
+    private GameObject lastAttacker;                // 반격 시 날라갈 대상 저장
 
     public void OnDamage(GameObject attacker, Weapon causer, Vector3 hitPoint, DoActionData data)
     {
-        if(state.EvadeMode == true)
+        lastAttacker = attacker;        // 공격자를 등록, 반격 대상으로 날라가기 위해 저장
+
+        if (state.EvadeMode == true)
         {
             state.SetDodgedMode();
-            EvadeSuccess();
+            StartCoroutine(MovableStopper.Instance.EvadeDelay());
+            EvadeSuccessColor();
             return;
         }
-
 
         healthPoint.Damage(data.Power);
 
@@ -89,8 +104,6 @@ public class Player : Character, IDamagable
 
         StartCoroutine(Change_Color(changeColorTime,damageColor));
         MovableStopper.Instance.Start_Delay(data.StopFrame);
-
-
 
         if (healthPoint.Dead == false)
         {
@@ -115,7 +128,6 @@ public class Player : Character, IDamagable
     {
         Melee melee = causer as Melee;
         melee?.Play_Impulse();
-
     }
 
     private IEnumerator Change_Color(float time, Color changeColor)
@@ -125,8 +137,19 @@ public class Player : Character, IDamagable
         skinMaterial.color = originColor;
     }
 
-    private void EvadeSuccess()
+    private void EvadeSuccessColor()
     {
         StartCoroutine(Change_Color(changeColorTime,evadeColor));
+    }
+
+    public override bool IsSpecialObject()
+    {
+        return true;
+    }
+
+    public void ResetToNormal()
+    {
+        state.SetIdleMode();
+        animator.SetBool("IsDodgedAction", false);
     }
 }

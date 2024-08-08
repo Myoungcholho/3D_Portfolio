@@ -66,6 +66,27 @@ public abstract class Character : MonoBehaviour, IStoppable
         animator.speed = 1.0f;
     }
 
+    // speed를 매개변수로 받아 Animation의 속도를 변경
+    public IEnumerator Start_FrameDelay(int frame, float speed)
+    {
+        animator.speed = speed;
+
+        for(int i=0; i<frame; i++)
+            yield return new WaitForFixedUpdate();
+
+        animator.speed = 1.0f;
+    }
+
+    public void SetAnimationSpeed(float speed)
+    {
+        animator.speed = speed;
+    }
+
+    public virtual bool IsSpecialObject()
+    {
+        return false;
+    }
+
     protected virtual void End_Damaged()
     {
         state.SetIdleMode();
@@ -75,5 +96,4 @@ public abstract class Character : MonoBehaviour, IStoppable
     {
         Remove_MovableStopper();
     }
-
 }

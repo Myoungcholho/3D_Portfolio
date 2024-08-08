@@ -20,9 +20,12 @@ public class CameraRotationMouseComponent : MonoBehaviour
     private Transform followTargetTransform;
     private Vector2 inputLook;              // 마우스 입력 값을 받을 Vector2
     private Quaternion rotation;
+    private StateComponent state;
 
     private void Awake()
     {
+        state = GetComponent<StateComponent>();
+
         PlayerInput input = GetComponent<PlayerInput>();
         InputActionMap actionMap = input.actions.FindActionMap("Player");
 
@@ -43,6 +46,14 @@ public class CameraRotationMouseComponent : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        bool bCheck = false;
+        bCheck |= state.EvadeMode == true;
+        bCheck |= state.DodgedMode == true;
+        bCheck |= state.DodgedAttackMode == true;
+
+        if (bCheck)
+            return;
+
         if (!IsMouseRotation)
             return;
         // 축 기준 회전

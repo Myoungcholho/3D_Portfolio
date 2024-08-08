@@ -39,7 +39,6 @@ public class PlayerMovingComponent : MonoBehaviour
     private Vector2 currInputMove;
     private bool bRun;
     private Vector2 velocity;
-    private Quaternion? evadeRotation = null;
     
     private float yIncreaseTime = 0.0f; // Y축 값이 4일 때의 지속 시간을 추적
 
@@ -48,6 +47,13 @@ public class PlayerMovingComponent : MonoBehaviour
     public LayerMask groundLayers;
     public float jumpForce = 5.0f;
 
+
+    // Evade시 활성화 할 Collider
+    public BoxCollider forwardCollider;
+    public BoxCollider backwardCollider;
+    public BoxCollider leftCollider;
+    public BoxCollider rightCollider;
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -55,10 +61,16 @@ public class PlayerMovingComponent : MonoBehaviour
         weapon = GetComponent<WeaponComponent>();
         state = GetComponent<StateComponent>();
 
+
         Awake_BindPlayerInput();
 
         //Evade용 등록함수
         state.OnStateTypeChanged += OnStateTypeChanged;
+    }
+
+    private void Start()
+    {
+        DeactivateAllColliders();
     }
 
     private void Awake_BindPlayerInput()
@@ -84,19 +96,15 @@ public class PlayerMovingComponent : MonoBehaviour
         if (bCanMove == false)
             return;
 
-        if (state.DamagedMode == true)
+        bool bCheck = false;
+        bCheck |= state.DamagedMode == true;
+        bCheck |= state.EvadeMode == true;
+        bCheck |= state.DodgedMode == true;
+
+        if(bCheck)
             return;
 
         
-        
-        /*// 계단 오르기 처리
-        if(false)
-        {
-            if (IsGrounded())
-            {
-                rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            }
-        }*/
 
 
         Vector3 direction = Vector3.zero;
@@ -158,78 +166,70 @@ public class PlayerMovingComponent : MonoBehaviour
     private void ExecuteEvade()
     {
         Vector2 value = inputMove;
-        EvadeDirection aniDirection = EvadeDirection.Forward;
-        EvadeDirection Direction = EvadeDirection.Forward;
-
+        EvadeDirection direction = EvadeDirection.Forward;
+        EvadeDirection staffDirection = EvadeDirection.Forward;
 
         // 키 입력이 없는 경우
         if (value.y == 0.0f)
         {
-            aniDirection = EvadeDirection.Forward;
-            Direction = aniDirection;
+            direction = EvadeDirection.Forward;
+            staffDirection = direction;
 
             if (value.x < 0.0f)
             {
-                aniDirection = EvadeDirection.Left;
-                Direction = aniDirection;
+                direction = EvadeDirection.Left;
+                staffDirection = direction;
             }
             else if (value.x > 0.0f)
             {
-                aniDirection = EvadeDirection.Right;
-                Direction = aniDirection;
+                direction = EvadeDirection.Right;
+                staffDirection = direction;
             }
         }
 
         // 앞 입력 시
         else if (value.y >= 0.0f)
         {
-            aniDirection = EvadeDirection.Forward;
-            Direction = aniDirection;
+            direction = EvadeDirection.Forward;
+            staffDirection = direction;
             // 왼쪽 대각선
             if (value.x < 0.0f)
             {
-                Direction = EvadeDirection.ForwardLeft;
-                evadeRotation = transform.rotation;
-                transform.Rotate(Vector3.up, -45.0f);
+                staffDirection = EvadeDirection.ForwardLeft;
+                
             }
             // 오른쪽 대각선
             else if (value.x > 0.0f)
             {
-                Direction = EvadeDirection.ForwardRight;
-                evadeRotation = transform.rotation;
-                transform.Rotate(Vector3.up, 45.0f);
+                staffDirection = EvadeDirection.ForwardRight;
             }
         }
         else
         {
-            aniDirection = EvadeDirection.Backward;
-            Direction = aniDirection;
+            direction = EvadeDirection.Backward;
+            staffDirection = direction;
             // 왼쪽 뒤 대각선
             if (value.x < 0.0f)
             {
-                Direction = EvadeDirection.BackwardLeft;
-                evadeRotation = transform.rotation;
-                transform.Rotate(Vector3.up, 45.0f);
+                staffDirection = EvadeDirection.BackwardLeft;                
             }
             // 오른쪽 뒤 대각선
             else if (value.x > 0.0f)
             {
-                Direction = EvadeDirection.BackwardRight;
-                evadeRotation = transform.rotation;
-                transform.Rotate(Vector3.up, -45.0f);
+                staffDirection = EvadeDirection.BackwardRight;
             }
         }
-        animator.SetInteger("Direction", (int)aniDirection);
+        animator.SetInteger("Direction", (int)direction);
         animator.SetTrigger("Evade");
-
-        Debug.Log("direction :" + Direction.ToString());
+        EnableEvadeCollider(direction);
 
         if (animator.GetInteger("WeaponType") == (int)WeaponType.FireBall)
         {
-            StaffEvade(Direction);
+            StaffEvade(staffDirection);
         }
     }
 
+    // 스태프 Evade
     private void StaffEvade(EvadeDirection direction)
     {
         Vector3 teleportPos = transform.position;
@@ -301,7 +301,6 @@ public class PlayerMovingComponent : MonoBehaviour
             Instantiate<GameObject>(StaffParticlePrefab, teleportPos,transform.rotation);
         }
     }
-
     private IEnumerator MoveToPosition(Vector3 target)
     {
         renderer = GetComponentsInChildren<Renderer>();
@@ -323,6 +322,26 @@ public class PlayerMovingComponent : MonoBehaviour
         animator.SetTrigger("TestExit");
         Move();
         End_Evade();
+    }
+    // 스태프 Evade
+
+    private void EnableEvadeCollider(EvadeDirection direction)
+    {
+        switch(direction)
+        {
+            case EvadeDirection.Forward:
+                forwardCollider.enabled = true;
+                break;
+            case EvadeDirection.Backward:
+                backwardCollider.enabled = true;
+                break;
+            case EvadeDirection.Left:
+                leftCollider.enabled = true;
+                break;
+            case EvadeDirection.Right:
+                rightCollider.enabled = true;
+                break;
+        }
     }
 
     public void Move()
@@ -355,39 +374,45 @@ public class PlayerMovingComponent : MonoBehaviour
     }
 
     /// <summary>
-    /// 구르기 끝나면 Idle모드로 변경하고, 회전한 값을 이전 상태로 회복합니다.
+    /// 구르기 끝나면 Idle모드로 변경
     /// </summary>
     public void End_Evade()
     {
-        if (evadeRotation.HasValue)
-            StartCoroutine(Reset_EvadeRotation());
-
         state.SetIdleMode();
+        DeactivateAllColliders();
     }
 
-    private IEnumerator Reset_EvadeRotation()
+    private void DeactivateAllColliders()
     {
-        float delta = 0.0f;
-
-        while (true)
-        {
-            float angle = Quaternion.Angle(transform.rotation, evadeRotation.Value);
-            if (angle < 2.0f)
-                break;
-
-            delta += Time.deltaTime * 50f;
-            Quaternion rotate = Quaternion.RotateTowards(transform.rotation, evadeRotation.Value, delta);
-            transform.rotation = rotate;
-
-            yield return new WaitForFixedUpdate();
-        }
-
-        transform.rotation = evadeRotation.Value;
+        forwardCollider.enabled = false;
+        backwardCollider.enabled = false;
+        leftCollider.enabled = false;
+        rightCollider.enabled = false;
     }
 
     bool IsGrounded()
     {
         return Physics.CheckSphere(transform.position, checkSphereRadius, groundLayers);
+    }
+
+    // 대상의 앞으로 위치하기
+    private float moveSpeed = 5f;
+    // target : 목표한 타겟으로 이동
+    // stoppingDistacne : 정확한 지점이 아닌 앞까지 이동하기 위한 차이값
+    public IEnumerator MoveToTarget(Transform target, float stoppingDistance)
+    {
+        // 목표 위치에 도달할 때까지 반복
+        while (Vector3.Distance(transform.position, target.position) > stoppingDistance)
+        {
+            // 대상의 위치까지의 방향 벡터 계산
+            Vector3 direction = (target.position - transform.position).normalized;
+
+            // 현재 위치에서 대상 위치로 이동 (MoveTowards 사용)
+            transform.position = Vector3.MoveTowards(transform.position, target.position, moveSpeed * Time.deltaTime);
+
+            // 프레임이 끝날 때까지 대기
+            yield return null;
+        }
     }
 
     // Gizmos를 사용하여 CheckSphere를 시각화

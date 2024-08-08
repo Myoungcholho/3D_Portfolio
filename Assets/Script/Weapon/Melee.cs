@@ -6,7 +6,7 @@ public class Melee : Weapon
 {
     private bool bEnable;
     private bool bExist;
-    protected int index;
+    protected int index;        // comboIndex확인용
     public int Index
     {
         set { index = value; }
@@ -152,6 +152,7 @@ public class Melee : Weapon
         impulse.GenerateImpulse(doActionDatas[index].ImpulseDirection);
     }
 
+    // 데미지 처리
     protected virtual void OnTriggerEnter(Collider other)
     {
         if (other.gameObject == rootObject)
@@ -166,7 +167,19 @@ public class Melee : Weapon
 
         hittedList.Add(hashCode);
 
+        
+        if(state != null && (state.DodgedMode || state.DodgedAttackMode))
+        {
+            ApplyDodgeCounterDamage(other);
+            return;
+        }
 
+        ApplyDamage(other);
+    }
+
+    // 일반 공격 데미지 저리
+    private void ApplyDamage(Collider other)
+    {
         IDamagable damage = other.gameObject.GetComponent<IDamagable>();
 
         if (damage == null)
@@ -187,9 +200,35 @@ public class Melee : Weapon
         }
 
         hitPoint = enabledCollider.ClosestPoint(other.transform.position);
-        //Debug.Log(hitPoint + " " + enabledCollider);
         hitPoint = other.transform.InverseTransformPoint(hitPoint);
-        //Debug.Log(hitPoint + " " + enabledCollider);
+
         damage.OnDamage(rootObject, this, hitPoint, doActionDatas[index]);
+    }
+
+    // 반격 공격 데미지 처리
+    private void ApplyDodgeCounterDamage(Collider other)
+    {
+        IDodgeDamageHandler damage = other.gameObject.GetComponent<IDodgeDamageHandler>();
+
+        if(damage == null) 
+            return;
+
+        Vector3 hitPoint = Vector3.zero;
+
+        Collider enabledCollider = null;
+        foreach (Collider collider in colliders)
+        {
+            if (collider.name.Equals(attacker.name) == true)
+            {
+                enabledCollider = collider;
+
+                break;
+            }
+        }
+
+        hitPoint = enabledCollider.ClosestPoint(other.transform.position);
+        hitPoint = other.transform.InverseTransformPoint(hitPoint);
+
+        damage.OnDodgeDamage(rootObject, this, hitPoint, doActionDatas[index]);
     }
 }

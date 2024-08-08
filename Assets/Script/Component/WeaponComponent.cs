@@ -202,6 +202,32 @@ public class WeaponComponent : MonoBehaviour
         weaponTable[type].DoAction();
     }
 
+
+    
+    public void DodgedDoAction()
+    {
+        if (weaponTable[type] == null)
+            return;
+
+        // Sword만 가능.
+        if (type != WeaponType.Sword)
+            return;
+
+        if (state.DodgedAttackMode == true)
+            return;
+
+        MovableStopper.Instance.AttackCount++;  // 반격중 공격 1회 추가
+        Sword sword = weaponTable[type] as Sword;
+        sword?.DodgedDoAction();
+    }
+
+    // Animation에 의해 호출
+    private void End_DodgedDoAction()
+    {
+        Sword sword = weaponTable[type] as Sword;
+        sword?.End_DodgedDoAction();
+    }
+
     private void Begin_DoAction()
     {
         weaponTable[type].Begin_DoAction();
@@ -210,11 +236,15 @@ public class WeaponComponent : MonoBehaviour
     // AI에서 Action 중 피격 시 강제호출 때문에 보호 수준 변경 (07.20)
     public void End_DoAction()
     {
+        if (UnarmedMode)
+            return;
+
         animator.SetBool("IsAction", false);
         target?.EndTargeting();
         weaponTable[type].End_DoAction();
         OnEndDoAction?.Invoke();
     }
+
 
     private void Begin_Combo()
     {
@@ -227,7 +257,7 @@ public class WeaponComponent : MonoBehaviour
     {
         Melee melee = weaponTable[type] as Melee;
 
-        melee?.Begin_Combo();
+        melee?.End_Combo();
     }
 
     private void Begin_Collision(AnimationEvent e)

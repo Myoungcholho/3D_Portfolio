@@ -60,7 +60,7 @@ ModelImporter:
       - time: 0.9337662
         functionName: End_Damaged
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: a14be3fe5fed8dc4f9a40d33badcd4c1, type: 3}
+        objectReferenceParameter: {fileID: 11500000, guid: 00f7624c4c6d338408657217c598936e, type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
