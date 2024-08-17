@@ -37,6 +37,6 @@ public class TimeLineController : MonoBehaviour
     public void RecevSignalBossTarget()
     {
         bossAI.SetBossTarget(gameObject);
-        bossUICanvas.SetActiveCanvas(true);
+        bossUICanvas.SetActivehpPanel(true);
     }
 }

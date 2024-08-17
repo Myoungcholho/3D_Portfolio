@@ -17,9 +17,9 @@ TagManager:
   - Floor
   - Stairs
   - EvadeCollider
-  - 
-  - 
-  - 
+  - PostProcessing
+  - Potal
+  - Interaction
   - 
   - 
   - 

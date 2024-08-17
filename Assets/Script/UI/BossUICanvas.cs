@@ -8,8 +8,13 @@ public class BossUICanvas : MonoBehaviour
     [SerializeField]
     private GameObject BossGameObject;
     [SerializeField]
-    private float fillDownSpeed = 0.5f;
+    private float fillDownSpeed = 0.5f;     // hp filldown speed
+    [SerializeField]
+    public float duration = 3f;             // fade
 
+
+    private GameObject hpPanel;
+    private CanvasGroup canvasGroup;
 
     private TextMeshProUGUI bossNameText;
     private Image bossOverKillHpBar;
@@ -21,6 +26,10 @@ public class BossUICanvas : MonoBehaviour
 
     private void Awake()
     {
+        hpPanel = transform.FindChildByName("HpPanel").gameObject;
+        canvasGroup = transform.FindChildByName("ClearPanel").GetComponent<CanvasGroup>();
+        Debug.Assert(canvasGroup != null);
+
         bossNameText = transform.FindChildByName("BossText").GetComponent<TextMeshProUGUI>();
         bossOverKillHpBar = transform.FindChildByName("BossHpBar_Yellow").GetComponent<Image>();
         healthBarImage = transform.FindChildByName("BossHpBar").GetComponent<Image>();
@@ -29,7 +38,10 @@ public class BossUICanvas : MonoBehaviour
     private void Start()
     {
         SetBossObject(BossGameObject);
-        gameObject.SetActive(false);
+
+        hpPanel.SetActive(false);
+        canvasGroup.alpha = 0f;
+
     }
 
     void Update()
@@ -62,9 +74,42 @@ public class BossUICanvas : MonoBehaviour
         healthBarImage.fillAmount = hp;
     }
 
-    public void SetActiveCanvas(bool active)
+    public void SetActivehpPanel(bool active)
     {
-        gameObject.SetActive(active);
+        hpPanel.SetActive(active);
     }
 
+    public void StartCoroutineClearPanel()
+    {
+        StartCoroutine(FadeIn());
+    }
+
+    #region ClearPanelFade
+    private IEnumerator FadeIn()
+    {
+        float elapsedTime = 0f;
+        while (elapsedTime < duration)
+        {
+            canvasGroup.alpha = Mathf.Lerp(0f, 1f, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        canvasGroup.alpha = 1f;
+
+        yield return new WaitForSeconds(2f);
+        StartCoroutine(FadeOut());
+    }
+
+    private IEnumerator FadeOut()
+    {
+        float elapsedTime = 0f;
+        while (elapsedTime < duration)
+        {
+            canvasGroup.alpha = Mathf.Lerp(1f, 0f, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        canvasGroup.alpha = 0f;
+    }
+    #endregion
 }

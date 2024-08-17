@@ -1,4 +1,5 @@
 using System.Collections;
+using Tiny;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -60,7 +61,6 @@ public class PlayerMovingComponent : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         weapon = GetComponent<WeaponComponent>();
         state = GetComponent<StateComponent>();
-
 
         Awake_BindPlayerInput();
 

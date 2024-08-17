@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Tiny;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.XR;
@@ -18,11 +20,17 @@ public class Player : Character, IDamagable
 
     private Color originColor;
     private PlayerMovingComponent movingComponent;
+
+    // Evade 성공 시 잔상
+    private MeshTrail trail;
+    public Action<bool> OnDodgeAttack;
+
     protected override void Awake()
     {
         base.Awake();
 
         movingComponent = GetComponent<PlayerMovingComponent>();
+        trail = GetComponent<MeshTrail>();
 
         PlayerInput input = GetComponent<PlayerInput>();
         InputActionMap actionMap = input.actions.FindActionMap("Player");
@@ -56,6 +64,8 @@ public class Player : Character, IDamagable
         {
             if(state.DodgedMode)
             {
+                // 대상앞으로 나아가기
+
                 StartCoroutine(movingComponent.MoveToTarget(lastAttacker.transform, 1.4f));
                 weapon.DodgedDoAction();
                 return;
@@ -92,9 +102,11 @@ public class Player : Character, IDamagable
 
         if (state.EvadeMode == true)
         {
+            trail.ActivateMeshTrail();
             state.SetDodgedMode();
             StartCoroutine(MovableStopper.Instance.EvadeDelay());
-            EvadeSuccessColor();
+            OnDodgeAttack?.Invoke(true);
+            //EvadeSuccessColor();
             return;
         }
 

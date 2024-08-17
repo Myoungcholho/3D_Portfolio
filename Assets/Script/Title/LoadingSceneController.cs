@@ -16,11 +16,14 @@ public class LoadingSceneController : MonoBehaviour
     [SerializeField]
     private Image progressBar;
 
-    public static void LoadScene(string sceneName)
+    public static void LoadScene(string sceneName,string spawnPointName)
     {
         nextScene = sceneName;
+
+        SceneDataManager.Instance.SpawnPoint = spawnPointName;
         SceneManager.LoadScene("LoadingScene");
     }
+
 
     private void Awake()
     {
@@ -38,6 +41,7 @@ public class LoadingSceneController : MonoBehaviour
         StartCoroutine(LoadSceneProcess());
     }
 
+    #region UI Button
     public void LeftButtonDown()
     {
         textIndex--;
@@ -69,6 +73,7 @@ public class LoadingSceneController : MonoBehaviour
     {
         loadingText.text = loadText[textIndex];
     }
+    #endregion
 
     IEnumerator LoadSceneProcess()
     {

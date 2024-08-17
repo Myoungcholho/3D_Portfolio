@@ -1,25 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
 public class SceneLoader : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    // 타이틀 화면의 Button에서 호출함.
     public void GameStart()
     {
-        LoadingSceneController.LoadScene("Main");
+        LoadingSceneController.LoadScene("Main", "TestSpawn01");
     }
 
     public void GameExit()

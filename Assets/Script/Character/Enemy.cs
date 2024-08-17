@@ -88,6 +88,12 @@ public class Enemy : Character, IDamagable, IDodgeDamageHandler
 
         animator.SetTrigger("Dead");
 
+        DeathEvent deathEvent = GetComponent<DeathEvent>();
+        if(deathEvent != null)
+        {
+            deathEvent.OnDeath();
+            return;
+        }
         Destroy(gameObject, 5f);
     }
 

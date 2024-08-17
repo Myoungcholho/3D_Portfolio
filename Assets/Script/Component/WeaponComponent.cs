@@ -24,6 +24,7 @@ public class WeaponComponent : MonoBehaviour
     public event Action<WeaponType, WeaponType> OnWeaponTyeChanged;
     public event Action OnEndEquip;
     public event Action OnEndDoAction;
+    public event Action<bool> OnDodgeAttack;
 
 
     public bool UnarmedMode { get => type == WeaponType.Unarmed; }
@@ -241,6 +242,7 @@ public class WeaponComponent : MonoBehaviour
 
         animator.SetBool("IsAction", false);
         target?.EndTargeting();
+        OnDodgeAttack?.Invoke(false);            // 회피 공격 끝 알림
         weaponTable[type].End_DoAction();
         OnEndDoAction?.Invoke();
     }
