@@ -1,8 +1,13 @@
 using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.Timeline;
 
+// Player가 참조하고 있음
 public class TimeLineController : MonoBehaviour
 {
+    [SerializeField]
+    private TimelineAsset bossStartTimeLine;
+
     private PlayableDirector pd;
     private BossAIController bossAI;
     private CameraDistanceAdjuster cameraDistance;
@@ -30,6 +35,11 @@ public class TimeLineController : MonoBehaviour
         {
             cameraDistance.SetObject(transform, bossAI.transform);
             other.gameObject.SetActive(false);
+
+            if (bossStartTimeLine == null)
+                return;
+
+            pd.playableAsset = bossStartTimeLine;
             pd.Play();
         }
     }

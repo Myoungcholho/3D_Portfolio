@@ -5,7 +5,7 @@ public class StateComponent : MonoBehaviour
 {
     public enum StateType// : byte
     {
-        Idle = 0, Equip, Action, Evade, Damaged, Dead, Dodged, DodgedAttack,
+        Idle = 0, Equip, Action, Evade, Damaged, Dead, Dodged, DodgedAttack, InstantKill, InstantKilled
     }
     public enum SubStateType
     {
@@ -26,6 +26,9 @@ public class StateComponent : MonoBehaviour
     public bool DeadMode { get => type == StateType.Dead; }
     public bool DodgedMode { get => type == StateType.Dodged; }
     public bool DodgedAttackMode {get=>type == StateType.DodgedAttack; }
+    public bool InstantKillMode { get=>type == StateType.InstantKill; }
+    public bool InstantKilledMode { get => type == StateType.InstantKilled; }
+
 
     // sub State
     public bool GroundedMode { get=> subType == SubStateType.Grounded; }
@@ -40,6 +43,8 @@ public class StateComponent : MonoBehaviour
     public void SetEvadeMode() => ChangeType(StateType.Evade);
     public void SetDodgedMode() => ChangeType(StateType.Dodged);
     public void SetDodgedAttackMode() => ChangeType(StateType.DodgedAttack);
+    public void SetInstantKillMode() => ChangeType(StateType.InstantKill);
+    public void SetInstantKilledMode() => ChangeType(StateType.InstantKilled); 
 
     //sub State
     public void SetGroundedMode() => SubChangeType(SubStateType.Grounded);

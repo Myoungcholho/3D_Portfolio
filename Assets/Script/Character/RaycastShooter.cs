@@ -3,14 +3,11 @@ using UnityEngine;
 public class RaycastShooter : MonoBehaviour
 {
     // Ray를 쏠 거리 변수
-    [SerializeField] private float rayDistance = 0.5f;
+    [SerializeField] private float rayDistance = 1f;
     [SerializeField] private Vector3 rayOffset = Vector3.zero;
 
-    // 상,하,좌,우 RayHit 정보를 저장할 변수
+    // 앞 RayHit 정보를 저장할 변수
     public RaycastHit hitForward;
-    public RaycastHit hitBackward;
-    public RaycastHit hitLeft;
-    public RaycastHit hitRight;
 
     // Ray가 감지할 Layer 변수
     [SerializeField] private LayerMask layerMaskRay;
@@ -36,48 +33,19 @@ public class RaycastShooter : MonoBehaviour
         if (Physics.Raycast(transform.position + rayOffset, transform.forward, out hitForward, rayDistance, layerMaskRay))
         {
             Debug.Log("Hit forward: " + hitForward.collider.name);
+            
+            // 캐릭터의 forward 벡터와 충돌체의 forward 벡터를 내적합니다.
+            Vector3 colliderForward = hitForward.collider.transform.forward;
+            float dotProduct = Vector3.Dot(transform.forward, colliderForward);
+
+            // 내적 값을 로그로 출력합니다.
+            Debug.Log("Dot Product: " + dotProduct);
         }
         else
         {
             // 히트하지 않은 경우, hitUp의 collider를 null로 설정
             hitForward = new RaycastHit();  // hitUp을 초기화하여 이전 값 제거
             Debug.Log("No Hit. forward");
-        }
-
-        // 하
-        if (Physics.Raycast(transform.position + rayOffset, -transform.forward, out hitBackward, rayDistance, layerMaskRay))
-        {
-            Debug.Log("Hit backward: " + hitBackward.collider.name);
-        }
-        else
-        {
-            // 히트하지 않은 경우, hitUp의 collider를 null로 설정
-            hitForward = new RaycastHit();  // hitUp을 초기화하여 이전 값 제거
-            Debug.Log("No Hit. down");
-        }
-
-        // 좌
-        if (Physics.Raycast(transform.position + rayOffset, -transform.right, out hitLeft, rayDistance, layerMaskRay))
-        {
-            Debug.Log("Hit Left: " + hitLeft.collider.name);
-        }
-        else
-        {
-            // 히트하지 않은 경우, hitUp의 collider를 null로 설정
-            hitForward = new RaycastHit();  // hitUp을 초기화하여 이전 값 제거
-            Debug.Log("No Hit. left");
-        }
-
-        // 우
-        if (Physics.Raycast(transform.position + rayOffset, transform.right, out hitRight, rayDistance, layerMaskRay))
-        {
-            Debug.Log("Hit Right: " + hitRight.collider.name);
-        }
-        else
-        {
-            // 히트하지 않은 경우, hitUp의 collider를 null로 설정
-            hitForward = new RaycastHit();  // hitUp을 초기화하여 이전 값 제거
-            Debug.Log("No Hit. right");
         }
     }
 
@@ -103,10 +71,7 @@ public class RaycastShooter : MonoBehaviour
         Gizmos.color = Color.magenta;
 
         // 상하좌우로 Ray 그리기
-        Gizmos.DrawRay(transform.position + rayOffset, transform.forward * rayDistance);  // 상
-        Gizmos.DrawRay(transform.position + rayOffset, -transform.forward * rayDistance); // 하
-        Gizmos.DrawRay(transform.position + rayOffset, -transform.right * rayDistance); // 좌
-        Gizmos.DrawRay(transform.position + rayOffset, transform.right * rayDistance); // 우
+        Gizmos.DrawRay(transform.position + rayOffset, transform.forward * rayDistance);  // 앞
 
         // 구 형태의 Ray 그리기
         Gizmos.color = Color.blue;

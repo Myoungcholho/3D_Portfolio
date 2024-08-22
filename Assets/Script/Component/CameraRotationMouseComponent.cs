@@ -50,6 +50,7 @@ public class CameraRotationMouseComponent : MonoBehaviour
         bCheck |= state.EvadeMode == true;
         bCheck |= state.DodgedMode == true;
         bCheck |= state.DodgedAttackMode == true;
+        bCheck |= state.InstantKillMode == true;
 
         if (bCheck)
             return;

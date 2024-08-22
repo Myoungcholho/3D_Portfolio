@@ -100,6 +100,7 @@ public class PlayerMovingComponent : MonoBehaviour
         bCheck |= state.DamagedMode == true;
         bCheck |= state.EvadeMode == true;
         bCheck |= state.DodgedMode == true;
+        bCheck |= state.InstantKillMode == true;
 
         if(bCheck)
             return;

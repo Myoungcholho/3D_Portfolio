@@ -80,10 +80,10 @@ public class Player : Character, IDamagable
             bCheck |= state.DamagedMode == true;
             bCheck |= state.EquipMode == true;
             bCheck |= state.DodgedMode == true;
+            bCheck |= state.InstantKillMode == true;
 
             if(bCheck)
                 return;
-
 
             state.SetEvadeMode();
         };
