@@ -133,6 +133,7 @@ public class InteractionComponent : MonoBehaviour
             if(topInteraction is PotalComponent potal)
             {
                 //대상의 상호작용 메서드 실행
+                SoundManager.Instance.PlaySound(SoundLibrary.Instance.teleport01, SoundLibrary.Instance.mixerBasic, false);
                 topInteraction.Interact();
             }
 

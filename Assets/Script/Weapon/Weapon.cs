@@ -43,6 +43,7 @@ public abstract class Weapon : MonoBehaviour
 
     protected StateComponent state;
     protected Animator animator;
+    protected SoundComponent soundComponent;
 
     protected virtual void Reset()
     {
@@ -56,6 +57,7 @@ public abstract class Weapon : MonoBehaviour
 
         state = rootObject.GetComponent<StateComponent>();
         animator = rootObject.GetComponent<Animator>();
+        soundComponent = rootObject.GetComponent<SoundComponent>();
     }
 
     protected virtual void Start()
@@ -124,6 +126,12 @@ public abstract class Weapon : MonoBehaviour
 
     //파티클 인덱스 처리용
     public virtual void Play_Particle_Index(AnimationEvent e)
+    {
+
+    }
+
+    //무기 사운드 실행용
+    public virtual void Play_Sound()
     {
 
     }

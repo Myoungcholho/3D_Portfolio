@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class Hammer : Melee
 {
@@ -14,6 +15,10 @@ public class Hammer : Melee
     private Transform handTransform;
     private Transform particleTransform;
     private GameObject trailParticle;
+
+
+    private AudioClip audioSourceAttack01;
+    private AudioMixerGroup audioMixer;
 
     protected override void Reset()
     {
@@ -68,5 +73,21 @@ public class Hammer : Melee
         base.End_Collision();
 
         Destroy(trailParticle);
+    }
+
+
+    public override void Play_Sound()
+    {
+        base.Play_Sound();
+
+        if (audioSourceAttack01 == null)
+            audioSourceAttack01 = SoundLibrary.Instance.hammerAttack01;
+        if (audioMixer == null)
+            audioMixer = SoundLibrary.Instance.mixerBasic;
+
+        if (soundComponent != null)
+        {
+            soundComponent.PlayLocalSound(audioSourceAttack01, audioMixer, false);
+        }
     }
 }

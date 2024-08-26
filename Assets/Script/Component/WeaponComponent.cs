@@ -287,4 +287,10 @@ public class WeaponComponent : MonoBehaviour
     {
         weaponTable[type].Play_Particle();
     }
+
+    // 무기의 사운드 호출 함수
+    private void Play_Sound()
+    {
+        weaponTable[type].Play_Sound();
+    }
 }

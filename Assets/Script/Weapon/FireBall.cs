@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class FireBall : Weapon
 {
@@ -98,6 +99,23 @@ public class FireBall : Weapon
         }
 
         obj.SetActive(true);
+    }
+
+    private AudioClip audioSourceAttack01;
+    private AudioMixerGroup audioMixer;
+    public override void Play_Sound()
+    {
+        base.Play_Sound();
+
+        if (audioSourceAttack01 == null)
+            audioSourceAttack01 = SoundLibrary.Instance.staffAttack01;
+        if (audioMixer == null)
+            audioMixer = SoundLibrary.Instance.mixerBasic;
+
+        if (soundComponent != null)
+        {
+            soundComponent.PlayLocalSound(audioSourceAttack01, audioMixer, true);
+        }
     }
 
     // projectile의 Action에 연결해 invoke 받을 함수

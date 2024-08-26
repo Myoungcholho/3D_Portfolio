@@ -625,6 +625,13 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
+      - time: 0.15777205
+        functionName: Sound_Evade
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: c8eae78b1eb77f24f95c825c7ebe0733, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       - time: 0.94394624
         functionName: End_Evade
         data: 

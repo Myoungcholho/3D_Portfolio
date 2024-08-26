@@ -25,12 +25,15 @@ public class Player : Character, IDamagable
     private MeshTrail trail;
     public Action<bool> OnDodgeAttack;
 
+    private SoundComponent soundComponent;
+
     protected override void Awake()
     {
         base.Awake();
 
         movingComponent = GetComponent<PlayerMovingComponent>();
         trail = GetComponent<MeshTrail>();
+        soundComponent = GetComponent<SoundComponent>();
 
         PlayerInput input = GetComponent<PlayerInput>();
         InputActionMap actionMap = input.actions.FindActionMap("Player");
@@ -102,11 +105,11 @@ public class Player : Character, IDamagable
 
         if (state.EvadeMode == true)
         {
-            trail.ActivateMeshTrail();
-            state.SetDodgedMode();
+            trail.ActivateMeshTrail();      // ÀÜ»ó
+            state.SetDodgedMode();          
+            soundComponent.PlayLocalSound(SoundLibrary.Instance.evadeDodage01, SoundLibrary.Instance.mixerBasic, false);
             StartCoroutine(MovableStopper.Instance.EvadeDelay());
-            OnDodgeAttack?.Invoke(true);
-            //EvadeSuccessColor();
+            OnDodgeAttack?.Invoke(true);    // ¹¹¿´Áö?
             return;
         }
 

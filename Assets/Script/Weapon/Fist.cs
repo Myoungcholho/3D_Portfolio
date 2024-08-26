@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using static DualSword;
 
 public class Fist : Melee
@@ -53,5 +54,22 @@ public class Fist : Melee
     {
         base.End_Collision();
 
+    }
+
+    private AudioClip audioSourceAttack01;
+    private AudioMixerGroup audioMixer;
+    public override void Play_Sound()
+    {
+        base.Play_Sound();
+
+        if (audioSourceAttack01 == null)
+            audioSourceAttack01 = SoundLibrary.Instance.fistAttack01;
+        if (audioMixer == null)
+            audioMixer = SoundLibrary.Instance.mixerBasic;
+
+        if (soundComponent != null)
+        {
+            soundComponent.PlayLocalSound(audioSourceAttack01, audioMixer, false);
+        }
     }
 }

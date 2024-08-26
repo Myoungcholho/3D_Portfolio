@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class Projectile : MonoBehaviour
 {
@@ -15,8 +16,6 @@ public class Projectile : MonoBehaviour
     {
         rigidbody = GetComponent<Rigidbody>();
         collider = GetComponent<Collider>();
-
-
     }
 
     private void Start()
@@ -28,6 +27,11 @@ public class Projectile : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         OnProjectileHit?.Invoke(collider, other, transform.position);
+
+        AudioClip clip = SoundLibrary.Instance.projectileExplosion01;
+        AudioMixerGroup group = SoundLibrary.Instance.mixerBasic;
+
+        SoundManager.Instance.PlaySound(clip, group, true, transform.position);
 
         Destroy(gameObject);
     }

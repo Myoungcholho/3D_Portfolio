@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class Sword : Melee
 {
@@ -17,6 +18,9 @@ public class Sword : Melee
     private Transform ss1;
     private Transform ss2;
     private Transform ss3;
+
+    private AudioClip audioSourceAttack01;
+    private AudioMixerGroup audioMixer;
 
     protected override void Reset()
     {
@@ -136,5 +140,21 @@ public class Sword : Melee
         // 의도치 않은 state변경을 막기 위함.
         if(state.DodgedAttackMode == true)
             state.SetDodgedMode();
+    }
+
+    // 애니메이션 이벤트에 의해 호출함.
+    public override void Play_Sound()
+    {
+        base.Play_Sound();
+
+        if (audioSourceAttack01 == null)
+            audioSourceAttack01 = SoundLibrary.Instance.swordAttack01;
+        if (audioMixer == null)
+            audioMixer = SoundLibrary.Instance.mixerBasic;
+
+        if (soundComponent != null)
+        { 
+            soundComponent.PlayLocalSound(audioSourceAttack01, audioMixer, false);
+        }
     }
 }
