@@ -9,7 +9,7 @@ using UnityEngine.Timeline;
 public class InteractionComponent : MonoBehaviour
 {
     public TimelineAsset instantKillTimeline; // 즉사기 타임라인 Inspector에서 할당
-    public GameObject targetingUI;
+    public GameObject targetingUI;            // Canvas에있는 Target 점 UI
 
     // 우선순위로 정렬함.
     private SortedSet<IInteractable> interactables = new SortedSet<IInteractable>(new InteractableComparer());

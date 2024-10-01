@@ -43,7 +43,6 @@ public class BossAIController : MonoBehaviour
     [SerializeField]
     private int shortRangePatternCount = 2;
 
-    
 
     // Type 체크용 프로퍼티
     public bool WaitMode { get => type == BossType.Wait; }
@@ -70,6 +69,16 @@ public class BossAIController : MonoBehaviour
     private float jumpStartTime;            // 점프 시작 시간
     private Vector3 jumpVelocity;           // 점프 속도
     public float distanceInFrontOfPlayer = 2f; // 플레이어 앞에 도착할 거리
+    [Header("착지 체크 Ray 정보")]
+    [SerializeField]
+    private float rayDistance = 2.0f;
+    [SerializeField]
+    private LayerMask groundLayer;
+    private bool isJumping = false;
+    [Header("Boss Rotation Speed")]
+    [SerializeField]
+    private float rotationSpeed = 10f;          // 보스 회전 속도
+
 
     private void Awake()
     {
@@ -84,7 +93,7 @@ public class BossAIController : MonoBehaviour
 
     private void Start()
     {
-        navMeshAgent.updateRotation = false;
+        navMeshAgent.updateRotation = false;            // navMesh로 인한 회전 사용 안함.
         SetWaitMode();
     }
 
@@ -112,10 +121,18 @@ public class BossAIController : MonoBehaviour
 
     private void lookPlayerUpdate()
     {
+        /* Vector3 directionToLookAtTarget = target.transform.position - transform.position;
+         directionToLookAtTarget.y = 0;
+         Quaternion lookRotation = Quaternion.LookRotation(directionToLookAtTarget);
+         transform.rotation = lookRotation;*/
+
         Vector3 directionToLookAtTarget = target.transform.position - transform.position;
-        directionToLookAtTarget.y = 0;
+        directionToLookAtTarget.y = 0; // Y축 회전만 처리하도록 설정
+
         Quaternion lookRotation = Quaternion.LookRotation(directionToLookAtTarget);
-        transform.rotation = lookRotation;
+
+        // 천천히 회전하기 위해 Slerp 사용
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
     }
 
 
@@ -123,12 +140,17 @@ public class BossAIController : MonoBehaviour
     public float dashSpeed = 10f;
     private void FixedUpdate()
     {
-        if (RushMode)
+        // 보스가 뛰는 상태라면
+        if (isJumping)
         {
-            float elapsed = Time.time - jumpStartTime;
-            if (elapsed > jumpDuration)
+            // Ray를 바닥 아래로 쏴서 바닥 Layer가 걸리면 EndJump() 실행
+            Ray ray = new Ray(transform.position, Vector3.down);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, rayDistance, groundLayer))
             {
                 EndJump();
+                return;
             }
             return;
         }
@@ -235,6 +257,12 @@ public class BossAIController : MonoBehaviour
         // 경로 계산이 안된다면.. 가운데로 텔포 
         //transform.position = centerPosition.position;
     }
+    
+    // 애니메이션 event 호출용
+    private void Begin_SetMoveMode()
+    {
+        SetMoveMode();
+    }
 
     Vector3 direction1;
     Vector3 direction2;
@@ -305,10 +333,9 @@ public class BossAIController : MonoBehaviour
 
         // Rush 
         animator.SetTrigger("Jump");
-        StartJump();
     }
 
-    private void StartJump()
+    private void Begin_Jump()
     {
         Vector3 directionToPlayer = (target.transform.position - transform.position).normalized;
         Vector3 jumpTarget = target.transform.position - directionToPlayer * distanceInFrontOfPlayer;
@@ -326,8 +353,16 @@ public class BossAIController : MonoBehaviour
         jumpStartTime = Time.time;
     }
 
+    private void Begin_IsJumping()
+    {
+        isJumping = true;
+    }
+
     private void EndJump()
     {
+        // 0. Ray 쏘기 멈추기
+        isJumping = false;
+
         // 1. 점프를 마친 후, 이동처리 및 보간
         rb.isKinematic = true;
         rb.velocity = Vector3.zero;
@@ -335,7 +370,7 @@ public class BossAIController : MonoBehaviour
         pos.y = 0;
         transform.position = pos;
 
-        // 2. navMesh 종료
+        // 2. navMesh 재활성
         navMeshAgent.enabled = true;
 
         // 3. Animation 설정
@@ -478,5 +513,10 @@ public class BossAIController : MonoBehaviour
 
         Gizmos.DrawLine(transform.position, transform.position + direction1 );
         Gizmos.DrawLine(transform.position, transform.position + direction2 );
+
+        // 보스 착지 Ray
+        // 레이가 그려질 시작점 (보스의 위치)에서 아래로 레이의 길이만큼 라인을 그림
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position, transform.position + Vector3.down * rayDistance);
     }
 }

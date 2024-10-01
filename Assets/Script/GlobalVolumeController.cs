@@ -3,6 +3,9 @@ using UnityEngine.Rendering;
 
 public class GlobalVolumeController : MonoBehaviour
 {
+    [SerializeField]
+    private string playerName = "Player";
+
     private GameObject playerObject;
     private WeaponComponent playerWeapon;
     private Player player;

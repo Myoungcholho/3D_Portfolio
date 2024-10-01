@@ -7,6 +7,10 @@ public class Melee : Weapon
     private bool bEnable;
     private bool bExist;
     protected int index;        // comboIndex확인용
+    
+    /// <summary>
+    /// 스킬 공격 시 문제가 생긴다. Impulse가 콤보공격의 정보를 따라가기 때문
+    /// </summary>
     public int Index
     {
         set { index = value; }
@@ -15,8 +19,6 @@ public class Melee : Weapon
     private List<string> hittedList;
     private GameObject attacker;
 
-    protected CinemachineImpulseSource impulse;
-    protected CinemachineBrain brain;
 
     public void Attacker(GameObject attacker)
     {
@@ -29,8 +31,6 @@ public class Melee : Weapon
 
         colliders = GetComponentsInChildren<Collider>();
         hittedList = new List<string>();
-        impulse = GetComponent<CinemachineImpulseSource>();
-        brain = Camera.main.GetComponent<CinemachineBrain>();
     }
 
     protected override void Start()
@@ -168,6 +168,7 @@ public class Melee : Weapon
         hittedList.Add(hashCode);
 
         
+        // 회피 카운터 공격의 데미지 처리는 다른 식으로 이루어져야 하기에 분리
         if(state != null && (state.DodgedMode || state.DodgedAttackMode))
         {
             ApplyDodgeCounterDamage(other);

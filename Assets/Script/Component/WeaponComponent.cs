@@ -21,7 +21,7 @@ public class WeaponComponent : MonoBehaviour
     private WeaponType type = WeaponType.Unarmed;
     public WeaponType Type { get => type; }
 
-    public event Action<WeaponType, WeaponType> OnWeaponTyeChanged;
+    public event Action<WeaponType, WeaponType> OnWeaponTypeChanged;
     public event Action OnEndEquip;
     public event Action OnEndDoAction;
     public event Action<bool> OnDodgeAttack;
@@ -43,6 +43,10 @@ public class WeaponComponent : MonoBehaviour
 
     private Dictionary<WeaponType, Weapon> weaponTable;
 
+    // Skill UI를 위한 Weapon getter
+    public Weapon GetCurrentWeapon() =>
+        weaponTable.TryGetValue(Type, out Weapon weapon) ? weapon : null;
+
     private void Start()
     {
         weaponTable = new Dictionary<WeaponType, Weapon>();
@@ -63,7 +67,7 @@ public class WeaponComponent : MonoBehaviour
 
     public void SetFistMode()
     {
-        if (state.IdleMode == false)
+        if (!(state.IdleMode || state.SkillCastMode))
             return;
 
         SetMode(WeaponType.Fist);
@@ -71,7 +75,7 @@ public class WeaponComponent : MonoBehaviour
 
     public void SetSwordMode()
     {
-        if (state.IdleMode == false)
+        if (!(state.IdleMode || state.SkillCastMode))
             return;
 
         SetMode(WeaponType.Sword);
@@ -79,7 +83,7 @@ public class WeaponComponent : MonoBehaviour
 
     public void SetHammerMode()
     {
-        if (state.IdleMode == false)
+        if (!(state.IdleMode || state.SkillCastMode))
             return;
 
         SetMode(WeaponType.Hammer);
@@ -87,7 +91,7 @@ public class WeaponComponent : MonoBehaviour
 
     public void SetFireBallMode()
     {
-        if (state.IdleMode == false)
+        if (!(state.IdleMode || state.SkillCastMode))
             return;
 
         SetMode(WeaponType.FireBall);
@@ -95,7 +99,7 @@ public class WeaponComponent : MonoBehaviour
 
     public void SetDualSwordMode()
     {
-        if (state.IdleMode == false)
+        if (!(state.IdleMode || state.SkillCastMode))
             return;
 
         SetMode(WeaponType.DualSword);
@@ -103,7 +107,7 @@ public class WeaponComponent : MonoBehaviour
 
     public void SetUnarmedMode()
     {
-        if (state.IdleMode == false)
+        if (!(state.IdleMode || state.SkillCastMode))
             return;
 
 
@@ -170,7 +174,7 @@ public class WeaponComponent : MonoBehaviour
         WeaponType prevType = this.type;
         this.type = type;
 
-        OnWeaponTyeChanged?.Invoke(prevType, type);
+        OnWeaponTypeChanged?.Invoke(prevType, type);
     }
 
     public void Begin_Equip()
@@ -195,6 +199,8 @@ public class WeaponComponent : MonoBehaviour
         if (weaponTable[type] == null)
             return;
         if (state.DamagedMode == true)
+            return;
+        if (state.UsingSkillMode == true)
             return;
 
 
@@ -222,6 +228,58 @@ public class WeaponComponent : MonoBehaviour
         sword?.DodgedDoAction();
     }
 
+    #region Skill
+    public void ActivateQSkill()
+    {
+        if (weaponTable[type] == null) 
+            return;
+        if (!(state.IdleMode || state.SkillCastMode))
+            return;
+        
+        weaponTable[type].ActivateQSkill();
+    }
+
+    public void ActivateESkill()
+    {
+        if (weaponTable[type] == null)
+            return;
+        if (!(state.IdleMode || state.SkillCastMode))
+            return;
+
+        weaponTable[type].ActivateESkill();
+    }
+    // Animation Event에 의해 호출
+    private void End_SkillAction()
+    {
+        animator.SetBool("IsSkillAction", false);
+        weaponTable[type].End_SkillAction();
+    }
+    private void Play_QSkillParticles()
+    {
+        weaponTable[type].Play_QSkillParticles();
+    }
+    private void Play_ESkillParticles()
+    {
+        weaponTable[type].Play_ESkillParticles();
+    }
+    private void Begin_Skill01VCam()
+    {
+        weaponTable[type].Begin_Skill01VCam();
+    }
+    private void End_Skill01VCam()
+    {
+        weaponTable[type].End_Skill01VCam();
+    }
+    private void Begin_Skill02VCam()
+    {
+        weaponTable[type].Begin_Skill02VCam();
+    }
+    private void End_Skill02VCam()
+    {
+        weaponTable[type].End_Skill02VCam();
+    }
+
+    #endregion
     // Animation에 의해 호출
     private void End_DodgedDoAction()
     {
@@ -246,7 +304,6 @@ public class WeaponComponent : MonoBehaviour
         weaponTable[type].End_DoAction();
         OnEndDoAction?.Invoke();
     }
-
 
     private void Begin_Combo()
     {
@@ -288,6 +345,7 @@ public class WeaponComponent : MonoBehaviour
         weaponTable[type].Play_Particle();
     }
 
+    
     // 무기의 사운드 호출 함수
     private void Play_Sound()
     {

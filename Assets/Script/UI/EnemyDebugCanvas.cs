@@ -25,7 +25,7 @@ public class EnemyDebugCanvas : MonoBehaviour
 
     private void Awake()
     {
-        debugObject = transform.root.gameObject;
+        debugObject = transform.parent.gameObject;
 
         if (debugObject == null)
             return;
@@ -45,7 +45,7 @@ public class EnemyDebugCanvas : MonoBehaviour
         coolTimeText = gameObject.transform.FindChildByName("CoolTimeText")?.GetComponent<TextMeshProUGUI>();
 
         state.OnStateTypeChanged += CharacterStateUpdate;
-        weapon.OnWeaponTyeChanged += CharacterWeaponUpdate;
+        weapon.OnWeaponTypeChanged += CharacterWeaponUpdate;
 
         if(aiController != null)
             aiController.OnAIStateTypeChanged += EnemyAIStateUpdate;

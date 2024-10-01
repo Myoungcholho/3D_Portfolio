@@ -65,6 +65,10 @@ public class SoundLibrary : MonoBehaviour
     public AudioMixerGroup mixerBasic;
     public AudioMixerGroup mixerImpact;
 
+    // Skill
+    [Header("-Skill-")]
+    public AudioClip FistSkill01;
+
 
     public static SoundLibrary Instance { get; private set; }
 

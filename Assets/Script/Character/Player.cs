@@ -8,7 +8,9 @@ using UnityEngine.InputSystem.XR;
 
 public class Player : Character, IDamagable
 {
-    private Material skinMaterial;
+    [SerializeField]
+    private string surfaceText = "Erika_Archer_Body_Mesh";
+    private Material skinMaterial;                  // 데미지 타격 시 material변경
 
     [SerializeField]
     private Color damageColor;
@@ -91,7 +93,17 @@ public class Player : Character, IDamagable
             state.SetEvadeMode();
         };
 
-        Transform surface = transform.FindChildByName("Alpha_Surface");
+        actionMap.FindAction("Skill01").started += context =>
+        {
+            weapon.ActivateQSkill();
+        };
+
+        actionMap.FindAction("Skill02").started += context =>
+        {
+            weapon.ActivateESkill();
+        };
+
+        Transform surface = transform.FindChildByName(surfaceText);
         skinMaterial = surface.GetComponent<SkinnedMeshRenderer>().material;
         originColor = skinMaterial.color;
 
@@ -113,7 +125,15 @@ public class Player : Character, IDamagable
             return;
         }
 
+        // 무적모드였다면 return
+        if (state.InvincibleMode == true)
+            return;
+
         healthPoint.Damage(data.Power);
+
+        // 슈퍼아머 모드였다면 return
+        if (state.SuperArmorMode == true)
+            return;
 
         HitCameraShake(causer);
 

@@ -104,10 +104,12 @@ public abstract class AIController : MonoBehaviour
                 break;
             case Type.Wait:
                 {
-                    if (bRetreat)
+                    if (bRetreat)       // 후퇴중이라면
                     {
                         animator.SetFloat("SpeedY", -nav.velocity.magnitude);
+                        break;
                     }
+                    animator.SetFloat("SpeedY", 0.0f);
                 }
                 break;
             case Type.Damaged:

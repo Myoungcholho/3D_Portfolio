@@ -38,8 +38,9 @@ public class CameraRotationMouseComponent : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        /*Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;*/
+
         followTargetTransform = transform.FindChildByName(followTargetName);
     }
 
@@ -51,6 +52,7 @@ public class CameraRotationMouseComponent : MonoBehaviour
         bCheck |= state.DodgedMode == true;
         bCheck |= state.DodgedAttackMode == true;
         bCheck |= state.InstantKillMode == true;
+        bCheck |= state.UsingSkillMode == true;
 
         if (bCheck)
             return;

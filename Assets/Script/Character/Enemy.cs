@@ -15,6 +15,8 @@ public class Enemy : Character, IDamagable, IDodgeDamageHandler
     private float changeColorTime = 0.15f;
 
     private Color originColor;
+    [SerializeField]
+    private string surfaceText = "Alpha_Surface";
     private Material skinMaterial;
 
     private AIController aiController;
@@ -26,7 +28,7 @@ public class Enemy : Character, IDamagable, IDodgeDamageHandler
 
         aiController = GetComponent<AIController>();
         bossAIController = GetComponent<BossAIController>();
-        Transform surface = transform.FindChildByName("Alpha_Surface");
+        Transform surface = transform.FindChildByName(surfaceText);
         skinMaterial = surface.GetComponent<SkinnedMeshRenderer>().material;
         originColor = skinMaterial.color;
     }
@@ -37,7 +39,8 @@ public class Enemy : Character, IDamagable, IDodgeDamageHandler
         // Damage 처리
         healthPoint.Damage(data.Power);
         // CameraSahking
-        HitCameraShake(causer);
+        if (data.abilityType == AbilityType.None)
+            HitCameraShake(causer);
 
         StartCoroutine(Change_Color(changeColorTime));
 
@@ -45,11 +48,24 @@ public class Enemy : Character, IDamagable, IDodgeDamageHandler
        
         if (healthPoint.Dead == false)
         {
-            oppositeDirection = -attacker.transform.forward;
-
             // 적의 회전을 설정
-            Quaternion lookRotation = Quaternion.LookRotation(oppositeDirection, Vector3.up);
-            transform.rotation = lookRotation;
+            // 1) True , 공격자와 방향벡터를 구해 회전
+            if (data.isObjectPushDisperse == true)
+            {
+                Vector3 Direction = attacker.transform.position - transform.position;
+                oppositeDirection = Direction.normalized;
+
+                Quaternion lookRotation = Quaternion.LookRotation(oppositeDirection, Vector3.up);
+                transform.rotation = lookRotation;
+            }
+            // 2) False, 공격자의 -Forward 방향으로 회전
+            else
+            {
+                oppositeDirection = -attacker.transform.forward;
+
+                Quaternion lookRotation = Quaternion.LookRotation(oppositeDirection, Vector3.up);
+                transform.rotation = lookRotation;
+            }
         }
 
         if (data.HitParticle != null)

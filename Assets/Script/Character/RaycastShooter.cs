@@ -32,20 +32,20 @@ public class RaycastShooter : MonoBehaviour
         // 상
         if (Physics.Raycast(transform.position + rayOffset, transform.forward, out hitForward, rayDistance, layerMaskRay))
         {
-            Debug.Log("Hit forward: " + hitForward.collider.name);
+            //Debug.Log("Hit forward: " + hitForward.collider.name);
             
             // 캐릭터의 forward 벡터와 충돌체의 forward 벡터를 내적합니다.
             Vector3 colliderForward = hitForward.collider.transform.forward;
             float dotProduct = Vector3.Dot(transform.forward, colliderForward);
 
             // 내적 값을 로그로 출력합니다.
-            Debug.Log("Dot Product: " + dotProduct);
+            //Debug.Log("Dot Product: " + dotProduct);
         }
         else
         {
             // 히트하지 않은 경우, hitUp의 collider를 null로 설정
             hitForward = new RaycastHit();  // hitUp을 초기화하여 이전 값 제거
-            Debug.Log("No Hit. forward");
+            //Debug.Log("No Hit. forward");
         }
     }
 
@@ -56,12 +56,12 @@ public class RaycastShooter : MonoBehaviour
         if(colliders.Length > 0 ) 
         {
             sphereHitCollider = colliders[0];
-            Debug.Log("Hit Shhere: " + sphereHitCollider.name);
+            //Debug.Log("Hit Shhere: " + sphereHitCollider.name);
         }
         else
         {
             sphereHitCollider = null;
-            Debug.Log("No Hit. shpere");
+            //Debug.Log("No Hit. shpere");
         }
     }
 

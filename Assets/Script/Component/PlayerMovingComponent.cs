@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 using StateType = StateComponent.StateType;
+using DamageStateType = StateComponent.DamageStateType;
 
 public enum EvadeDirection
 {
@@ -43,11 +44,6 @@ public class PlayerMovingComponent : MonoBehaviour
     
     private float yIncreaseTime = 0.0f; // Y축 값이 4일 때의 지속 시간을 추적
 
-    // IK용 변수
-    public float checkSphereRadius = 0.1f; // CheckSphere의 반경
-    public LayerMask groundLayers;
-    public float jumpForce = 5.0f;
-
 
     // Evade시 활성화 할 Collider
     public BoxCollider forwardCollider;
@@ -66,6 +62,8 @@ public class PlayerMovingComponent : MonoBehaviour
 
         //Evade용 등록함수
         state.OnStateTypeChanged += OnStateTypeChanged;
+        state.OnDamageStateChanged += OnDamageStateTypeChanged;
+
     }
 
     private void Start()
@@ -101,12 +99,10 @@ public class PlayerMovingComponent : MonoBehaviour
         bCheck |= state.EvadeMode == true;
         bCheck |= state.DodgedMode == true;
         bCheck |= state.InstantKillMode == true;
+        bCheck |= state.UsingSkillMode == true;
 
         if(bCheck)
             return;
-
-        
-
 
         Vector3 direction = Vector3.zero;
         float speed = bRun ? runSpeed : walkSpeed;
@@ -162,6 +158,25 @@ public class PlayerMovingComponent : MonoBehaviour
                 }
                 break;
         }
+    }
+
+    private void OnDamageStateTypeChanged(DamageStateType prevType, DamageStateType newType)
+    {
+        switch (newType)
+        {
+            case DamageStateType.Normal:
+                {
+                    rb.isKinematic = false;
+                }
+                break;
+            case DamageStateType.SuperArmor:
+                {
+                    rb.isKinematic = true;
+                }
+                break;
+        
+        }
+
     }
 
     private void ExecuteEvade()
@@ -233,73 +248,66 @@ public class PlayerMovingComponent : MonoBehaviour
     // 스태프 Evade
     private void StaffEvade(EvadeDirection direction)
     {
-        Vector3 teleportPos = transform.position;
+        Vector3 moveDirection = Vector3.zero;
+        Vector3 position = transform.position;
 
         switch (direction)
         {
             case EvadeDirection.Forward:
-                {
-                  //  transform.Translate(new Vector3(0, 0, 5f));
-                    Vector3 distance = transform.position + new Vector3(0, 0, teleportDistance);
-                    StartCoroutine(MoveToPosition(distance));
-                }
-            break;
+                moveDirection = transform.forward;
+                break;
             case EvadeDirection.Backward:
-                {
-                    //transform.Translate(new Vector3(0, 0, -5f));
-                    Vector3 distance = transform.position + new Vector3(0, 0, -teleportDistance);
-                    StartCoroutine(MoveToPosition(distance));
-                }
-            break;
+                moveDirection = -transform.forward;
+                break;
             case EvadeDirection.Left:
-                {
-                   // transform.Translate(new Vector3(-5f, 0, 0));
-                    Vector3 distance = transform.position + new Vector3(-teleportDistance, 0, 0);
-                    StartCoroutine(MoveToPosition(distance));
-
-                }
-            break;
+                moveDirection = -transform.right;
+                break;
             case EvadeDirection.Right:
-                {
-                    //transform.Translate(new Vector3(5f, 0, 0));
-                    Vector3 distance = transform.position + new Vector3(teleportDistance, 0, 0);
-                    StartCoroutine(MoveToPosition(distance));
-                }
+                moveDirection = transform.right;
                 break;
             case EvadeDirection.ForwardLeft:
-                {
-                    //transform.Translate(new Vector3(5f, 0, 0));
-                    Vector3 distance = transform.position + new Vector3(-teleportDistance, 0, teleportDistance);
-                    StartCoroutine(MoveToPosition(distance));
-                }
+                moveDirection = (transform.forward - transform.right).normalized;
                 break;
             case EvadeDirection.ForwardRight:
-                {
-                    //transform.Translate(new Vector3(5f, 0, 0));
-                    Vector3 distance = transform.position + new Vector3(teleportDistance, 0, teleportDistance);
-                    StartCoroutine(MoveToPosition(distance));
-                }
+                moveDirection = (transform.forward + transform.right).normalized;
                 break;
             case EvadeDirection.BackwardLeft:
-                {
-                    //transform.Translate(new Vector3(5f, 0, 0));
-                    Vector3 distance = transform.position + new Vector3(-teleportDistance, 0, -teleportDistance);
-                    StartCoroutine(MoveToPosition(distance));
-                }
+                moveDirection = (-transform.forward - transform.right).normalized;
                 break;
             case EvadeDirection.BackwardRight:
-                {
-                    //transform.Translate(new Vector3(5f, 0, 0));
-                    Vector3 distance = transform.position + new Vector3(teleportDistance, 0, -teleportDistance);
-                    StartCoroutine(MoveToPosition(distance));
-                }
+                moveDirection = (-transform.forward + transform.right).normalized;
                 break;
         }
 
-        Debug.Assert(StaffParticlePrefab != null);
-        if(StaffParticlePrefab != null)
+        // Ray를 쏴서 충돌 여부 체크
+        RaycastHit hit;
+        Vector3 destination;
+
+        // 확인용 Ray
+        Debug.DrawRay(position, moveDirection * teleportDistance, Color.green, 2f);
+
+        if (Physics.Raycast(position, moveDirection, out hit, teleportDistance))
         {
-            Instantiate<GameObject>(StaffParticlePrefab, teleportPos,transform.rotation);
+            // 벽에 부딪힌 경우, 충돌 지점까지만 이동
+            destination = hit.point;
+
+            // 충돌 지점까지 Ray를 다른 색상으로 그리기
+            Debug.DrawLine(position, hit.point, Color.red, 2f);
+        }
+        else
+        {
+            // 벽에 부딪히지 않는 경우, 지정된 거리만큼 이동
+            destination = transform.position + moveDirection * teleportDistance;
+        }
+
+        // 목적지로 이동
+        StartCoroutine(MoveToPosition(destination));
+
+        // 텔포 시 파티클 생성
+        Debug.Assert(StaffParticlePrefab != null);
+        if (StaffParticlePrefab != null)
+        {
+            Instantiate<GameObject>(StaffParticlePrefab, transform.position, transform.rotation);
         }
     }
     private IEnumerator MoveToPosition(Vector3 target)
@@ -310,12 +318,20 @@ public class PlayerMovingComponent : MonoBehaviour
             rd.enabled = false;
         }
 
-        while (Vector3.Distance(transform.position, target) > 0.01f)
+        float duration = 0.5f; // 0.5초 동안 이동
+        float elapsedTime = 0f;
+        Vector3 startPos = transform.position;
+
+        // Lerp를 사용해 1초 동안 이동
+        while (elapsedTime < duration)
         {
-            // 현재 위치에서 목표 위치로 매 프레임마다 이동
-            transform.position = Vector3.MoveTowards(transform.position, target, 10f * Time.deltaTime);
+            transform.position = Vector3.Lerp(startPos, target, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
             yield return null; // 다음 프레임까지 대기
         }
+
+        // 정확한 위치로 이동 (Lerp가 끝났을 때)
+        transform.position = target;
 
         foreach (Renderer rd in renderer)
             rd.enabled = true;
@@ -356,7 +372,7 @@ public class PlayerMovingComponent : MonoBehaviour
 
     private void Input_Move_Performed(InputAction.CallbackContext context)
     {
-        inputMove = context.ReadValue<Vector2>();
+         inputMove = context.ReadValue<Vector2>();
     }
 
     private void Input_Move_Cancled(InputAction.CallbackContext context)
@@ -391,10 +407,6 @@ public class PlayerMovingComponent : MonoBehaviour
         rightCollider.enabled = false;
     }
 
-    bool IsGrounded()
-    {
-        return Physics.CheckSphere(transform.position, checkSphereRadius, groundLayers);
-    }
 
     // 대상의 앞으로 위치하기
     private float moveSpeed = 5f;
@@ -416,10 +428,72 @@ public class PlayerMovingComponent : MonoBehaviour
         }
     }
 
+    #region FistQSkillDash
+
+    // Fist Q 스킬 시 앞으로 살짝 뛰게 하기 위한 이벤트 메서드
+    // 애니메이션 이벤트에 의해 호출
+    private void Begin_MoveForward()
+    {
+        StartCoroutine(MoveForward());
+    }
+
+    private float forwardMoveDistance = 5.0f;  // 앞으로 이동할 거리
+    private float forwardMoveDuration = 0.5f;  // 이동하는 데 걸릴 시간
+    private float bufferDistance = 0.5f; // 벽에서 살짝 떨어진 위치로 이동하기 위한 버퍼 거리
+
+    private Vector3 playeroffset = new Vector3(0, 0.9f, 0);
+    private IEnumerator MoveForward()
+    {
+        float elapsedTime = 0;
+        Vector3 movementDirection = transform.forward.normalized;  // 이동 방향
+
+        // Ray를 쏴서 충돌을 감지
+        RaycastHit hit;
+        float moveDistance = forwardMoveDistance; // 실제로 이동할 거리
+
+        // 캐릭터 앞으로 Raycast를 쏴서 충돌 여부 확인
+        if (Physics.Raycast(transform.position + playeroffset, movementDirection, out hit, forwardMoveDistance, 1 << 15))
+        {
+            // 충돌이 발생한 경우, 충돌 지점까지의 거리만큼 이동
+            moveDistance = hit.distance - bufferDistance;
+            if (moveDistance < 0)
+            {
+                moveDistance = 0;
+            }
+        }
+
+        Vector3 startingPosition = rb.position;
+        Vector3 targetPosition = rb.position + movementDirection * moveDistance;
+
+        // 일정 시간 동안 부드럽게 이동
+        while (elapsedTime < forwardMoveDuration)
+        {
+            Vector3 newPosition = Vector3.Lerp(startingPosition, targetPosition, elapsedTime / forwardMoveDuration);
+            transform.position = newPosition;
+            elapsedTime += Time.deltaTime;
+            yield return null;  // 다음 프레임으로 넘어감
+        }
+
+        // 이동이 끝난 후 마지막 위치 보정
+        transform.position = targetPosition;
+    }
+
+    #endregion
+
+
+
+
     // Gizmos를 사용하여 CheckSphere를 시각화
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, checkSphereRadius);
+        Gizmos.color = Color.cyan;
+        Vector3 rayStart = transform.position + playeroffset;
+        Vector3 rayDirection = transform.forward.normalized * forwardMoveDistance;
+
+        // Ray를 Gizmos로 그리기
+        Gizmos.DrawRay(rayStart, rayDirection);
+
+        // Ray의 끝점을 표시하기 위해 구를 그림
+        Gizmos.DrawSphere(rayStart + rayDirection, 0.1f);
     }
 }

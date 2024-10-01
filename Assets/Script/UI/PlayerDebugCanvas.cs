@@ -3,6 +3,7 @@ using UnityEditor;
 using UnityEngine;
 
 using StateType = StateComponent.StateType;
+using DamagedType = StateComponent.DamageStateType;
 
 public class PlayerDebugCanvas : MonoBehaviour
 {
@@ -13,13 +14,14 @@ public class PlayerDebugCanvas : MonoBehaviour
     private WeaponComponent weapon;
     private PlayerMovingComponent moving;
 
-
     //Text
     private TextMeshProUGUI objectName;
     private TextMeshProUGUI currentStateText;
     private TextMeshProUGUI prevStateText;
     private TextMeshProUGUI weaponText;
     private TextMeshProUGUI speedText;
+    private TextMeshProUGUI damagedText;
+
     private void Awake()
     {
         if (debugObject == null)
@@ -34,9 +36,11 @@ public class PlayerDebugCanvas : MonoBehaviour
         prevStateText = gameObject.transform.FindChildByName("PrevStateText").GetComponent<TextMeshProUGUI>();
         weaponText = gameObject.transform.FindChildByName("WeaponText").GetComponent<TextMeshProUGUI>();
         speedText = gameObject.transform.FindChildByName("SpeedText")?.GetComponent<TextMeshProUGUI>();
-        
+        damagedText = gameObject.transform.FindChildByName("DamagedText")?.GetComponent<TextMeshProUGUI>();
+
         state.OnStateTypeChanged += CharacterStateUpdate;
-        weapon.OnWeaponTyeChanged += CharacterWeaponUpdate;
+        weapon.OnWeaponTypeChanged += CharacterWeaponUpdate;
+        state.OnDamageStateChanged += CharacterDamagedTypeUpdate;
     }
 
     private void Start()
@@ -62,6 +66,9 @@ public class PlayerDebugCanvas : MonoBehaviour
         weaponText.text = type.ToString();
     }
 
-
+    private void CharacterDamagedTypeUpdate(DamagedType prevType, DamagedType type)
+    {
+        damagedText.text = type.ToString();
+    }
 
 }

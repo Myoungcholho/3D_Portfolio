@@ -1,4 +1,5 @@
 using Cinemachine;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -44,6 +45,14 @@ public class BrainController : MonoBehaviour
 
     public void RollBackBlend()
     {
+        StartCoroutine(DelayRollBackBlend());
+    }
+
+    private IEnumerator DelayRollBackBlend()
+    {
+        for(int i=0; i<2; ++i)
+            yield return new WaitForEndOfFrame();
+
         var blend = new CinemachineBlendDefinition();
 
         switch (prevBlendStyle)
@@ -51,21 +60,18 @@ public class BrainController : MonoBehaviour
             case "EaseInOut":
                 blend.m_Style = CinemachineBlendDefinition.Style.EaseInOut;
                 blend.m_Time = prevDuration;
-
                 break;
             case "Cut":
                 blend.m_Style = CinemachineBlendDefinition.Style.Cut;
                 blend.m_Time = prevDuration;
-                
                 break;
-            //없는 경우 기본 값 으로 설정
             default:
                 blend.m_Style = CinemachineBlendDefinition.Style.EaseInOut;
                 blend.m_Time = 2f;
-                
                 break;
         }
-        // 초기화 및 셋팅
+
+        // 초기화 및 설정
         prevBlendStyle = "";
         prevDuration = 0f;
         brain.m_DefaultBlend = blend;
