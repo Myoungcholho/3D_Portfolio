@@ -23,16 +23,26 @@ public class CollisionAttackHandler : MonoBehaviour
         Destroy(gameObject, delay);
     }
 
+    public void SetDoActionData(DoActionData data)
+    {
+        actionData = data;
+    }
+
     private void OnTriggerStay(Collider other)
     {
         if (attacker == null)
             return;
+
+
 
         IDamagable damage = other.gameObject.GetComponent<IDamagable>();
         if (damage == null)
             return;
 
         GameObject target = other.transform.gameObject;
+        if (attacker == target)
+            return;
+
 
         if (hitList.Contains(target) == true)
             return;

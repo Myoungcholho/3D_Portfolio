@@ -33,7 +33,7 @@ public class AIController_Staff : AIController
             directionToLookAtTarget.y = 0;
             Quaternion lookRotation = Quaternion.LookRotation(directionToLookAtTarget);
             //transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5.0f);
-           transform.rotation = lookRotation;
+            transform.rotation = lookRotation;
         }
 
         // 경로에 도착했는지 판단
@@ -80,6 +80,7 @@ public class AIController_Staff : AIController
         float temp = Vector3.Distance(transform.position, player.transform.position);
         if (temp <= avoidRange)
         {
+            SetFallBackMode();
             if (SetNavMeshPath(player.transform))
                 return;
             
@@ -130,6 +131,7 @@ public class AIController_Staff : AIController
         if (PatrolMode == true)
             return;
 
+        nav.updateRotation = true;      // 자동 회전 활성
         ChangeType(Type.Patrol);
         nav.isStopped = false;
         patrol.StartMove();

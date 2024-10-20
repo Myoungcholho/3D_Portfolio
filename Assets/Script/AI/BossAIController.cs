@@ -77,7 +77,7 @@ public class BossAIController : MonoBehaviour
     private bool isJumping = false;
     [Header("Boss Rotation Speed")]
     [SerializeField]
-    private float rotationSpeed = 10f;          // 보스 회전 속도
+    private float rotationSpeed = 5f;          // 보스 회전 속도
 
 
     private void Awake()

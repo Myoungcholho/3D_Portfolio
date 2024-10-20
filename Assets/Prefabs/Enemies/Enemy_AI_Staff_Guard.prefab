@@ -952,9 +952,9 @@ GameObject:
   - component: {fileID: 3858120459313849886}
   - component: {fileID: 3858120459313849885}
   - component: {fileID: 3858120459313849884}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Enemy_AI_Staff_Guard
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1056,7 +1056,7 @@ MonoBehaviour:
   hpBarCanvasName: HpBarCanvas
   hpBarImageName: PanelHp
   hpBarPosition: {x: 0, y: 1.2}
-  hpBarActive: 0
+  hpBarActive: 1
 --- !u!114 &3858120459313849859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1153,7 +1153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   distance: 10
   angle: 45
-  lostTime: 2
+  lostTime: 5
   layerMask:
     serializedVersion: 2
     m_Bits: 64

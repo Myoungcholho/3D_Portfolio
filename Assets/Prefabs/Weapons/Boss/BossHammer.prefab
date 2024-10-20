@@ -134,7 +134,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 6
   doActionDatas:
-  - bCanMove: 0
+  - abilityType: 0
+    isObjectPushDisperse: 0
+    bCanMove: 0
     Power: 5
     Distance: 50
     StopFrame: 10
@@ -147,7 +149,9 @@ MonoBehaviour:
     HitParticleScaleOffset: {x: 0, y: 0, z: 0}
     ImpulseDirection: {x: 0, y: 0, z: 0}
     ImpulseSettings: {fileID: 11400000, guid: a3b8629d78d051d41ad2e09c3b8be726, type: 2}
-  - bCanMove: 0
+  - abilityType: 0
+    isObjectPushDisperse: 0
+    bCanMove: 0
     Power: 0
     Distance: 0
     StopFrame: 0
@@ -160,7 +164,9 @@ MonoBehaviour:
     HitParticleScaleOffset: {x: 0, y: 0, z: 0}
     ImpulseDirection: {x: 0, y: 0, z: 0}
     ImpulseSettings: {fileID: 11400000, guid: a3b8629d78d051d41ad2e09c3b8be726, type: 2}
-  - bCanMove: 0
+  - abilityType: 0
+    isObjectPushDisperse: 0
+    bCanMove: 0
     Power: 5
     Distance: 50
     StopFrame: 10
@@ -173,7 +179,9 @@ MonoBehaviour:
     HitParticleScaleOffset: {x: 1, y: 1, z: 1}
     ImpulseDirection: {x: 1, y: 1, z: 1}
     ImpulseSettings: {fileID: 11400000, guid: a3b8629d78d051d41ad2e09c3b8be726, type: 2}
-  - bCanMove: 0
+  - abilityType: 0
+    isObjectPushDisperse: 0
+    bCanMove: 0
     Power: 5
     Distance: 50
     StopFrame: 10
@@ -186,7 +194,9 @@ MonoBehaviour:
     HitParticleScaleOffset: {x: 1, y: 1, z: 1}
     ImpulseDirection: {x: 1, y: 1, z: 1}
     ImpulseSettings: {fileID: 11400000, guid: a3b8629d78d051d41ad2e09c3b8be726, type: 2}
-  - bCanMove: 0
+  - abilityType: 0
+    isObjectPushDisperse: 0
+    bCanMove: 0
     Power: 5
     Distance: 50
     StopFrame: 10
@@ -199,6 +209,54 @@ MonoBehaviour:
     HitParticleScaleOffset: {x: 1, y: 1, z: 1}
     ImpulseDirection: {x: 1, y: 1, z: 1}
     ImpulseSettings: {fileID: 11400000, guid: a3b8629d78d051d41ad2e09c3b8be726, type: 2}
+  qSkillParticlePrefab: {fileID: 0}
+  eSkillParticlePrefab: {fileID: 0}
+  QSkillData:
+    abilityType: 0
+    isObjectPushDisperse: 0
+    bCanMove: 0
+    Power: 0
+    Distance: 0
+    StopFrame: 0
+    Particle: {fileID: 0}
+    ParticlePositionOffset: {x: 0, y: 0, z: 0}
+    ParticleScaleOffset: {x: 1, y: 1, z: 1}
+    HitImpactIndex: 0
+    HitParticle: {fileID: 0}
+    HitParticlePositionOffset: {x: 0, y: 0, z: 0}
+    HitParticleScaleOffset: {x: 1, y: 1, z: 1}
+    ImpulseDirection: {x: 0, y: 0, z: 0}
+    ImpulseSettings: {fileID: 0}
+  QSkillDataCoolTime:
+    CooldownTime: 0
+    RemainingCooldownTime: 0
+    ColliderDelay: 0
+    ColliderDuration: 0
+    MultiHitInterval: 0
+    MultiHitCount: 0
+  ESkillData:
+    abilityType: 0
+    isObjectPushDisperse: 0
+    bCanMove: 0
+    Power: 0
+    Distance: 0
+    StopFrame: 0
+    Particle: {fileID: 0}
+    ParticlePositionOffset: {x: 0, y: 0, z: 0}
+    ParticleScaleOffset: {x: 1, y: 1, z: 1}
+    HitImpactIndex: 0
+    HitParticle: {fileID: 0}
+    HitParticlePositionOffset: {x: 0, y: 0, z: 0}
+    HitParticleScaleOffset: {x: 1, y: 1, z: 1}
+    ImpulseDirection: {x: 0, y: 0, z: 0}
+    ImpulseSettings: {fileID: 0}
+  ESkillDataCoolTime:
+    CooldownTime: 0
+    RemainingCooldownTime: 0
+    ColliderDelay: 0
+    ColliderDuration: 0
+    MultiHitInterval: 0
+    MultiHitCount: 0
   handName: Hand_Hammer
   particlePrefab: {fileID: 0}
   particleTransformName: warhammer_head_low

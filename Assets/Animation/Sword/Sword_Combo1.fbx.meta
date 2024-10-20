@@ -71,13 +71,6 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.34571105
-        functionName: Play_Sound
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 26f4075ce74b0904e8c381d6f4941341, type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
       - time: 0.38847303
         functionName: Begin_Collision
         data: 

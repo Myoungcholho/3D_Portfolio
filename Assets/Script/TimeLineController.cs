@@ -33,7 +33,7 @@ public class TimeLineController : MonoBehaviour
 
         cameraDistance = playerVirtualCamera.GetComponent<CameraDistanceAdjuster>();
 
-        bossUICanvas = GameObject.Find("BossCanvas").GetComponent<BossUICanvas>();
+        bossUICanvas = GameObject.Find("BossCanvas")?.GetComponent<BossUICanvas>();
     }
 
     private void OnTriggerEnter(Collider other)

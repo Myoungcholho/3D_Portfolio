@@ -682,6 +682,13 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
+      - time: 0.2523585
+        functionName: Create_Attack_Collision
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 26f4075ce74b0904e8c381d6f4941341, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}

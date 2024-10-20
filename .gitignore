@@ -73,3 +73,10 @@ crashlytics-build.properties
 
 # TerrainDemoScene_URP 폴더 전체를 제외
 Assets/TerrainDemoScene_URP/
+
+# NavMesh.asset 파일 무시
+Assets/Scenes/TerrainDemoScene/NavMesh.asset
+
+# LightingData.asset 파일 무시
+Assets/MyPackages/Fallen Photoscanned Ruins Pack/_DemoScene/
+

@@ -24,6 +24,9 @@ public class RootMotionController : MonoBehaviour
         bCheck |= state.ActionMode;
         bCheck |= state.UsingSkillMode;
         bCheck |= state.EvadeMode;
+        bCheck |= state.DodgedMode;
+        bCheck |= state.DodgedAttackMode;
+        bCheck |= state.DamagedMode;
 
         if (bCheck)
             animator.applyRootMotion = true;

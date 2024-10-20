@@ -17,9 +17,11 @@ public class CameraRotationMouseComponent : MonoBehaviour
     [SerializeField]
     private float mouseRotationLerp = 0.25f;
 
-    private Transform followTargetTransform;
+    // 이전 회전 값이 남아 타겟팅 후에 복원되는 문제로 public으로 변경해둠.
+    public Transform followTargetTransform;
+
     private Vector2 inputLook;              // 마우스 입력 값을 받을 Vector2
-    private Quaternion rotation;
+    public Quaternion rotation;
     private StateComponent state;
 
     private void Awake()
@@ -38,8 +40,9 @@ public class CameraRotationMouseComponent : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        /*Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;*/
+        // 마우스 게임 종속
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
 
         followTargetTransform = transform.FindChildByName(followTargetName);
     }
@@ -53,6 +56,7 @@ public class CameraRotationMouseComponent : MonoBehaviour
         bCheck |= state.DodgedAttackMode == true;
         bCheck |= state.InstantKillMode == true;
         bCheck |= state.UsingSkillMode == true;
+        bCheck |= state.ActionMode == true;
 
         if (bCheck)
             return;

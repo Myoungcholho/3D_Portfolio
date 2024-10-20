@@ -62,7 +62,7 @@ public class EnemyDebugCanvas : MonoBehaviour
         if (speedText != null)
             speedText.text = moving.currentSpeed.ToString() + "/s";
 
-        if (aiController != null)
+        if (aiController != null && coolTimeText != null)
             coolTimeText.text = aiController.CurrentCoolTime.ToString();
 
         gameObject.transform.rotation = Camera.main.transform.rotation;    

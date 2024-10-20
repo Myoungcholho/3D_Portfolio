@@ -141,7 +141,7 @@ MonoBehaviour:
     ImpulseDirection: {x: 0, y: 1, z: 0}
     ImpulseSettings: {fileID: 11400000, guid: a3b8629d78d051d41ad2e09c3b8be726, type: 2}
   qSkillParticlePrefab: {fileID: 100018, guid: e08878c9a4eb5704fba71fc28d21cb1d, type: 3}
-  eSkillParticlePrefab: {fileID: 0}
+  eSkillParticlePrefab: {fileID: 100018, guid: faa99dacca8c481419b806827928baa9, type: 3}
   QSkillData:
     abilityType: 1
     isObjectPushDisperse: 1
@@ -169,25 +169,25 @@ MonoBehaviour:
     abilityType: 2
     isObjectPushDisperse: 0
     bCanMove: 0
-    Power: 0
+    Power: 1
     Distance: 0
-    StopFrame: 0
+    StopFrame: 10
     Particle: {fileID: 0}
     ParticlePositionOffset: {x: 0, y: 0, z: 0}
     ParticleScaleOffset: {x: 1, y: 1, z: 1}
     HitImpactIndex: 4
-    HitParticle: {fileID: 0}
-    HitParticlePositionOffset: {x: 0, y: 0, z: 0}
+    HitParticle: {fileID: 100672, guid: 7dc0b63f67faaf9479803bcfdff7f71e, type: 3}
+    HitParticlePositionOffset: {x: 0, y: 1, z: 0}
     HitParticleScaleOffset: {x: 1, y: 1, z: 1}
-    ImpulseDirection: {x: 0, y: 0, z: 0}
-    ImpulseSettings: {fileID: 0}
+    ImpulseDirection: {x: 1, y: 1, z: 0}
+    ImpulseSettings: {fileID: 11400000, guid: a3b8629d78d051d41ad2e09c3b8be726, type: 2}
   ESkillDataCoolTime:
-    CooldownTime: 0
+    CooldownTime: 5
     RemainingCooldownTime: 0
     ColliderDelay: 0
-    ColliderDuration: 0
-    MultiHitInterval: 0
-    MultiHitCount: 0
+    ColliderDuration: 0.1
+    MultiHitInterval: 0.1
+    MultiHitCount: 1
   handName: Hand_Hammer
   particlePrefab: {fileID: 8597731318025692521, guid: f51db08a311afb84b987037763c4cce7, type: 3}
   particleTransformName: warhammer_head_low

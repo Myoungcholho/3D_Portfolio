@@ -146,8 +146,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 2
   doActionDatas:
-  - bCanMove: 0
-    Power: 1
+  - abilityType: 0
+    isObjectPushDisperse: 0
+    bCanMove: 0
+    Power: 5
     Distance: 0
     StopFrame: 3
     Particle: {fileID: 0}
@@ -159,8 +161,10 @@ MonoBehaviour:
     HitParticleScaleOffset: {x: 1, y: 1, z: 1}
     ImpulseDirection: {x: 0, y: 0, z: 0}
     ImpulseSettings: {fileID: 0}
-  - bCanMove: 0
-    Power: 1
+  - abilityType: 0
+    isObjectPushDisperse: 0
+    bCanMove: 0
+    Power: 5
     Distance: 0
     StopFrame: 3
     Particle: {fileID: 0}
@@ -172,8 +176,10 @@ MonoBehaviour:
     HitParticleScaleOffset: {x: 1, y: 1, z: 1}
     ImpulseDirection: {x: 0, y: 0, z: 0}
     ImpulseSettings: {fileID: 0}
-  - bCanMove: 0
-    Power: 1
+  - abilityType: 0
+    isObjectPushDisperse: 0
+    bCanMove: 0
+    Power: 10
     Distance: 7
     StopFrame: 3
     Particle: {fileID: 0}
@@ -185,7 +191,9 @@ MonoBehaviour:
     HitParticleScaleOffset: {x: 1, y: 1, z: 1}
     ImpulseDirection: {x: 0, y: 0, z: 0}
     ImpulseSettings: {fileID: 0}
-  - bCanMove: 0
+  - abilityType: 0
+    isObjectPushDisperse: 0
+    bCanMove: 0
     Power: 5
     Distance: 5
     StopFrame: 0
@@ -198,14 +206,11 @@ MonoBehaviour:
     HitParticleScaleOffset: {x: 1, y: 1, z: 1}
     ImpulseDirection: {x: 1, y: 1, z: 0}
     ImpulseSettings: {fileID: 11400000, guid: a3b8629d78d051d41ad2e09c3b8be726, type: 2}
-  holsterName: Holster_Sword
-  handName: Hand_Sword
-  slashParicle: {fileID: 6445826192643391251, guid: 9b6701af468904645b8ef67e0e326bb5, type: 3}
   qSkillParticlePrefab: {fileID: 1644958980890870, guid: 9311cf8f1548b054284a407d8824027a, type: 3}
   eSkillParticlePrefab: {fileID: 1996079926692674, guid: 07a63921b5e0a8f43ba19f9d79f92952, type: 3}
-  skill01VCamName: VCamSkill01
-  skill02VCamName: VCamSkill02
   QSkillData:
+    abilityType: 0
+    isObjectPushDisperse: 0
     bCanMove: 0
     Power: 10
     Distance: 0
@@ -227,6 +232,8 @@ MonoBehaviour:
     MultiHitInterval: 0.1
     MultiHitCount: 3
   ESkillData:
+    abilityType: 0
+    isObjectPushDisperse: 0
     bCanMove: 0
     Power: 10
     Distance: 100
@@ -247,6 +254,11 @@ MonoBehaviour:
     ColliderDuration: 0.6
     MultiHitInterval: 0.2
     MultiHitCount: 3
+  holsterName: Holster_Sword
+  handName: Hand_Sword
+  slashParicle: {fileID: 6445826192643391251, guid: 9b6701af468904645b8ef67e0e326bb5, type: 3}
+  skill01VCamName: VCamSkill01
+  skill02VCamName: VCamSkill02
 --- !u!114 &394529266694238505
 MonoBehaviour:
   m_ObjectHideFlags: 0

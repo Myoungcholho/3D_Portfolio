@@ -661,7 +661,7 @@ GameObject:
   - component: {fileID: 8683313911291607215}
   m_Layer: 7
   m_Name: Enemy_AI_Sword_Patrol
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -748,7 +748,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   footOffset: {x: 0, y: -0.08, z: 0}
-  damageColor: {r: 0.2028302, g: 0.37792152, b: 1, a: 0}
+  damageColor: {r: 1, g: 0.25369912, b: 0.20392156, a: 0}
   changeColorTime: 0.15
   surfaceText: Guard02
 --- !u!114 &8683313911291607211
@@ -768,7 +768,7 @@ MonoBehaviour:
   hpBarCanvasName: HpBarCanvas
   hpBarImageName: PanelHp
   hpBarPosition: {x: 0, y: 1.2}
-  hpBarActive: 0
+  hpBarActive: 1
 --- !u!114 &8683313911291607210
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -808,7 +808,7 @@ NavMeshAgent:
   m_Speed: 2
   m_Acceleration: 8
   avoidancePriority: 50
-  m_AngularSpeed: 120
+  m_AngularSpeed: 200
   m_StoppingDistance: 1
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -829,9 +829,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9277072c4a9400045b75d56950b0728d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  distance: 5
+  distance: 10
   angle: 45
-  lostTime: 2
+  lostTime: 5
   layerMask:
     serializedVersion: 2
     m_Bits: 64

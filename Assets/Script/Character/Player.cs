@@ -1,11 +1,9 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using Tiny;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.XR;
 
+// 플레이어 캐릭터 클래스 (Character를 상속받음)
 public class Player : Character, IDamagable
 {
     [SerializeField]
@@ -13,33 +11,34 @@ public class Player : Character, IDamagable
     private Material skinMaterial;                  // 데미지 타격 시 material변경
 
     [SerializeField]
-    private Color damageColor;
+    private Color damageColor;                      // 데미지 시 색상
     [SerializeField]
-    private Color evadeColor;
+    private Color evadeColor;                       // 회피 성공 시 색상
 
     [SerializeField]
-    private float changeColorTime = 0.15f;
+    private float changeColorTime = 0.15f;          // 색상 변경 시간
 
     private Color originColor;
-    private PlayerMovingComponent movingComponent;
 
-    // Evade 성공 시 잔상
+    // Evade 성공 시 잔상 효과
     private MeshTrail trail;
     public Action<bool> OnDodgeAttack;
 
     private SoundComponent soundComponent;
 
+    // 초기 설정 및 입력 매핑 처리
     protected override void Awake()
     {
         base.Awake();
 
-        movingComponent = GetComponent<PlayerMovingComponent>();
         trail = GetComponent<MeshTrail>();
         soundComponent = GetComponent<SoundComponent>();
 
+        // PlayerInput 설정 및 입력 매핑
         PlayerInput input = GetComponent<PlayerInput>();
         InputActionMap actionMap = input.actions.FindActionMap("Player");
 
+        // 무기 모드 변경 입력 설정
         actionMap.FindAction("Sword").started += context =>
         {
             weapon.SetSwordMode();
@@ -65,20 +64,26 @@ public class Player : Character, IDamagable
             weapon.SetHammerMode();
         };
 
+        // 공격 액션 입력 설정
         actionMap.FindAction("Action").started += context =>
         {
-            if(state.DodgedMode)
+            if(state.DodgedMode || state.DodgedAttackMode)
             {
-                // 대상앞으로 나아가기
-
-                StartCoroutine(movingComponent.MoveToTarget(lastAttacker.transform, 1.4f));
+                // 회피 공격 처리
                 weapon.DodgedDoAction();
                 return;
             }
 
+            bool bCheck = false;
+            bCheck |= state.EvadeMode;
+
+            if (bCheck)
+                return;
+
             weapon.DoAction();
         };
 
+        // 회피 액션 입력 설정
         actionMap.FindAction("Evade").started += context =>
         {
             bool bCheck = false;
@@ -86,13 +91,15 @@ public class Player : Character, IDamagable
             bCheck |= state.EquipMode == true;
             bCheck |= state.DodgedMode == true;
             bCheck |= state.InstantKillMode == true;
+            bCheck |= state.ActionMode == true;                 // 공격 중 회피 금지
 
-            if(bCheck)
+            if (bCheck)
                 return;
 
             state.SetEvadeMode();
         };
 
+        // 스킬 입력 설정
         actionMap.FindAction("Skill01").started += context =>
         {
             weapon.ActivateQSkill();
@@ -103,43 +110,50 @@ public class Player : Character, IDamagable
             weapon.ActivateESkill();
         };
 
+        // 스킨 머티리얼 설정
         Transform surface = transform.FindChildByName(surfaceText);
         skinMaterial = surface.GetComponent<SkinnedMeshRenderer>().material;
         originColor = skinMaterial.color;
 
     }
 
-    private GameObject lastAttacker;                // 반격 시 날라갈 대상 저장
+    public GameObject lastAttacker;                // 마지막 공격자를 저장 (반격 시 사용)
 
     public void OnDamage(GameObject attacker, Weapon causer, Vector3 hitPoint, DoActionData data)
     {
-        lastAttacker = attacker;        // 공격자를 등록, 반격 대상으로 날라가기 위해 저장
+        lastAttacker = attacker;        // 마지막 공격자를 기록, 대상으로 날라가기 위해
 
+        // 회피 모드일 경우 회피 처리
         if (state.EvadeMode == true)
         {
-            trail.ActivateMeshTrail();      // 잔상
-            state.SetDodgedMode();          
+            trail.ActivateMeshTrail();      // 잔상 효과 활성화
+            state.SetDodgedMode();          // 회피 모드 전환
             soundComponent.PlayLocalSound(SoundLibrary.Instance.evadeDodage01, SoundLibrary.Instance.mixerBasic, false);
             StartCoroutine(MovableStopper.Instance.EvadeDelay());
-            OnDodgeAttack?.Invoke(true);    // 뭐였지?
+            OnDodgeAttack?.Invoke(true);    
             return;
         }
 
-        // 무적모드였다면 return
+        // 무적 모드일 경우 데미지 처리하지 않음
         if (state.InvincibleMode == true)
             return;
 
+        // 체력 감소 처리
         healthPoint.Damage(data.Power);
 
-        // 슈퍼아머 모드였다면 return
+        // 슈퍼 아머 모드일 경우 데미지 후 처리하지 않음
         if (state.SuperArmorMode == true)
             return;
 
+        // 카메라 흔들림 처리
         HitCameraShake(causer);
 
+        // 색상 변경 처리 (피격 시)
         StartCoroutine(Change_Color(changeColorTime,damageColor));
+        // 피격으로 인한 일시적 정지
         MovableStopper.Instance.Start_Delay(data.StopFrame);
 
+        // 사망하지 않았다면 피격 상태 설정
         if (healthPoint.Dead == false)
         {
             state.SetDamagedMode();
@@ -150,6 +164,7 @@ public class Player : Character, IDamagable
 
             return;
         }
+        // 사망 처리
         state.SetDeadMode();
 
         Collider collider = GetComponent<Collider>();
@@ -159,12 +174,14 @@ public class Player : Character, IDamagable
         Destroy(gameObject, 5f);
     }
 
+    // 카메라 흔들림 처리
     private void HitCameraShake(Weapon causer)
     {
         Melee melee = causer as Melee;
         melee?.Play_Impulse();
     }
 
+    // 색상 변경 처리 (타이머 기반)
     private IEnumerator Change_Color(float time, Color changeColor)
     {
         skinMaterial.color = changeColor;
@@ -172,16 +189,19 @@ public class Player : Character, IDamagable
         skinMaterial.color = originColor;
     }
 
+    // 회피 성공 시 색상 변경
     private void EvadeSuccessColor()
     {
         StartCoroutine(Change_Color(changeColorTime,evadeColor));
     }
 
+    // 특수 객체 여부 확인
     public override bool IsSpecialObject()
     {
         return true;
     }
 
+    // 정상 상태로 복귀
     public void ResetToNormal()
     {
         state.SetIdleMode();

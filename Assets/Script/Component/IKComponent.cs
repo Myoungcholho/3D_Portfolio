@@ -55,8 +55,9 @@ public class IKComponent : MonoBehaviour
         if (weaponComponent == null)
             return;
 
-        if (state.IdleMode == false)
-            return;
+        // 해머 테스트 시 이 코드 삭제할 것
+        //if (state.IdleMode == false)
+            //return;
 
         SetWeaponBodyOffset();                      // 무기마다 다른 bodyOffset 값 셋팅
 
@@ -67,10 +68,13 @@ public class IKComponent : MonoBehaviour
 
 
         // 텍스트 출력 코드
-        leftFootCurveText.text = leftFootPositionWeight.ToString();
-        rightFootCurveText.text = rightFootPositionWeight.ToString();
-        leftFootRotationText.text = leftFootRotationWeight.ToString();
-        rightFootRotationText.text = rightFootRotationWeight.ToString();
+        if (leftFootCurveText != null)
+        {
+            leftFootCurveText.text = leftFootPositionWeight.ToString();
+            rightFootCurveText.text = rightFootPositionWeight.ToString();
+            leftFootRotationText.text = leftFootRotationWeight.ToString();
+            rightFootRotationText.text = rightFootRotationWeight.ToString();
+        }
 
         RaycastHit leftFootHit, rightFootHit;
         GetFootHeight(AvatarIKGoal.LeftFoot, out leftFootHit);

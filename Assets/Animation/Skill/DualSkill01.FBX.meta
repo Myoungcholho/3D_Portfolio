@@ -99,13 +99,6 @@ ModelImporter:
         floatParameter: 0
         intParameter: 1
         messageOptions: 0
-      - time: 0.96153843
-        functionName: End_SkillAction
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 26f4075ce74b0904e8c381d6f4941341, type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
       - time: 0.54150945
         functionName: CreateAfterImage
         data: 
@@ -119,6 +112,13 @@ ModelImporter:
         objectReferenceParameter: {fileID: 11500000, guid: be61294bb37d33240a50a029f2283982, type: 3}
         floatParameter: 0
         intParameter: 1
+        messageOptions: 0
+      - time: 0.96153843
+        functionName: End_SkillAction
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 26f4075ce74b0904e8c381d6f4941341, type: 3}
+        floatParameter: 0
+        intParameter: 0
         messageOptions: 0
       transformMask: []
       maskType: 3

@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 
 using StateType = StateComponent.StateType;
 using DamageStateType = StateComponent.DamageStateType;
+using Unity.VisualScripting;
 
 public enum EvadeDirection
 {
@@ -20,12 +21,25 @@ public class PlayerMovingComponent : MonoBehaviour
     private float runSpeed = 4.0f;
     [SerializeField]
     private float fastSpeed = 2f;
+    [Header("움직임 보간 수치 높을 수록 전환 빠름")]
     [SerializeField]
-    private float sensitivity = 100.0f;
+    private float sensitivity = 5f;
+    [Header("잠깐 눌렀다 땐 경우 움직임 제한하기 위함")]
     [SerializeField]
-    private float deadZone = 0.001f;
+    private float deadZone = 0.2f;
+
+    [Header("Evade Distance")]
     [SerializeField]
-    private float teleportDistance = 5f;
+    private float fistEvadeDistance = 5f;
+    [SerializeField]
+    private float swordEvadeDistance = 5f;
+    [SerializeField]
+    private float hammerEvadeDistance = 5f;
+    [SerializeField]
+    private float staffEvadeDistance = 5f;
+    [SerializeField]
+    private float dualEvadeDistance = 5f;
+
     [SerializeField]
     private GameObject StaffParticlePrefab;
 
@@ -50,6 +64,9 @@ public class PlayerMovingComponent : MonoBehaviour
     public BoxCollider backwardCollider;
     public BoxCollider leftCollider;
     public BoxCollider rightCollider;
+
+    // 반격 시 진행 중인 코루틴 정지 위함
+    private Coroutine moveCoroutine;
 
     private void Awake()
     {
@@ -87,6 +104,7 @@ public class PlayerMovingComponent : MonoBehaviour
 
     [HideInInspector]
     public float currentSpeed;
+    private float smoothSpeed;      // Shift 보간
     private void Update()
     {
         currInputMove = Vector2.SmoothDamp(currInputMove, inputMove, ref velocity, 1.0f / sensitivity);
@@ -105,16 +123,20 @@ public class PlayerMovingComponent : MonoBehaviour
             return;
 
         Vector3 direction = Vector3.zero;
-        float speed = bRun ? runSpeed : walkSpeed;
+        float targetSpeed = bRun ? runSpeed : walkSpeed;
+        smoothSpeed = Mathf.Lerp(smoothSpeed, targetSpeed, Time.deltaTime * sensitivity);
+
+        // 데드존 값을 올려 찔끔찔끔 가는걸 방지
         if (currInputMove.magnitude > deadZone)
         {
             direction = (Vector3.right * currInputMove.x) + (Vector3.forward * currInputMove.y);
-            direction = direction.normalized * speed;
+            direction = direction.normalized * smoothSpeed;
         }
+
 
         if (direction.z >= 0.0f)
         {
-            if (direction.z >= 1.0f * runSpeed)
+            if (direction.z >= 1.0f * runSpeed-0.1f)
             {
                 yIncreaseTime += Time.deltaTime;
             }
@@ -142,8 +164,8 @@ public class PlayerMovingComponent : MonoBehaviour
             return;
         }
 
-        animator.SetFloat("SpeedX", currInputMove.x * speed);
-        animator.SetFloat("SpeedY", currInputMove.y * speed + yIncreaseTime);
+        animator.SetFloat("SpeedX", currInputMove.x * smoothSpeed);
+        animator.SetFloat("SpeedY", currInputMove.y * smoothSpeed + yIncreaseTime);
     }
 
 
@@ -182,8 +204,8 @@ public class PlayerMovingComponent : MonoBehaviour
     private void ExecuteEvade()
     {
         Vector2 value = inputMove;
-        EvadeDirection direction = EvadeDirection.Forward;
-        EvadeDirection staffDirection = EvadeDirection.Forward;
+        EvadeDirection direction = EvadeDirection.Forward;          // 4방향 저장
+        EvadeDirection staffDirection = EvadeDirection.Forward;     // 8방향 저장
 
         // 키 입력이 없는 경우
         if (value.y == 0.0f)
@@ -237,19 +259,94 @@ public class PlayerMovingComponent : MonoBehaviour
         }
         animator.SetInteger("Direction", (int)direction);
         animator.SetTrigger("Evade");
-        EnableEvadeCollider(direction);
+        EnableEvadeCollider(direction);                                 // 회피 판정용 Collider 활성
+
+        if (animator.GetInteger("WeaponType") == (int)WeaponType.Fist)
+        {
+            FistEvade(direction);
+        }
+
+        if (animator.GetInteger("WeaponType") == (int)WeaponType.Sword)
+        {
+            SwordEvade(direction);
+        }
+
+        if (animator.GetInteger("WeaponType") == (int)WeaponType.Hammer)
+        {
+            HammerEvade(direction);
+        }
 
         if (animator.GetInteger("WeaponType") == (int)WeaponType.FireBall)
         {
             StaffEvade(staffDirection);
         }
+
+        if (animator.GetInteger("WeaponType") == (int)WeaponType.DualSword)
+        {
+            DualEvade(direction);
+        }
     }
 
-    // 스태프 Evade
+
+    // Fist Evade
+    private void FistEvade(EvadeDirection direction)
+    {
+        CheckCollisionAndMove(direction,fistEvadeDistance, 0.5f);
+    }
+
+    // Sword Evade
+    private void SwordEvade(EvadeDirection direction)
+    {
+        CheckCollisionAndMove(direction, swordEvadeDistance, 0.5f);
+    }
+
+    // Hammer Evade
+    private void HammerEvade(EvadeDirection direction)
+    {
+        CheckCollisionAndMove(direction,hammerEvadeDistance,0.5f);
+    }
+
+    // Staff Evade
     private void StaffEvade(EvadeDirection direction)
+    {
+        CheckCollisionAndMove(direction, staffEvadeDistance,0.25f, true);
+
+        // 텔포 시 파티클 생성
+        Debug.Assert(StaffParticlePrefab != null);
+        if (StaffParticlePrefab != null)
+        {
+            Instantiate<GameObject>(StaffParticlePrefab, transform.position, transform.rotation);
+        }
+    }
+
+    [SerializeField]
+    private GameObject dualEvadeTrailPrefab;                 // evade Trail 프리팹
+    private GameObject dualEvadeTrailObject;                 // Instance Object;
+    // Dual Evade
+    private void DualEvade(EvadeDirection direction)
+    {
+        CheckCollisionAndMove(direction,dualEvadeDistance,0.1f,true);
+
+        // trail 생성
+        if(dualEvadeTrailPrefab != null)
+        {
+            Vector3 pos = transform.position;
+            pos += new Vector3(0, 0.25f, 0);
+
+            Quaternion quaternion = transform.rotation;
+
+            dualEvadeTrailObject = Instantiate<GameObject>(dualEvadeTrailPrefab, pos, quaternion,transform);
+            Destroy(dualEvadeTrailObject, 0.4f);
+        }
+
+    }
+
+    // 이동 거리 가능 판단 및 이동 toggleRenderer True면 렌더링 비활성
+    private void CheckCollisionAndMove(EvadeDirection direction, float distance,float duration, bool toggleRenderer = false)
     {
         Vector3 moveDirection = Vector3.zero;
         Vector3 position = transform.position;
+        position += new Vector3(0, 0.9f, 0);
 
         switch (direction)
         {
@@ -284,9 +381,9 @@ public class PlayerMovingComponent : MonoBehaviour
         Vector3 destination;
 
         // 확인용 Ray
-        Debug.DrawRay(position, moveDirection * teleportDistance, Color.green, 2f);
+        Debug.DrawRay(position, moveDirection * distance, Color.green, 2f);
 
-        if (Physics.Raycast(position, moveDirection, out hit, teleportDistance))
+        if (Physics.Raycast(position, moveDirection, out hit, distance))
         {
             // 벽에 부딪힌 경우, 충돌 지점까지만 이동
             destination = hit.point;
@@ -297,35 +394,45 @@ public class PlayerMovingComponent : MonoBehaviour
         else
         {
             // 벽에 부딪히지 않는 경우, 지정된 거리만큼 이동
-            destination = transform.position + moveDirection * teleportDistance;
+            destination = transform.position + moveDirection * distance;
         }
 
         // 목적지로 이동
-        StartCoroutine(MoveToPosition(destination));
-
-        // 텔포 시 파티클 생성
-        Debug.Assert(StaffParticlePrefab != null);
-        if (StaffParticlePrefab != null)
-        {
-            Instantiate<GameObject>(StaffParticlePrefab, transform.position, transform.rotation);
-        }
+        // 예외1) - Sword의 반격이 들어오면 이동을 멈추어야 함 
+        moveCoroutine = StartCoroutine(MoveToPosition(destination, duration,toggleRenderer));
     }
-    private IEnumerator MoveToPosition(Vector3 target)
+
+    // 목표 지점으로 움직이는 코루틴
+    private IEnumerator MoveToPosition(Vector3 target,float duration, bool toggleRenderer = false)
     {
-        renderer = GetComponentsInChildren<Renderer>();
-        foreach (Renderer rd in renderer)
+        // 랜더 끄기
+        if (toggleRenderer)
         {
-            rd.enabled = false;
+            ToggleRenderers(false);
         }
 
-        float duration = 0.5f; // 0.5초 동안 이동
         float elapsedTime = 0f;
         Vector3 startPos = transform.position;
 
+        float actualDuration = duration; // 애니메이션 속도에 따른 실제 duration
+
         // Lerp를 사용해 1초 동안 이동
-        while (elapsedTime < duration)
+        while (elapsedTime < actualDuration)
         {
-            transform.position = Vector3.Lerp(startPos, target, elapsedTime / duration);
+            //transform.position = Vector3.Lerp(startPos, target, elapsedTime / duration);
+            
+            // 애니메이션 속도 가져오기
+            float animSpeed = animator.speed;
+
+            // 애니메이션 속도에 따라 실제 지속 시간을 증가시킴
+            actualDuration = duration / animSpeed;  // 애니메이션 속도가 느려지면 더 긴 duration으로 변경
+
+            // 이동 시간 비율 계산 (애니메이션 속도에 맞춰)
+            float t = elapsedTime / actualDuration;
+
+            // Lerp를 사용하여 캐릭터 이동
+            transform.position = Vector3.Lerp(startPos, target, Mathf.Clamp01(t));
+
             elapsedTime += Time.deltaTime;
             yield return null; // 다음 프레임까지 대기
         }
@@ -333,14 +440,37 @@ public class PlayerMovingComponent : MonoBehaviour
         // 정확한 위치로 이동 (Lerp가 끝났을 때)
         transform.position = target;
 
-        foreach (Renderer rd in renderer)
-            rd.enabled = true;
-        
+        // 랜더 키기
+        if (toggleRenderer)
+        {
+            ToggleRenderers(true);
+        }
+
         animator.SetTrigger("TestExit");
         Move();
-        End_Evade();
+        End_Evade();                                // 코루틴을 중간에 끊었는데 너가 왜해?
     }
-    // 스태프 Evade
+
+    // 목표 지점 이동 캔슬
+    public void CancelMove()
+    {
+        if (moveCoroutine != null)
+        {
+            StopCoroutine(moveCoroutine);
+            moveCoroutine = null; // 코루틴 참조를 초기화
+        }
+    }
+
+    // 렌더러를 켜고 끄는 메서드
+    private void ToggleRenderers(bool enabled)
+    {
+        Renderer[] renderers = GetComponentsInChildren<Renderer>();
+        foreach (Renderer rd in renderers)
+        {
+            rd.enabled = enabled;
+        }
+    }
+
 
     private void EnableEvadeCollider(EvadeDirection direction)
     {
@@ -479,8 +609,6 @@ public class PlayerMovingComponent : MonoBehaviour
     }
 
     #endregion
-
-
 
 
     // Gizmos를 사용하여 CheckSphere를 시각화

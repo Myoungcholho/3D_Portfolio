@@ -191,14 +191,14 @@ public class Hammer : Melee
         if (eSkillParticlePrefab == null)
             return;
 
-        // 앞으로 뻗는 펀치
         Vector3 pos = rootObject.transform.position;
-        pos += new Vector3(0, 1.5f, 0f);
-        pos += rootObject.transform.forward * 2.0f;
+        pos += rootObject.transform.forward * 2f;
 
         Quaternion quaternion = rootObject.transform.rotation;
 
-        GameObject obj = Instantiate<GameObject>(eSkillParticlePrefab, pos, quaternion);
+        // 오브젝트를 rootObject의 자식으로 설정
+        GameObject obj = Instantiate(eSkillParticlePrefab, pos, quaternion, rootObject.transform);
+
         TriggerInvoker weaponTrigger = obj.GetComponent<TriggerInvoker>();
         weaponTrigger.Initialize(ESkillDataCoolTime.ColliderDelay, ESkillDataCoolTime.ColliderDuration);
         weaponTrigger.OnTriggerHit += OnTriggerESkill;

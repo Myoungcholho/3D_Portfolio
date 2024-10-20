@@ -1554,7 +1554,7 @@ GameObject:
   - component: {fileID: 2678840683546954859}
   m_Layer: 7
   m_Name: Enemy_AI_Sword_Dummy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1641,7 +1641,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   footOffset: {x: 0, y: -0.08, z: 0}
-  damageColor: {r: 0.2028302, g: 0.37792152, b: 1, a: 0}
+  damageColor: {r: 1, g: 0.21232054, b: 0.20392156, a: 0}
   changeColorTime: 0.15
   surfaceText: Guard02
 --- !u!114 &2678840683546954863
@@ -1661,7 +1661,7 @@ MonoBehaviour:
   hpBarCanvasName: HpBarCanvas
   hpBarImageName: PanelHp
   hpBarPosition: {x: 0, y: 1.2}
-  hpBarActive: 0
+  hpBarActive: 1
 --- !u!114 &2678840683546954862
 MonoBehaviour:
   m_ObjectHideFlags: 0

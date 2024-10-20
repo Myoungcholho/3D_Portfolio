@@ -633,13 +633,6 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.935772
-        functionName: End_Evade
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 16e2048fd19489b45b2dd8b034548610, type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}

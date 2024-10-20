@@ -1,25 +1,25 @@
 using Cinemachine;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Melee 클래스: Weapon 클래스 상속. 근접 무기 관련 동작 구현
 public class Melee : Weapon
 {
-    private bool bEnable;
-    private bool bExist;
-    protected int index;        // comboIndex확인용
-    
-    /// <summary>
-    /// 스킬 공격 시 문제가 생긴다. Impulse가 콤보공격의 정보를 따라가기 때문
-    /// </summary>
+    private bool bEnable;       // 콤보 활성화 여부
+    private bool bExist;        // 콤보 중 여부
+    protected int index;        // 콤보 인덱스
+
+    // 스킬 공격 시 콤보 정보를 저장
     public int Index
     {
         set { index = value; }
     }
-    protected Collider[] colliders;
-    private List<string> hittedList;
-    private GameObject attacker;
+    protected Collider[] colliders;             // 무기에 적용된 Collider 배열
+    private List<string> hittedList;            // 히트한 객체의 해시 리스트 (중복 히트 방지)
+    private GameObject attacker;                // 공격자 오브젝트
 
-
+    // 공격자 설정
     public void Attacker(GameObject attacker)
     {
         this.attacker = attacker;
@@ -40,34 +40,35 @@ public class Melee : Weapon
         End_Collision();
     }
 
+    // 콜라이더 활성화 (공격 시작)
     public virtual void Begin_Collision(AnimationEvent e)
     {
         foreach (Collider collider in colliders)
             collider.enabled = true;
-
-
     }
 
+    // 콜라이더 비활성화 (공격 종료)
     public virtual void End_Collision()
     {
         foreach (Collider collider in colliders)
             collider.enabled = false;
 
-
-
         hittedList.Clear();
     }
 
+    // 콤보 시작
     public void Begin_Combo()
     {
         bEnable = true;
     }
 
+    // 콤보 종료
     public void End_Combo()
     {
         bEnable = false;
     }
 
+    // 공격 액션 처리
     public override void DoAction()
     {
         if (bEnable)
@@ -78,17 +79,18 @@ public class Melee : Weapon
             return;
         }
 
-
         if (state.IdleMode == false)
             return;
 
         base.DoAction();
     }
 
+    // 공격 시작 처리
     public override void Begin_DoAction()
     {
         base.Begin_DoAction();
 
+        // 콤보 상태가 아니거나 데미지 상태이면 중단
         if (bExist == false)
             return;
         if (state.DamagedMode == true)
@@ -110,15 +112,17 @@ public class Melee : Weapon
         CheckStop(index);
     }
 
+    // 공격 종료 처리
     public override void End_DoAction()
     {
         base.End_DoAction();
 
-        index = 0;
-        bEnable = false;
+        index = 0;                          // 콤보 인덱스 초기화
+        bEnable = false;                    // 콤보 종료
     }
 
-    public string CreateHashCode(Collider other,GameObject obj)
+    // 히트 시 해시 코드 생성 (중복 방지용)
+    public string CreateHashCode(Collider other, GameObject obj)
     {
         if (other == null)
             return string.Empty;
@@ -129,6 +133,7 @@ public class Melee : Weapon
         return $"{other.name}_{obj.name}";
     }
 
+    // 카메라 임펄스 효과 실행
     public virtual void Play_Impulse()
     {
         if (impulse == null)
@@ -152,7 +157,7 @@ public class Melee : Weapon
         impulse.GenerateImpulse(doActionDatas[index].ImpulseDirection);
     }
 
-    // 데미지 처리
+    // 데미지 처리 (Trigger 충돌)
     protected virtual void OnTriggerEnter(Collider other)
     {
         if (other.gameObject == rootObject)
@@ -165,11 +170,11 @@ public class Melee : Weapon
         if (hittedList.Contains(hashCode) == true)
             return;
 
-        hittedList.Add(hashCode);
+        hittedList.Add(hashCode);                            // 히트한 객체 저장
 
-        
-        // 회피 카운터 공격의 데미지 처리는 다른 식으로 이루어져야 하기에 분리
-        if(state != null && (state.DodgedMode || state.DodgedAttackMode))
+
+        // 회피 카운터 공격 처리
+        if (state != null && (state.DodgedMode || state.DodgedAttackMode))
         {
             ApplyDodgeCounterDamage(other);
             return;
@@ -178,24 +183,23 @@ public class Melee : Weapon
         ApplyDamage(other);
     }
 
-    // 일반 공격 데미지 저리
-    private void ApplyDamage(Collider other)
+    // 일반/반격 공격 데미지 처리 공통 메서드
+    private void ApplyDamage<T>(Collider other, Action<GameObject, Weapon, Vector3, DoActionData> damageAction) where T : class
     {
-        IDamagable damage = other.gameObject.GetComponent<IDamagable>();
+        T damageHandler = other.gameObject.GetComponent<T>();
 
-        if (damage == null)
+        if (damageHandler == null)
             return;
-
 
         Vector3 hitPoint = Vector3.zero;
 
+        // 공격자와 일치하는 콜라이더로 충돌 지점 계산
         Collider enabledCollider = null;
         foreach (Collider collider in colliders)
         {
             if (collider.name.Equals(attacker.name) == true)
             {
                 enabledCollider = collider;
-
                 break;
             }
         }
@@ -203,33 +207,27 @@ public class Melee : Weapon
         hitPoint = enabledCollider.ClosestPoint(other.transform.position);
         hitPoint = other.transform.InverseTransformPoint(hitPoint);
 
-        damage.OnDamage(rootObject, this, hitPoint, doActionDatas[index]);
+        // 호출할 메서드를 파라미터로 받아 처리
+        damageAction(rootObject, this, hitPoint, doActionDatas[index]);
     }
 
-    // 반격 공격 데미지 처리
+    // 기존의 일반 공격 데미지 처리
+    private void ApplyDamage(Collider other)
+    {
+        ApplyDamage<IDamagable>(other, (rootObj, weapon, hitPoint, data) =>
+        {
+            var damage = other.gameObject.GetComponent<IDamagable>();
+            damage?.OnDamage(rootObj, weapon, hitPoint, data);
+        });
+    }
+
+    // 기존의 반격 공격 데미지 처리
     private void ApplyDodgeCounterDamage(Collider other)
     {
-        IDodgeDamageHandler damage = other.gameObject.GetComponent<IDodgeDamageHandler>();
-
-        if(damage == null) 
-            return;
-
-        Vector3 hitPoint = Vector3.zero;
-
-        Collider enabledCollider = null;
-        foreach (Collider collider in colliders)
+        ApplyDamage<IDodgeDamageHandler>(other, (rootObj, weapon, hitPoint, data) =>
         {
-            if (collider.name.Equals(attacker.name) == true)
-            {
-                enabledCollider = collider;
-
-                break;
-            }
-        }
-
-        hitPoint = enabledCollider.ClosestPoint(other.transform.position);
-        hitPoint = other.transform.InverseTransformPoint(hitPoint);
-
-        damage.OnDodgeDamage(rootObject, this, hitPoint, doActionDatas[index]);
+            var damage = other.gameObject.GetComponent<IDodgeDamageHandler>();
+            damage?.OnDodgeDamage(rootObj, weapon, hitPoint, data);
+        });
     }
 }

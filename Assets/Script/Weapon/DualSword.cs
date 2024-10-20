@@ -16,8 +16,6 @@ public class DualSword : Melee
     {
         base.Reset();
         type = WeaponType.DualSword;
-
-        
     }
 
     public enum PartType
@@ -163,8 +161,18 @@ public class DualSword : Melee
         if (qSkillParticlePrefab == null)
             return;
 
-        // 회오리 전진 스킬
+        // 전진 회오리 스킬
+        Vector3 pos = rootObject.transform.position;
         
+        Quaternion quaternion = rootObject.transform.rotation;
+
+        // 오브젝트를 rootObject의 자식으로 설정
+        GameObject obj = Instantiate(qSkillParticlePrefab, pos, quaternion, rootObject.transform);
+
+        TriggerInvoker weaponTrigger = obj.GetComponent<TriggerInvoker>();
+        weaponTrigger.Initialize(QSkillDataCoolTime.ColliderDelay, QSkillDataCoolTime.ColliderDuration);
+        weaponTrigger.OnTriggerHit += OnTriggerQSkill;
+
 
         // 리스트 data초마다 Clear , 다단히트용
         StartCoroutine(ClearHitListRoutine(qSkillHitList, QSkillDataCoolTime.MultiHitInterval));
@@ -214,8 +222,6 @@ public class DualSword : Melee
         // 리스트 data초마다 Clear , 다단히트용
         StartCoroutine(ClearHitListRoutine(eSkillHitList, ESkillDataCoolTime.MultiHitInterval));
     }
-
-
 
     private void OnTriggerQSkill(Collider t, Collider other, Vector3 hitPos)
     {
@@ -268,4 +274,15 @@ public class DualSword : Melee
     }
 
     #endregion
+
+    public GameObject attack4CollisionPrefab;
+    public override void Create_Attack_Collision()
+    {
+        Vector3 pos = transform.position;
+        Quaternion quaternion = transform.rotation;
+
+        GameObject obj = Instantiate<GameObject>(attack4CollisionPrefab, pos,quaternion);
+        CollisionAttackHandler handler = obj.GetComponent<CollisionAttackHandler>();
+        handler.InitData(rootObject, this, 0.2f);
+    }
 }

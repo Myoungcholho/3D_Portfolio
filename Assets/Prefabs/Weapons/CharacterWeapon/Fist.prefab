@@ -112,7 +112,7 @@ MonoBehaviour:
   - abilityType: 0
     isObjectPushDisperse: 0
     bCanMove: 0
-    Power: 30
+    Power: 5
     Distance: 2
     StopFrame: 5
     Particle: {fileID: 0}
@@ -142,7 +142,7 @@ MonoBehaviour:
   - abilityType: 0
     isObjectPushDisperse: 0
     bCanMove: 0
-    Power: 5
+    Power: 10
     Distance: 10
     StopFrame: 5
     Particle: {fileID: 0}
