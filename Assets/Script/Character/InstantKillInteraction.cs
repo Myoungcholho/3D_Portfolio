@@ -20,7 +20,7 @@ public class InstantKillInteraction : MonoBehaviour,IInteractable
     #region Iteraction
     public int GetPriority()
     {
-        return 2;
+        return (int)InteractionPriority.InstantKillI;
     }
 
     public void Interact()

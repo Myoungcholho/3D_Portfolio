@@ -34,9 +34,6 @@ public class InteractionComponent : MonoBehaviour
 
         actionMap.FindAction("Interaction").started += context =>
         {
-            //animator.SetTrigger("IsStealAction");
-            //animator.SetTrigger("StealDead");
-
             AddInteractablesToPriorityList();       // 상호작용 가능한 오브젝트들을 리스트에 담고
             ExecuteTopInteraction();                // 가장 우선순위가 높은 오브젝트의 상호작용 기능을 실행
         };
