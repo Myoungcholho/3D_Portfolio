@@ -4,7 +4,7 @@ using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 
 // Enemy 클래스: 적 캐릭터의 피격 처리와 데미지 반응을 구현하는 클래스
-public class Enemy : Character, IDamagable, IDodgeDamageHandler
+public class Enemy : EnemyInformation, IDamagable, IDodgeDamageHandler
 {
     [Header("Animation에 의한 발 오차 offset")]
     [SerializeField]
@@ -118,6 +118,12 @@ public class Enemy : Character, IDamagable, IDodgeDamageHandler
         Collider collider = GetComponent<Collider>();
         collider.enabled = false;
         animator.SetTrigger("Dead");
+
+        //Onattacker.메서드
+
+        // 사망 시 Action 호출
+        if (OnDeath != null)
+            OnDeath.Invoke(monsterType);
 
         // 사망 이벤트 호출
         DeathEvent deathEvent = GetComponent<DeathEvent>();

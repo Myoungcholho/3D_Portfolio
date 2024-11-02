@@ -23,7 +23,7 @@ public class InstantKillInteraction : MonoBehaviour,IInteractable
         return (int)InteractionPriority.InstantKillI;
     }
 
-    public void Interact()
+    public void Interact(GameObject interactor)
     {
         // 1. 기습 당한 상태로 변경 다른 로직은 처리하지 않기 위함.
         state.SetInstantKilledMode();

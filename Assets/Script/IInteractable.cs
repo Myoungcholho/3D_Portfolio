@@ -9,6 +9,6 @@ public enum InteractionPriority
 interface IInteractable
 {
     int GetPriority();      // 상호작용 우선순위를 반환
-    void Interact();        // 상호작용 동작을 정의
+    void Interact(GameObject interactor);        // 상호작용 동작을 정의
 
 }

@@ -6,7 +6,9 @@ using UnityEngine.UI;
 public class PlayerUICanvas : MonoBehaviour
 {
     [SerializeField]
-    private GameObject Object;
+    private string PlayerName = "Player";
+    private GameObject player;
+
     [SerializeField]
     private float fillDownSpeed = 0.5f;     // hp filldown speed
     [SerializeField]
@@ -21,6 +23,7 @@ public class PlayerUICanvas : MonoBehaviour
     private string hpBarName = "PlayerHpBar";
     private Image healthBarImage;
 
+    public TextMeshProUGUI weaponText;
 
     private float prevHp;
     private float curHp;
@@ -29,11 +32,17 @@ public class PlayerUICanvas : MonoBehaviour
     {
         overKillHpBar = transform.FindChildByName(overPanelName).GetComponent<Image>();     // OverBar Image
         healthBarImage = transform.FindChildByName(hpBarName).GetComponent<Image>();        // hpBar
+        player = GameObject.Find(PlayerName);
+        Debug.Assert(player != null);
     }
 
     private void Start()
     {
-        SetObject(Object);
+        WeaponComponent weapon = player.GetComponent<WeaponComponent>();
+        Debug.Assert(weapon != null);
+        weapon.OnWeaponTypeChanged += OnChangeWeapon;
+        
+        SetObject(player);
     }
 
     void Update()
@@ -61,5 +70,14 @@ public class PlayerUICanvas : MonoBehaviour
     {
         curHp = hp;
         healthBarImage.fillAmount = hp;
+    }
+
+    public void OnChangeWeapon(WeaponType prev, WeaponType curr)
+    {
+        string str = curr.ToString();
+        if (weaponText == null)
+            return;
+
+        weaponText.text = str;
     }
 }

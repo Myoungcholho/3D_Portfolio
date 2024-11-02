@@ -135,5 +135,4 @@ public class SoundComponent : MonoBehaviour
 
         audioSource.Play();
     }
-
 }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using static StateComponent;
 
 public enum SkillType
 {
@@ -20,15 +21,23 @@ public class DecalComponent : MonoBehaviour
     private StateComponent state;
     private WorldCursor cursor;
     private GameObject decalObject;
+    private CursorComponent cursorComponent;
 
     private Vector3 position;
     public Vector3 Position { get => position; }
     private Vector3 normal;
     public Vector3 Normal { get => normal; }
 
+
+
     private void Awake()
     {
         state = GetComponent<StateComponent>();
+        cursorComponent = GetComponent<CursorComponent>();
+
+        // 스킬 캐스팅이라면 커서가 보이게,
+        // 캐스팅이 끝나면 커서 사라지게
+        state.OnStateTypeChanged += OnCursor;
     }
 
     private void Start()
@@ -59,10 +68,9 @@ public class DecalComponent : MonoBehaviour
             return;
 
         decalObject.transform.position = position;
-
-
     }
 
+    // 데칼 생성
     public void ActivateDecalForTargeting(SkillType skillType, float distance)
     {
         this.skillType = skillType;
@@ -72,11 +80,13 @@ public class DecalComponent : MonoBehaviour
         decalObject.SetActive(true);
     }
 
+    // 데칼 삭제
     private void CancelDecal()
     {
         skillType = SkillType.None;
         traceDistance = 0;
         SetWorldCursor();
+
         decalObject.SetActive(false);
     }
 
@@ -88,4 +98,21 @@ public class DecalComponent : MonoBehaviour
         cursor.TraceDistance = traceDistance;
         cursor.Mask = layerMask;
     }
+
+    private void OnCursor(StateType prev, StateType curr)
+    {
+        if (curr == StateType.SkillCast)
+        {
+            cursorComponent.ShowCursorForUI();
+            return;
+        }
+
+
+        if(prev == StateType.SkillCast)
+        {
+            cursorComponent.HideCursorForUI();
+            return;
+        }
+    }
+
 }

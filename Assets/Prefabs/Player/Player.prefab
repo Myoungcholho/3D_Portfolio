@@ -593,7 +593,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 509832575160254151}
-  m_LocalRotation: {x: -0.016138876, y: 0.84025234, z: 0.025048628, w: 0.54137605}
+  m_LocalRotation: {x: -0.016138887, y: 0.84025246, z: 0.025048653, w: 0.54137605}
   m_LocalPosition: {x: -1.648, y: 0.892, z: 0.748}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -664,7 +664,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 509832575163701190}
-  m_LocalRotation: {x: 0.006340527, y: -0.96590257, z: 0.023762118, w: 0.2577351}
+  m_LocalRotation: {x: -0.006340515, y: 0.9659026, z: -0.023762092, w: -0.25773484}
   m_LocalPosition: {x: 2.034, y: 2.201, z: 3.54}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -807,7 +807,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 509832575288808833}
-  m_LocalRotation: {x: 0.036106464, y: -0.95225626, z: 0.12436035, w: 0.2764757}
+  m_LocalRotation: {x: -0.036106378, y: 0.9522562, z: -0.12435984, w: -0.2764761}
   m_LocalPosition: {x: 0.676116, y: 1.3354776, z: 1.0662118}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1121,7 +1121,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 509832575706735361}
   m_LocalRotation: {x: 0.34667102, y: -0.08068245, z: 0.029945778, w: 0.9340304}
-  m_LocalPosition: {x: 4.0999994, y: 2.6171935, z: -34.77656}
+  m_LocalPosition: {x: 4.0999994, y: 2.6171935, z: -34.776558}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1858,7 +1858,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 509832576587677624}
-  m_LocalRotation: {x: 0.025073644, y: -0.9616128, z: 0.09396433, w: 0.25659877}
+  m_LocalRotation: {x: -0.025073683, y: 0.96161264, z: -0.09396439, w: -0.25659904}
   m_LocalPosition: {x: 0.9423685, y: 1.3732233, z: 1.6400466}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2143,6 +2143,8 @@ GameObject:
   - component: {fileID: 6231257502952846419}
   - component: {fileID: 6231257502952846418}
   - component: {fileID: 6231257502952846417}
+  - component: {fileID: 919132148787781233}
+  - component: {fileID: 919132148787781234}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -2791,6 +2793,34 @@ MonoBehaviour:
   groundLayers:
     serializedVersion: 2
     m_Bits: 768
+--- !u!114 &919132148787781233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 851782686668256400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 633f8536a3fb8b049b13bf14916da087, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  QuestUIObjectName: QuestCanvas
+  activeQuests: []
+  clearQuests: []
+--- !u!114 &919132148787781234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 851782686668256400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93f7fa7a548570442ad4dafe4630a0b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ComunicationUIName: DialogueCanvas
 --- !u!1 &1212373119528122698
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 // 플레이어 캐릭터 클래스 (Character를 상속받음)
@@ -26,6 +27,12 @@ public class Player : Character, IDamagable
 
     private SoundComponent soundComponent;
 
+    // 무기 빠른 스위칭 UI
+    private WeaponChangeUI weaponChangeUI;
+
+    // 화면 커서 가시성 여부
+    private CursorComponent cursorComponent;
+
     // 초기 설정 및 입력 매핑 처리
     protected override void Awake()
     {
@@ -33,6 +40,14 @@ public class Player : Character, IDamagable
 
         trail = GetComponent<MeshTrail>();
         soundComponent = GetComponent<SoundComponent>();
+        cursorComponent = GetComponent<CursorComponent>();
+        weaponChangeUI = FindObjectOfType<WeaponChangeUI>();
+        if(weaponChangeUI == null )
+        {
+            Debug.Log("WeaponChangeUI is null");
+        }
+        
+
 
         // PlayerInput 설정 및 입력 매핑
         PlayerInput input = GetComponent<PlayerInput>();
@@ -67,7 +82,11 @@ public class Player : Character, IDamagable
         // 공격 액션 입력 설정
         actionMap.FindAction("Action").started += context =>
         {
-            if(state.DodgedMode || state.DodgedAttackMode)
+            // UI 위에서 클릭했는지 확인
+            if (EventSystem.current.IsPointerOverGameObject())
+                return;
+            
+            if (state.DodgedMode || state.DodgedAttackMode)
             {
                 // 회피 공격 처리
                 weapon.DodgedDoAction();
@@ -108,6 +127,20 @@ public class Player : Character, IDamagable
         actionMap.FindAction("Skill02").started += context =>
         {
             weapon.ActivateESkill();
+        };
+
+        // 판넬 키기
+        actionMap.FindAction("FastEquip").started += context =>
+        {
+            weaponChangeUI.ToggleUIPanel(true);
+            cursorComponent.ShowCursorForUI();
+        };
+
+        // 판넬 끄기
+        actionMap.FindAction("FastEquip").canceled += context =>
+        {
+            weaponChangeUI.ToggleUIPanel(false);
+            cursorComponent.HideCursorForUI();
         };
 
         // 스킨 머티리얼 설정

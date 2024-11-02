@@ -16,6 +16,13 @@ public class HealthPointComponent : MonoBehaviour
     private Vector2 hpBarPosition = new Vector2(0, 1.2f);
     [SerializeField]
     private bool hpBarActive;
+    [SerializeField]
+    private string damageCanvasName = "DamageCanvas";
+    [SerializeField]
+    private Vector3 damagePosition = new Vector3(0, 2f, 0);
+    [SerializeField]
+    private bool damageTextActive = true;
+
 
     public Action<float> takeDamage;
     public Action lowHpAction;
@@ -25,13 +32,17 @@ public class HealthPointComponent : MonoBehaviour
     private GameObject canvasObject;
     private Canvas hpCanvas;
     private Image hpBarImage;
+    private GameObject damageCanvasObject;
+    
+
 
     void Start()
     {
         currentHealth = maxHealth;
         // HpBarPrefab을 Resource에서 가져오고 셋팅
-        if(GetComponent<Enemy>() != null && hpBarActive)
+        if(GetComponent<Character>() != null && hpBarActive)
         {
+            // HP
             GameObject prefab = Resources.Load<GameObject>(hpBarCanvasName);
             canvasObject = Instantiate<GameObject>(prefab, transform);
             canvasObject.transform.position += new Vector3(hpBarPosition.x, hpBarPosition.y, 0);
@@ -40,6 +51,9 @@ public class HealthPointComponent : MonoBehaviour
             hpBarImage = canvasObject.transform.FindChildByName(hpBarImageName).GetComponent<Image>();
             Debug.Assert(hpBarImage != null);
         }
+
+        damageCanvasObject = Resources.Load<GameObject>(damageCanvasName);
+        Debug.Assert(damageCanvasObject != null);
     }
 
     private void Update()
@@ -58,10 +72,16 @@ public class HealthPointComponent : MonoBehaviour
         if (damage < 1.0f)
             return;
 
+        if(damageTextActive == true)
+        {
+            GameObject obj = Instantiate<GameObject>(damageCanvasObject, transform);
+            obj.transform.position += damagePosition;
+            DamageTextUI ui = obj.GetComponent<DamageTextUI>();
+            ui.UpdateDamgeText(damage);
+        }
+
         currentHealth += (damage * -1.0f);
         currentHealth = Mathf.Clamp(currentHealth, 0.0f, maxHealth);
-
-        Debug.Log(gameObject + " : " + currentHealth);
 
         if(hpBarImage != null && hpBarActive) 
         {

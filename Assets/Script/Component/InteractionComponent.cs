@@ -124,16 +124,23 @@ public class InteractionComponent : MonoBehaviour
                 brainController.SetDefaultBlend("Cut", 0f);
 
                 //대상의 상호작용 메서드 실행
-                topInteraction.Interact();
+                topInteraction.Interact(gameObject);
             }
 
             if(topInteraction is PotalComponent potal)
             {
                 //대상의 상호작용 메서드 실행
                 SoundManager.Instance.PlaySound(SoundLibrary.Instance.teleport01, SoundLibrary.Instance.mixerBasic, false);
-                topInteraction.Interact();
+                topInteraction.Interact(gameObject);
             }
 
+            // Npc와의 상호작용 실행
+            if(topInteraction is Npc npc)
+            {
+                // Npc와 상호작용 메서드 실행
+                topInteraction.Interact(gameObject);
+            }
+            
         }
         else
         {

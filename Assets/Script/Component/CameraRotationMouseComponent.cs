@@ -23,10 +23,12 @@ public class CameraRotationMouseComponent : MonoBehaviour
     private Vector2 inputLook;              // 마우스 입력 값을 받을 Vector2
     public Quaternion rotation;
     private StateComponent state;
+    private CursorComponent cursor;
 
     private void Awake()
     {
         state = GetComponent<StateComponent>();
+        cursor = GetComponent<CursorComponent>();
 
         PlayerInput input = GetComponent<PlayerInput>();
         InputActionMap actionMap = input.actions.FindActionMap("Player");
@@ -40,10 +42,6 @@ public class CameraRotationMouseComponent : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // 마우스 게임 종속
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
-
         followTargetTransform = transform.FindChildByName(followTargetName);
     }
 
@@ -63,6 +61,10 @@ public class CameraRotationMouseComponent : MonoBehaviour
 
         if (!IsMouseRotation)
             return;
+
+        if (0 < cursor.UIWindowsIpen)
+            return;
+
         // 축 기준 회전
         // b축을 기준으로 a로의 회전 값을 반환함.
         rotation *= Quaternion.AngleAxis(inputLook.x * mouseSensitivity.x, Vector3.up);

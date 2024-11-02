@@ -37,7 +37,7 @@ public class PotalComponent : MonoBehaviour , IInteractable
     }
 
     #region Interaction Interface
-    public void Interact()
+    public void Interact(GameObject interactor)
     {
         LoadingSceneController.LoadScene(loadSceneName, spawnObjectName);
     }
