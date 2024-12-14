@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+// 곧 도태될 스크립트
 public class SkillUI : MonoBehaviour
 {
     public enum SkillType

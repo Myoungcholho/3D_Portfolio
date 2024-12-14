@@ -175,5 +175,6 @@ public static class CameraHelpers
 
             return false;
         }
+        
     }
 }

@@ -156,6 +156,8 @@ MonoBehaviour:
     ImpulseSettings: {fileID: 0}
   qSkillParticlePrefab: {fileID: 1210069404974878, guid: 897c840d84ba9d341894e561f0e5a4c6, type: 3}
   eSkillParticlePrefab: {fileID: 1893033738566276, guid: 3e04efdf8ee665d48962b33b06e8e3d3, type: 3}
+  ThreeSkillPrefab: {fileID: 0}
+  FourSkillPrefab: {fileID: 0}
   QSkillData:
     abilityType: 1
     isObjectPushDisperse: 1
@@ -167,9 +169,9 @@ MonoBehaviour:
     ParticlePositionOffset: {x: 0, y: 0, z: 0}
     ParticleScaleOffset: {x: 1, y: 1, z: 1}
     HitImpactIndex: 3
-    HitParticle: {fileID: 100672, guid: 7dc0b63f67faaf9479803bcfdff7f71e, type: 3}
+    HitParticle: {fileID: 5024009746357069194, guid: ec3f674830402cc45bce805cf6493db7, type: 3}
     HitParticlePositionOffset: {x: 0, y: 0, z: 0}
-    HitParticleScaleOffset: {x: 1, y: 1, z: 1}
+    HitParticleScaleOffset: {x: 0.2, y: 0.2, z: 0.2}
     ImpulseDirection: {x: 1, y: 1, z: 1}
     ImpulseSettings: {fileID: 11400000, guid: a3b8629d78d051d41ad2e09c3b8be726, type: 2}
   QSkillDataCoolTime:
@@ -190,9 +192,9 @@ MonoBehaviour:
     ParticlePositionOffset: {x: 0, y: 0, z: 0}
     ParticleScaleOffset: {x: 1, y: 1, z: 1}
     HitImpactIndex: 3
-    HitParticle: {fileID: 100672, guid: 7dc0b63f67faaf9479803bcfdff7f71e, type: 3}
+    HitParticle: {fileID: 5024009746357069194, guid: ec3f674830402cc45bce805cf6493db7, type: 3}
     HitParticlePositionOffset: {x: 0, y: 0, z: 0}
-    HitParticleScaleOffset: {x: 1, y: 1, z: 1}
+    HitParticleScaleOffset: {x: 0.2, y: 0.2, z: 0.2}
     ImpulseDirection: {x: 0.5, y: 0.5, z: 0}
     ImpulseSettings: {fileID: 11400000, guid: a3b8629d78d051d41ad2e09c3b8be726, type: 2}
   ESkillDataCoolTime:
@@ -202,6 +204,52 @@ MonoBehaviour:
     ColliderDuration: 0.5
     MultiHitInterval: 0.3
     MultiHitCount: 3
+  ThreeSkillData:
+    abilityType: 0
+    isObjectPushDisperse: 0
+    bCanMove: 0
+    Power: 0
+    Distance: 0
+    StopFrame: 0
+    Particle: {fileID: 0}
+    ParticlePositionOffset: {x: 0, y: 0, z: 0}
+    ParticleScaleOffset: {x: 1, y: 1, z: 1}
+    HitImpactIndex: 0
+    HitParticle: {fileID: 0}
+    HitParticlePositionOffset: {x: 0, y: 0, z: 0}
+    HitParticleScaleOffset: {x: 1, y: 1, z: 1}
+    ImpulseDirection: {x: 0, y: 0, z: 0}
+    ImpulseSettings: {fileID: 0}
+  ThreeSkillDataCoolTime:
+    CooldownTime: 0
+    RemainingCooldownTime: 0
+    ColliderDelay: 0
+    ColliderDuration: 0
+    MultiHitInterval: 0
+    MultiHitCount: 0
+  FourSkillData:
+    abilityType: 0
+    isObjectPushDisperse: 0
+    bCanMove: 0
+    Power: 0
+    Distance: 0
+    StopFrame: 0
+    Particle: {fileID: 0}
+    ParticlePositionOffset: {x: 0, y: 0, z: 0}
+    ParticleScaleOffset: {x: 1, y: 1, z: 1}
+    HitImpactIndex: 0
+    HitParticle: {fileID: 0}
+    HitParticlePositionOffset: {x: 0, y: 0, z: 0}
+    HitParticleScaleOffset: {x: 1, y: 1, z: 1}
+    ImpulseDirection: {x: 0, y: 0, z: 0}
+    ImpulseSettings: {fileID: 0}
+  FourSkillDataCoolTime:
+    CooldownTime: 0
+    RemainingCooldownTime: 0
+    ColliderDelay: 0
+    ColliderDuration: 0
+    MultiHitInterval: 0
+    MultiHitCount: 0
 --- !u!114 &3169253760119101277
 MonoBehaviour:
   m_ObjectHideFlags: 0

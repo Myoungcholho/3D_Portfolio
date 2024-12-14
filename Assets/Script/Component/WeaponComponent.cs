@@ -29,6 +29,17 @@ public class WeaponComponent : MonoBehaviour
     public event Action OnEndDoAction;
     public event Action<bool> OnDodgeAttack;
 
+    // 스킬 슬롯
+    private SkillSlot[] slots;
+    [SerializeField]
+    private string[] SlotName = { "QSlot", "ESlot" };
+
+    // Slot
+    protected string Q_SlotName = "QSlot";
+    protected string E_SlotName = "ESlot";
+    protected SkillSlot QSkillSlot;
+    protected SkillSlot ESkillSlot;
+
     // 각 무기 타입에 따른 모드 체크
     public bool UnarmedMode { get => type == WeaponType.Unarmed; }
     public bool FistMode { get => type == WeaponType.Fist; }
@@ -46,6 +57,15 @@ public class WeaponComponent : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         state = GetComponent<StateComponent>();
+
+        slots = new SkillSlot[SlotName.Length];
+
+        // 슬롯 등록
+        for(int i=0; i<SlotName.Length; i++) 
+        {
+            GameObject obj = GameObject.Find(SlotName[i]);
+            slots[i] = obj.GetComponent<SkillSlot>();
+        }
     }
 
     private void Start()
@@ -246,8 +266,10 @@ public class WeaponComponent : MonoBehaviour
             return;
         if (!(state.IdleMode || state.SkillCastMode))
             return;
-        
-        weaponTable[type].ActivateQSkill();
+        if (slots[0].originalSkillIcon[(int)Type] == null)
+            return;
+
+        SlotSaveSkill(slots[0].originalSkillIcon[(int)Type].skillType);
     }
     // E 스킬 액션 처리 (E 입력 시 호출)
     public void ActivateESkill()
@@ -256,8 +278,30 @@ public class WeaponComponent : MonoBehaviour
             return;
         if (!(state.IdleMode || state.SkillCastMode))
             return;
+        if (slots[1].originalSkillIcon[(int)Type] == null)
+            return;
 
-        weaponTable[type].ActivateESkill();
+        SlotSaveSkill(slots[1].originalSkillIcon[(int)Type].skillType);
+    }
+
+    // 슬롯에 맞는 스킬 호출
+    private void SlotSaveSkill(SkillType2 skill)
+    {
+        switch (skill)
+        {
+            case SkillType2.one:
+                weaponTable[type].Activate01Skill();
+                break;
+            case SkillType2.two:
+                weaponTable[type].Activate02Skill();
+                break;
+            case SkillType2.three:
+                weaponTable[type].Activate03Skill();
+                break;
+            case SkillType2.four:
+                weaponTable[type].Activate04Skill();
+                break;
+        }
     }
 
     // 스킬 액션 종료 (애니메이션 이벤트로 호출됨)
@@ -268,15 +312,21 @@ public class WeaponComponent : MonoBehaviour
     }
 
     // Q스킬 파티클 효과 재생 (애니메이션 이벤트로 호출됨)
-    private void Play_QSkillParticles()
+    private void Play_01SkillParticles()
     {
-        weaponTable[type].Play_QSkillParticles();
+        weaponTable[type].Play_01SkillParticles();
     }
 
     // E스킬 파티클 효과 재생 (애니메이션 이벤트로 호출됨)
-    private void Play_ESkillParticles()
+    private void Play_02SkillParticles()
     {
-        weaponTable[type].Play_ESkillParticles();
+        weaponTable[type].Play_02SkillParticles();
+    }
+
+    // 3번째 스킬 파티클 효과 재생(애니메이션 이벤트로 호출됨)
+    private void Play_03Skill()
+    {
+        weaponTable[type].Play_03Skill();
     }
 
     #region Skill Camera Cinematics

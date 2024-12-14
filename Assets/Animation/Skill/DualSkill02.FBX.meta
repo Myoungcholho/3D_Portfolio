@@ -638,31 +638,17 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.21818182
-        functionName: Play_ESkillParticles
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 26f4075ce74b0904e8c381d6f4941341, type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.6506291
-        functionName: Play_ESkillParticles
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 26f4075ce74b0904e8c381d6f4941341, type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.9260355
-        functionName: End_SkillAction
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 26f4075ce74b0904e8c381d6f4941341, type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.21509434
+      - time: 0.21702112
         functionName: CreateAfterImage
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: be61294bb37d33240a50a029f2283982, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.22203538
+        functionName: Play_02SkillParticles
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 26f4075ce74b0904e8c381d6f4941341, type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
@@ -694,10 +680,24 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
+      - time: 0.6506291
+        functionName: Play_02SkillParticles
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 26f4075ce74b0904e8c381d6f4941341, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       - time: 0.9056604
         functionName: RemoveAfterImages
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: be61294bb37d33240a50a029f2283982, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.9260355
+        functionName: End_SkillAction
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 26f4075ce74b0904e8c381d6f4941341, type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0

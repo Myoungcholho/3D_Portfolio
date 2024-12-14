@@ -33,8 +33,6 @@ public class CollisionAttackHandler : MonoBehaviour
         if (attacker == null)
             return;
 
-
-
         IDamagable damage = other.gameObject.GetComponent<IDamagable>();
         if (damage == null)
             return;

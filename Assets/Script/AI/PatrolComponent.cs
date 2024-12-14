@@ -133,8 +133,8 @@ public class PatrolComponent : MonoBehaviour
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {
-        if (Application.isPlaying == false)
-            return;
+        /*if (Application.isPlaying == false)
+            return;*/
 
         Vector3 from = transform.position + new Vector3(0.0f, 0.1f, 0.0f);
         Vector3 to = goalPosition + new Vector3(0.0f, 0.1f, 0.0f);

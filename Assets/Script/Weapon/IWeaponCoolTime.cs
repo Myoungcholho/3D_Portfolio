@@ -5,4 +5,8 @@ public interface IWeaponCoolTime
 
     float GetESkillCooldown();
     float GetESkillCoolRemaining();
+
+    // ¸®´º¾ó
+    float GetSkillCooldown(SkillType2 skillType);
+    float GetSkillCoolRemaining(SkillType2 skillType);
 }

@@ -16,8 +16,8 @@ public class Melee : Weapon
         set { index = value; }
     }
     protected Collider[] colliders;             // 무기에 적용된 Collider 배열
-    private List<string> hittedList;            // 히트한 객체의 해시 리스트 (중복 히트 방지)
-    private GameObject attacker;                // 공격자 오브젝트
+    protected List<string> hittedList;            // 히트한 객체의 해시 리스트 (중복 히트 방지)
+    protected GameObject attacker;                // 공격자 오브젝트
 
     // 공격자 설정
     public void Attacker(GameObject attacker)
@@ -183,51 +183,55 @@ public class Melee : Weapon
         ApplyDamage(other);
     }
 
-    // 일반/반격 공격 데미지 처리 공통 메서드
-    private void ApplyDamage<T>(Collider other, Action<GameObject, Weapon, Vector3, DoActionData> damageAction) where T : class
-    {
-        T damageHandler = other.gameObject.GetComponent<T>();
 
-        if (damageHandler == null)
-            return;
-
-        Vector3 hitPoint = Vector3.zero;
-
-        // 공격자와 일치하는 콜라이더로 충돌 지점 계산
-        Collider enabledCollider = null;
-        foreach (Collider collider in colliders)
+        // 일반/반격 공격 데미지 처리 공통 메서드
+        private void ApplyDamage<T>(Collider other, Action<GameObject, Weapon, Vector3, DoActionData> damageAction) where T : class
         {
-            if (collider.name.Equals(attacker.name) == true)
+            T damageHandler = other.gameObject.GetComponent<T>();
+
+            if (damageHandler == null)
+                return;
+
+            Vector3 hitPoint = Vector3.zero;
+
+            // 공격자와 일치하는 콜라이더로 충돌 지점 계산
+            Collider enabledCollider = null;
+            foreach (Collider collider in colliders)
             {
-                enabledCollider = collider;
-                break;
+                if (collider.name.Equals(attacker.name) == true)
+                {
+                    enabledCollider = collider;
+                    break;
+                }
             }
+
+            // 내 검의 위치와 적의 위치의 가장 가까운 지점 반환
+            // 
+            hitPoint = enabledCollider.ClosestPoint(other.transform.position);
+            // 
+            hitPoint = other.transform.InverseTransformPoint(hitPoint);
+
+            // 호출할 메서드를 파라미터로 받아 처리
+            damageAction(rootObject, this, hitPoint, doActionDatas[index]);
         }
 
-        hitPoint = enabledCollider.ClosestPoint(other.transform.position);
-        hitPoint = other.transform.InverseTransformPoint(hitPoint);
-
-        // 호출할 메서드를 파라미터로 받아 처리
-        damageAction(rootObject, this, hitPoint, doActionDatas[index]);
-    }
-
-    // 기존의 일반 공격 데미지 처리
-    private void ApplyDamage(Collider other)
-    {
-        ApplyDamage<IDamagable>(other, (rootObj, weapon, hitPoint, data) =>
+        // 기존의 일반 공격 데미지 처리
+        private void ApplyDamage(Collider other)
         {
-            var damage = other.gameObject.GetComponent<IDamagable>();
-            damage?.OnDamage(rootObj, weapon, hitPoint, data);
-        });
-    }
+            ApplyDamage<IDamagable>(other, (rootObj, weapon, hitPoint, data) =>
+            {
+                var damage = other.gameObject.GetComponent<IDamagable>();
+                damage?.OnDamage(rootObj, weapon, hitPoint, data);
+            });
+        }
 
-    // 기존의 반격 공격 데미지 처리
-    private void ApplyDodgeCounterDamage(Collider other)
-    {
-        ApplyDamage<IDodgeDamageHandler>(other, (rootObj, weapon, hitPoint, data) =>
+        // 기존의 반격 공격 데미지 처리
+        private void ApplyDodgeCounterDamage(Collider other)
         {
-            var damage = other.gameObject.GetComponent<IDodgeDamageHandler>();
-            damage?.OnDodgeDamage(rootObj, weapon, hitPoint, data);
-        });
-    }
+            ApplyDamage<IDodgeDamageHandler>(other, (rootObj, weapon, hitPoint, data) =>
+            {
+                var damage = other.gameObject.GetComponent<IDodgeDamageHandler>();
+                damage?.OnDodgeDamage(rootObj, weapon, hitPoint, data);
+            });
+        }
 }

@@ -619,9 +619,9 @@ public class PlayerMovingComponent : MonoBehaviour
         Vector3 rayDirection = transform.forward.normalized * forwardMoveDistance;
 
         // Ray를 Gizmos로 그리기
-        Gizmos.DrawRay(rayStart, rayDirection);
+        //Gizmos.DrawRay(rayStart, rayDirection);
 
         // Ray의 끝점을 표시하기 위해 구를 그림
-        Gizmos.DrawSphere(rayStart + rayDirection, 0.1f);
+        //Gizmos.DrawSphere(rayStart + rayDirection, 0.1f);
     }
 }

@@ -179,7 +179,7 @@ public class FireBall : Weapon
     // 데칼 용 위치 저장 변수
     private Vector3 skill01Position;
     private Vector3 skill02Position;
-    public override void ActivateQSkill()
+    public override void Activate01Skill()
     {
         // 쿨타임 판단
         if (QSkillDataCoolTime.RemainingCooldownTime > 0)
@@ -197,10 +197,10 @@ public class FireBall : Weapon
         skill01Position = decalComponent.Position;
 
         QSkillDataCoolTime.RemainingCooldownTime = QSkillDataCoolTime.CooldownTime;
-        base.ActivateQSkill();
+        base.Activate01Skill();
     }
 
-    public override void ActivateESkill()
+    public override void Activate02Skill()
     {
         // 쿨타임 처리
         if (ESkillDataCoolTime.RemainingCooldownTime > 0)
@@ -217,9 +217,9 @@ public class FireBall : Weapon
         skill02Position = decalComponent.Position;
 
         ESkillDataCoolTime.RemainingCooldownTime = ESkillDataCoolTime.CooldownTime;
-        base.ActivateESkill();
+        base.Activate02Skill();
     }
-    public override void Play_QSkillParticles()
+    public override void Play_01SkillParticles()
     {
         if (qSkillParticlePrefab == null)
             return;
@@ -237,7 +237,7 @@ public class FireBall : Weapon
         // 리스트 data초마다 Clear , 다단히트용
         StartCoroutine(ClearHitListRoutine(qSkillHitList, QSkillDataCoolTime.MultiHitInterval));
     }
-    public override void Play_ESkillParticles()
+    public override void Play_02SkillParticles()
     {
         if (eSkillParticlePrefab == null)
             return;

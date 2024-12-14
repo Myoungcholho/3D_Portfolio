@@ -1,6 +1,8 @@
 using Cinemachine;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
+using static DualSword;
 
 public enum AbilityType
 {
@@ -48,6 +50,13 @@ public class DoActionSkillData
     public int MultiHitCount;                   // 다단히트 횟수
 }
 
+[Serializable]
+public class HandActionData
+{
+    public PartType partType;                 // 왼손/오른손 구분
+    public List<DoActionData> actionData;     // 해당 손의 액션 데이터
+}
+
 // Weapon 추상 클래스: 무기와 관련된 기본 기능을 정의
 public abstract class Weapon : MonoBehaviour , IWeaponCoolTime
 {
@@ -58,6 +67,13 @@ public abstract class Weapon : MonoBehaviour , IWeaponCoolTime
     // 공격 데이터 배열 (콤보)
     [SerializeField]
     protected DoActionData[] doActionDatas;
+
+    // 공격 데이터 배열 (콤보, 양손)
+    [SerializeField]
+    protected bool IsBothHandAction = false;
+    [SerializeField]
+    protected List<HandActionData> handActionDataList;
+    protected Dictionary<PartType, List<DoActionData>> handActionData;
 
     // 무기의 장착 여부
     protected bool bEquipped;                       
@@ -83,23 +99,41 @@ public abstract class Weapon : MonoBehaviour , IWeaponCoolTime
     protected GameObject qSkillParticlePrefab;
     [SerializeField]
     protected GameObject eSkillParticlePrefab;
+    [SerializeField]
+    protected GameObject ThreeSkillPrefab;
+    [SerializeField]
+    protected GameObject FourSkillPrefab;
 
     protected CinemachineVirtualCamera skill01Camera;
     protected CinemachineVirtualCamera skill02Camera;
 
+    // Skill One
     [SerializeField]
     protected DoActionData QSkillData;
     [SerializeField]
     protected DoActionSkillData QSkillDataCoolTime;
 
+    // Skill Two
     [SerializeField]
     protected DoActionData ESkillData;
     [SerializeField]
     protected DoActionSkillData ESkillDataCoolTime;
 
+    // Skill Three
+    [SerializeField]
+    protected DoActionData ThreeSkillData;
+    [SerializeField]
+    protected DoActionSkillData ThreeSkillDataCoolTime;
+
+    // Skill Four
+    [SerializeField]
+    protected DoActionData FourSkillData;
+    [SerializeField]
+    protected DoActionSkillData FourSkillDataCoolTime;
+
+
     protected CinemachineBrain brain;
     protected CinemachineImpulseSource impulse;
-
 
     protected virtual void Reset()
     {
@@ -225,8 +259,10 @@ public abstract class Weapon : MonoBehaviour , IWeaponCoolTime
     #endregion
 
     #region Skill Actions
-    // Q스킬 활성화
-    public virtual void ActivateQSkill()
+
+
+    // one 스킬
+    public virtual void Activate01Skill()
     {
         animator.SetBool("IsSkillAction", true);        // 스킬 애니메이션 상태 설정
         animator.SetInteger("SkillType", 0);            // 스킬 타입 Q 설정
@@ -235,12 +271,32 @@ public abstract class Weapon : MonoBehaviour , IWeaponCoolTime
         state.SetSuperArmorMode();                      // 슈퍼아머 상태로 전환
     }
 
-    // E스킬 활성화
-    public virtual void ActivateESkill()
+    // two 스킬
+    public virtual void Activate02Skill()
     {
         animator.SetBool("IsSkillAction", true);        // 스킬 애니메이션 상태 설정
         animator.SetInteger("SkillType", 1);            // 스킬 타입 E 설정
         
+        state.SetUsingSkillMode();                      // 스킬 사용 상태로 전환
+        state.SetSuperArmorMode();                      // 슈퍼아머 상태로 전환
+    }
+
+    // three 스킬
+    public virtual void Activate03Skill()
+    {
+        animator.SetBool("IsSkillAction", true);        // 스킬 애니메이션 상태 설정
+        animator.SetInteger("SkillType", 2);            // 스킬 타입 E 설정
+
+        state.SetUsingSkillMode();                      // 스킬 사용 상태로 전환
+        state.SetSuperArmorMode();                      // 슈퍼아머 상태로 전환
+    }
+
+    // four 스킬
+    public virtual void Activate04Skill()
+    {
+        animator.SetBool("IsSkillAction", true);        // 스킬 애니메이션 상태 설정
+        animator.SetInteger("SkillType", 3);            // 스킬 타입 E 설정
+
         state.SetUsingSkillMode();                      // 스킬 사용 상태로 전환
         state.SetSuperArmorMode();                      // 슈퍼아머 상태로 전환
     }
@@ -252,13 +308,17 @@ public abstract class Weapon : MonoBehaviour , IWeaponCoolTime
         state.SetNormalMode();                          // 일반 피격 상태로 전환
     }
 
-    public virtual void Play_QSkillParticles()
+    public virtual void Play_01SkillParticles()
     {
 
     }
-    public virtual void Play_ESkillParticles()
+    public virtual void Play_02SkillParticles()
     {
 
+    }
+    public virtual void Play_03Skill()
+    {
+        /*3번째 스킬 구현*/
     }
     public virtual void Begin_Skill01VCam()
     {
@@ -323,6 +383,49 @@ public abstract class Weapon : MonoBehaviour , IWeaponCoolTime
     {
         return ESkillDataCoolTime.RemainingCooldownTime;
     }
+
+    public float GetSkillCooldown(SkillType2 skillType)
+    {
+        float coolTime = 0f;
+        switch(skillType)
+        {
+            case SkillType2.one:
+                coolTime = QSkillDataCoolTime.CooldownTime;
+                break;
+            case SkillType2.two:
+                coolTime = ESkillDataCoolTime.CooldownTime;
+                break;
+            case SkillType2.three:
+                coolTime = ThreeSkillDataCoolTime.CooldownTime;
+                break;
+            case SkillType2.four:
+                coolTime = FourSkillDataCoolTime.CooldownTime;
+                break;
+        }
+
+        return coolTime;
+    }
+    public float GetSkillCoolRemaining(SkillType2 skillType)
+    {
+        float coolTime = 0f;
+        switch (skillType)
+        {
+            case SkillType2.one:
+                coolTime = QSkillDataCoolTime.RemainingCooldownTime;
+                break;
+            case SkillType2.two:
+                coolTime = ESkillDataCoolTime.RemainingCooldownTime;
+                break;
+            case SkillType2.three:
+                coolTime = ThreeSkillDataCoolTime.RemainingCooldownTime;
+                break;
+            case SkillType2.four:
+                coolTime = FourSkillDataCoolTime.RemainingCooldownTime;
+                break;
+        }
+
+        return coolTime;
+    }
     #endregion
 
     // 스킬 사용 시 카메라 임펄스 효과 재생
@@ -379,5 +482,25 @@ public abstract class Weapon : MonoBehaviour , IWeaponCoolTime
     public virtual void Create_Attack_Collision()
     {
         // 상속받은 클래스에서 구체화
+    }
+
+    private int GetSkillTypeToInt(SkillType2 skillType)
+    {
+        int idx = -1;
+        switch(skillType)
+        {
+            case SkillType2.None: idx = -1;
+                break;
+            case SkillType2.one: idx = 0;
+                break;
+            case SkillType2.two: idx = 1;
+                break;
+            case SkillType2.three: idx = 2;
+                break;
+            case SkillType2.four: idx = 3;
+                break;
+        }
+
+        return idx;
     }
 }

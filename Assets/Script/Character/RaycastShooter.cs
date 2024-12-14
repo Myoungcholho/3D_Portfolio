@@ -71,10 +71,10 @@ public class RaycastShooter : MonoBehaviour
         Gizmos.color = Color.magenta;
 
         // 상하좌우로 Ray 그리기
-        Gizmos.DrawRay(transform.position + rayOffset, transform.forward * rayDistance);  // 앞
+        //Gizmos.DrawRay(transform.position + rayOffset, transform.forward * rayDistance);  // 앞
 
         // 구 형태의 Ray 그리기
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position + sphereRayOffset, sphereRadius);
+        //Gizmos.DrawWireSphere(transform.position + sphereRayOffset, sphereRadius);
     }
 }

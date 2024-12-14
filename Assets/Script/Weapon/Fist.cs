@@ -99,27 +99,27 @@ public class Fist : Melee
     #region Skill
 
     // Q 스킬 사용 (쿨타임 적용)
-    public override void ActivateQSkill()
+    public override void Activate01Skill()
     {
         if (QSkillDataCoolTime.RemainingCooldownTime > 0)
             return;
 
         QSkillDataCoolTime.RemainingCooldownTime = QSkillDataCoolTime.CooldownTime;
-        base.ActivateQSkill();
+        base.Activate01Skill();
     }
 
     // E 스킬 사용 (쿨타임 적용)
-    public override void ActivateESkill()
+    public override void Activate02Skill()
     {
         if (ESkillDataCoolTime.RemainingCooldownTime > 0)
             return;
 
         ESkillDataCoolTime.RemainingCooldownTime = ESkillDataCoolTime.CooldownTime;
-        base.ActivateESkill();
+        base.Activate02Skill();
     }
 
     // Q 스킬 파티클 생성 및 카메라 흔들림 적용
-    public override void Play_QSkillParticles()
+    public override void Play_01SkillParticles()
     {
         if (qSkillParticlePrefab == null)
             return;
@@ -157,7 +157,7 @@ public class Fist : Melee
     }
 
     // E 스킬 파티클 생성 및 카메라 흔들림 적용
-    public override void Play_ESkillParticles()
+    public override void Play_02SkillParticles()
     {
         if (eSkillParticlePrefab == null)
             return;

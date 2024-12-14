@@ -226,7 +226,8 @@ public abstract class AIController : MonoBehaviour
     // 데미지 모드 설정
     public void SetDamageMode()
     {
-        if (EquipMode && !AnimatorHelper.DoesStateExistInLayer(animator, "Unarmed_None", 1))
+        //if (EquipMode && !AnimatorHelper.DoesStateExistInLayer(animator, "Unarmed_None", 1))
+        if (EquipMode)
         {
             animator.Play("Unarmed_None", 1);
             if (!weapon.IsEquippingMode())

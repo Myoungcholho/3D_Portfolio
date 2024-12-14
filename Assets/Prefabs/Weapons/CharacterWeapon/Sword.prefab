@@ -208,6 +208,8 @@ MonoBehaviour:
     ImpulseSettings: {fileID: 11400000, guid: a3b8629d78d051d41ad2e09c3b8be726, type: 2}
   qSkillParticlePrefab: {fileID: 1644958980890870, guid: 9311cf8f1548b054284a407d8824027a, type: 3}
   eSkillParticlePrefab: {fileID: 1996079926692674, guid: 07a63921b5e0a8f43ba19f9d79f92952, type: 3}
+  ThreeSkillPrefab: {fileID: 4930881276032713983, guid: b27b83d57d959ed4b8578b97bcc6a52f, type: 3}
+  FourSkillPrefab: {fileID: 0}
   QSkillData:
     abilityType: 0
     isObjectPushDisperse: 0
@@ -219,9 +221,9 @@ MonoBehaviour:
     ParticlePositionOffset: {x: 0, y: 0, z: 0}
     ParticleScaleOffset: {x: 1, y: 1, z: 1}
     HitImpactIndex: 0
-    HitParticle: {fileID: 123640, guid: 9242b15a276bc5a4babd09239e5fa709, type: 3}
+    HitParticle: {fileID: 5024009746357069194, guid: ec3f674830402cc45bce805cf6493db7, type: 3}
     HitParticlePositionOffset: {x: 0, y: 0.9, z: 0}
-    HitParticleScaleOffset: {x: 1, y: 1, z: 1}
+    HitParticleScaleOffset: {x: 0.5, y: 0.5, z: 0.5}
     ImpulseDirection: {x: 0, y: 0, z: 0}
     ImpulseSettings: {fileID: 0}
   QSkillDataCoolTime:
@@ -254,9 +256,54 @@ MonoBehaviour:
     ColliderDuration: 0.6
     MultiHitInterval: 0.2
     MultiHitCount: 3
+  ThreeSkillData:
+    abilityType: 0
+    isObjectPushDisperse: 0
+    bCanMove: 0
+    Power: 30
+    Distance: 0
+    StopFrame: 30
+    Particle: {fileID: 0}
+    ParticlePositionOffset: {x: 0, y: 0, z: 0}
+    ParticleScaleOffset: {x: 1, y: 1, z: 1}
+    HitImpactIndex: 0
+    HitParticle: {fileID: 5024009746357069194, guid: ec3f674830402cc45bce805cf6493db7, type: 3}
+    HitParticlePositionOffset: {x: 0, y: 0.9, z: 0}
+    HitParticleScaleOffset: {x: 0.5, y: 0.5, z: 0.5}
+    ImpulseDirection: {x: 0, y: 0, z: 0}
+    ImpulseSettings: {fileID: 0}
+  ThreeSkillDataCoolTime:
+    CooldownTime: 5
+    RemainingCooldownTime: 0
+    ColliderDelay: 0
+    ColliderDuration: 0.1
+    MultiHitInterval: 0.1
+    MultiHitCount: 1
+  FourSkillData:
+    abilityType: 0
+    isObjectPushDisperse: 0
+    bCanMove: 0
+    Power: 0
+    Distance: 0
+    StopFrame: 0
+    Particle: {fileID: 0}
+    ParticlePositionOffset: {x: 0, y: 0, z: 0}
+    ParticleScaleOffset: {x: 1, y: 1, z: 1}
+    HitImpactIndex: 0
+    HitParticle: {fileID: 0}
+    HitParticlePositionOffset: {x: 0, y: 0, z: 0}
+    HitParticleScaleOffset: {x: 1, y: 1, z: 1}
+    ImpulseDirection: {x: 0, y: 0, z: 0}
+    ImpulseSettings: {fileID: 0}
+  FourSkillDataCoolTime:
+    CooldownTime: 0
+    RemainingCooldownTime: 0
+    ColliderDelay: 0
+    ColliderDuration: 0
+    MultiHitInterval: 0
+    MultiHitCount: 0
   holsterName: Holster_Sword
   handName: Hand_Sword
-  slashParicle: {fileID: 6445826192643391251, guid: 9b6701af468904645b8ef67e0e326bb5, type: 3}
   skill01VCamName: VCamSkill01
   skill02VCamName: VCamSkill02
 --- !u!114 &394529266694238505

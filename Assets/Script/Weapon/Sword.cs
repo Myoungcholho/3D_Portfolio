@@ -88,6 +88,14 @@ public class Sword : Melee
                 ESkillDataCoolTime.RemainingCooldownTime = 0;  // 쿨타임이 0보다 작아지지 않도록 제한
             }
         }
+
+        // 3번째 스킬 쿨타임 감소
+        if(ThreeSkillDataCoolTime.RemainingCooldownTime >0)
+        {
+            ThreeSkillDataCoolTime.RemainingCooldownTime -= Time.deltaTime;
+            if (ThreeSkillDataCoolTime.RemainingCooldownTime < 0)
+                ThreeSkillDataCoolTime.RemainingCooldownTime = 0;
+        }
     }
 
     #region Weapon Equip/Unequip
@@ -118,8 +126,8 @@ public class Sword : Melee
     #endregion
 
     #region Skill Implementation
-    // 사용자 Q키 입력 시 호출
-    public override void ActivateQSkill()
+    // One Skill
+    public override void Activate01Skill()
     {
         // 쿨타임 체크
         if (QSkillDataCoolTime.RemainingCooldownTime > 0)
@@ -127,10 +135,10 @@ public class Sword : Melee
 
         // 쿨타임 판단
         QSkillDataCoolTime.RemainingCooldownTime = QSkillDataCoolTime.CooldownTime;
-        base.ActivateQSkill();
+        base.Activate01Skill();
     }
-    // 사용자 E키 입력 시 호출
-    public override void ActivateESkill()
+    // Two Skill
+    public override void Activate02Skill()
     {
         // 쿨타임 체크
         if (ESkillDataCoolTime.RemainingCooldownTime > 0)
@@ -138,11 +146,24 @@ public class Sword : Melee
 
         // 쿨타임 판단
         ESkillDataCoolTime.RemainingCooldownTime = ESkillDataCoolTime.CooldownTime;
-        base.ActivateESkill();
+        base.Activate02Skill();
+    }
+    // Three Skill
+    public override void Activate03Skill()
+    {
+        // 쿨타임 체크
+        if (ThreeSkillDataCoolTime.RemainingCooldownTime > 0)
+            return;
+
+        // 쿨타임 판단
+       ThreeSkillDataCoolTime.RemainingCooldownTime = ThreeSkillDataCoolTime.CooldownTime;
+
+        base.Activate03Skill();
     }
 
+
     // Q 스킬 파티클 재생
-    public override void Play_QSkillParticles()
+    public override void Play_01SkillParticles()
     {
         if (qSkillParticlePrefab == null)
             return;
@@ -161,7 +182,7 @@ public class Sword : Melee
     }
 
     // E 스킬 파티클 재생
-    public override void Play_ESkillParticles()
+    public override void Play_02SkillParticles()
     {
         if (eSkillParticlePrefab == null)
             return;
@@ -181,6 +202,58 @@ public class Sword : Melee
         // 리스트 data초마다 Clear , 다단히트용
         StartCoroutine(ClearHitListRoutine(ESkillDataCoolTime.MultiHitInterval));
 
+    }
+
+    // 3번째 스킬 파티클 재생
+    public override void Play_03Skill()
+    {
+        if (ThreeSkillPrefab == null)
+            return;
+
+        // 찌르기
+        Vector3 pos = rootObject.transform.position;
+        pos += new Vector3(0, 0.9f, 0f);
+
+        Quaternion quaternion = rootObject.transform.rotation;
+
+        GameObject obj = Instantiate<GameObject>(ThreeSkillPrefab, pos, quaternion);
+        TriggerInvoker weaponTrigger = obj.GetComponent<TriggerInvoker>();
+        weaponTrigger.Initialize(ThreeSkillDataCoolTime.ColliderDelay, ThreeSkillDataCoolTime.ColliderDuration);
+        weaponTrigger.OnTriggerHit += OnTriggerSkill;
+
+        StartCoroutine(ClearHitListRoutine(SkillHitList, ThreeSkillDataCoolTime.MultiHitInterval));  // 다단히트 처리
+    }
+
+    private List<GameObject> SkillHitList = new List<GameObject>();
+    private void OnTriggerSkill(Collider t, Collider other, Vector3 hitPos)
+    {
+        IDamagable damage = other.GetComponent<IDamagable>();
+        if (damage == null)
+            return;
+
+        GameObject target = other.transform.gameObject;
+        if (SkillHitList.Contains(target))
+            return;
+
+        SkillHitList.Add(target);  // 히트 리스트에 추가
+
+        Vector3 hitPointNew = t.ClosestPoint(other.transform.position);
+        hitPointNew = other.transform.InverseTransformPoint(hitPointNew);
+        damage.OnDamage(rootObject, this, hitPointNew, ThreeSkillData);  // 데미지 처리
+    }
+    // 히트 리스트를 주기적으로 초기화하는 코루틴
+    private IEnumerator ClearHitListRoutine(List<GameObject> list, float interval)
+    {
+        float duration = ESkillDataCoolTime.ColliderDelay + ESkillDataCoolTime.ColliderDuration;
+        float _time = 0f;
+
+        while (_time < duration)
+        {
+            yield return new WaitForSeconds(interval);
+            list.Clear();  // 히트 리스트 초기화
+
+            _time += interval;
+        }
     }
     #endregion
 

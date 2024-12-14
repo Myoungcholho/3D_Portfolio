@@ -116,7 +116,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contents: {fileID: 2205693805821788075}
   questPrefab: {fileID: 6872582490774887662, guid: de4051fa7b7be8d4f913b4fc54b5db2c, type: 3}
-  player: {fileID: 0}
   questListSpacing: 45
 --- !u!1 &2205693805821788075
 GameObject:
@@ -152,7 +151,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00002795065}
+  m_AnchoredPosition: {x: 0, y: 0.00028865918}
   m_SizeDelta: {x: 0, y: 45}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2205693805821788073

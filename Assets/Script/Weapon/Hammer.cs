@@ -119,26 +119,26 @@ public class Hammer : Melee
     }
 
     #region SKill
-    public override void ActivateQSkill()
+    public override void Activate01Skill()
     {
         // ÄðÅ¸ÀÓ ÆÇ´Ü
         if (QSkillDataCoolTime.RemainingCooldownTime > 0)
             return;
 
         QSkillDataCoolTime.RemainingCooldownTime = QSkillDataCoolTime.CooldownTime;
-        base.ActivateQSkill();
+        base.Activate01Skill();
     }
 
-    public override void ActivateESkill()
+    public override void Activate02Skill()
     {
         // ÄðÅ¸ÀÓ Ã³¸®
         if (ESkillDataCoolTime.RemainingCooldownTime > 0)
             return;
 
         ESkillDataCoolTime.RemainingCooldownTime = ESkillDataCoolTime.CooldownTime;
-        base.ActivateESkill();
+        base.Activate02Skill();
     }
-    public override void Play_QSkillParticles()
+    public override void Play_01SkillParticles()
     {
         if (qSkillParticlePrefab == null)
             return;
@@ -186,7 +186,7 @@ public class Hammer : Melee
         damage.OnDamage(rootObject, this, hitPointNew, QSkillData);
     }
 
-    public override void Play_ESkillParticles()
+    public override void Play_02SkillParticles()
     {
         if (eSkillParticlePrefab == null)
             return;

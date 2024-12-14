@@ -88,6 +88,9 @@ public class StateComponent : MonoBehaviour
         if (this.type == type)
             return;
 
+        if (this.type == StateType.Dead)
+            return;
+
         StateType prevType = this.type;
         this.type = type;
 

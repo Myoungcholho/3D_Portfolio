@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Rendering.LookDev;
 
@@ -29,6 +30,7 @@ public class DualSword : Melee
         swords = new GameObject[(int)PartType.Max];
         particleList = new List<GameObject>();
 
+        // 무기 손에 어태치
         for (int i = 0; i < (int)PartType.Max; i++)
         {
             Transform t = colliders[i].transform;
@@ -39,7 +41,7 @@ public class DualSword : Melee
             t.rotation = Quaternion.identity;
 
             DualSwordTrigger trigger = t.GetComponent<DualSwordTrigger>();
-            trigger.OnTrigger += OnTriggerEnter;
+            trigger.OnTrigger += DualTrigger;
             trigger.OnAttacker += Attacker;
 
             string partName = ((PartType)i).ToString();
@@ -52,13 +54,23 @@ public class DualSword : Melee
         }
 
 
-
+        // 무기 비활성화
         for (int i=0; i<(int)PartType.Max; i++)
         {
             swords[i].SetActive(false);
         }
 
-        
+        // 데미지 데이터 분리
+        handActionData = new Dictionary<PartType, List<DoActionData>>();
+
+        foreach (var entry in handActionDataList)
+        {
+            if (!handActionData.ContainsKey(entry.partType))
+            {
+                handActionData.Add(entry.partType, entry.actionData);
+            }
+        }
+
     }
 
     protected override void Update()
@@ -134,17 +146,17 @@ public class DualSword : Melee
     private List<GameObject> qSkillHitList = new List<GameObject>();
     private List<GameObject> eSkillHitList = new List<GameObject>();
 
-    public override void ActivateQSkill()
+    public override void Activate01Skill()
     {
         // 쿨타임 판단
         if (QSkillDataCoolTime.RemainingCooldownTime > 0)
             return;
 
         QSkillDataCoolTime.RemainingCooldownTime = QSkillDataCoolTime.CooldownTime;
-        base.ActivateQSkill();
+        base.Activate01Skill();
     }
 
-    public override void ActivateESkill()
+    public override void Activate02Skill()
     {
         // 쿨타임 판단
         if (ESkillDataCoolTime.RemainingCooldownTime > 0)
@@ -153,10 +165,10 @@ public class DualSword : Melee
         ESkillDataCoolTime.RemainingCooldownTime = ESkillDataCoolTime.CooldownTime;
 
         
-        base.ActivateESkill();
+        base.Activate02Skill();
     }
 
-    public override void Play_QSkillParticles()
+    public override void Play_01SkillParticles()
     {
         if (qSkillParticlePrefab == null)
             return;
@@ -182,7 +194,7 @@ public class DualSword : Melee
     private bool isSecondary;
     public GameObject DualSkill02_PlusPrefab;
 
-    public override void Play_ESkillParticles()
+    public override void Play_02SkillParticles()
     {
         if (eSkillParticlePrefab == null)
             return;
@@ -284,5 +296,42 @@ public class DualSword : Melee
         GameObject obj = Instantiate<GameObject>(attack4CollisionPrefab, pos,quaternion);
         CollisionAttackHandler handler = obj.GetComponent<CollisionAttackHandler>();
         handler.InitData(rootObject, this, 0.2f);
+    }
+
+    // 쌍검용으로 오버라이딩
+    private void DualTrigger(Collider other, PartType partType)
+    {
+        if (other.gameObject == rootObject)
+            return;
+
+        if (attacker == null)
+            attacker = gameObject;
+        string hashCode = CreateHashCode(other, attacker);
+
+        if (hittedList.Contains(hashCode) == true)
+            return;
+
+        hittedList.Add(hashCode);                            // 히트한 객체 저장
+
+        Vector3 hitPoint = Vector3.zero;
+
+        // 공격자와 일치하는 콜라이더로 충돌 지점 계산
+        Collider enabledCollider = null;
+        foreach (Collider collider in colliders)
+        {
+            if (collider.name.Equals(attacker.name) == true)
+            {
+                enabledCollider = collider;
+                break;
+            }
+        }
+        hitPoint = enabledCollider.ClosestPoint(other.transform.position);
+        hitPoint = other.transform.InverseTransformPoint(hitPoint);
+
+
+        var damage = other.gameObject.GetComponent<IDamagable>();
+
+        List<DoActionData> HandData = handActionData[partType];
+        damage?.OnDamage(rootObject, this, hitPoint, HandData[index]);
     }
 }

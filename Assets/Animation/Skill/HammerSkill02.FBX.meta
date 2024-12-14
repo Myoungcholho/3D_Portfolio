@@ -563,42 +563,42 @@ ModelImporter:
         intParameter: 0
         messageOptions: 0
       - time: 0.1748072
-        functionName: Play_ESkillParticles
+        functionName: Play_02SkillParticles
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 26f4075ce74b0904e8c381d6f4941341, type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
       - time: 0.25192803
-        functionName: Play_ESkillParticles
+        functionName: Play_02SkillParticles
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 26f4075ce74b0904e8c381d6f4941341, type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
       - time: 0.35475576
-        functionName: Play_ESkillParticles
+        functionName: Play_02SkillParticles
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 26f4075ce74b0904e8c381d6f4941341, type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
       - time: 0.45758358
-        functionName: Play_ESkillParticles
+        functionName: Play_02SkillParticles
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 26f4075ce74b0904e8c381d6f4941341, type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
       - time: 0.5758355
-        functionName: Play_ESkillParticles
+        functionName: Play_02SkillParticles
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 26f4075ce74b0904e8c381d6f4941341, type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
       - time: 0.7069409
-        functionName: Play_ESkillParticles
+        functionName: Play_02SkillParticles
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 26f4075ce74b0904e8c381d6f4941341, type: 3}
         floatParameter: 0

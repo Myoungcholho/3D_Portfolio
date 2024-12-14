@@ -75,5 +75,7 @@ public class BrainController : MonoBehaviour
         prevBlendStyle = "";
         prevDuration = 0f;
         brain.m_DefaultBlend = blend;
+
+        yield return null;
     }
 }

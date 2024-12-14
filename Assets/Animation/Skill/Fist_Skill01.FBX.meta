@@ -1023,7 +1023,7 @@ ModelImporter:
         intParameter: 0
         messageOptions: 0
       - time: 0.40236688
-        functionName: Play_ESkillParticles
+        functionName: Play_02SkillParticles
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 26f4075ce74b0904e8c381d6f4941341, type: 3}
         floatParameter: 0

@@ -1858,7 +1858,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 509832576587677624}
-  m_LocalRotation: {x: -0.025073683, y: 0.96161264, z: -0.09396439, w: -0.25659904}
+  m_LocalRotation: {x: -0.025073688, y: 0.96161264, z: -0.093964405, w: -0.25659904}
   m_LocalPosition: {x: 0.9423685, y: 1.3732233, z: 1.6400466}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2145,6 +2145,7 @@ GameObject:
   - component: {fileID: 6231257502952846417}
   - component: {fileID: 919132148787781233}
   - component: {fileID: 919132148787781234}
+  - component: {fileID: 919132148787781209}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -2551,6 +2552,9 @@ MonoBehaviour:
   hpBarImageName: PanelHp
   hpBarPosition: {x: 0, y: 1.2}
   hpBarActive: 0
+  damageCanvasName: DamageCanvas
+  damagePosition: {x: 0, y: 2, z: 0}
+  damageTextActive: 1
 --- !u!114 &6231257502952846444
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2636,6 +2640,9 @@ MonoBehaviour:
   - {fileID: 1497429943179544527, guid: fb2b46ba2e2b36f4a93fa59c9692fa54, type: 3}
   - {fileID: 8457828835844764249, guid: ef7be6fe9d405084aa4fe1e745029636, type: 3}
   - {fileID: 3765008650632650752, guid: 4ac1275da83782a4ea4f559102629411, type: 3}
+  SlotName:
+  - QSlot
+  - ESlot
 --- !u!114 &6231257502952846440
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2821,6 +2828,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ComunicationUIName: DialogueCanvas
+--- !u!114 &919132148787781209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 851782686668256400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 997f5ffe41c966841908f5158b5dfee1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1212373119528122698
 GameObject:
   m_ObjectHideFlags: 0

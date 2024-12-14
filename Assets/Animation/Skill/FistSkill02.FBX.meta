@@ -1029,7 +1029,7 @@ ModelImporter:
       curves: []
       events:
       - time: 0.5946745
-        functionName: Play_QSkillParticles
+        functionName: Play_01SkillParticles
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 26f4075ce74b0904e8c381d6f4941341, type: 3}
         floatParameter: 0

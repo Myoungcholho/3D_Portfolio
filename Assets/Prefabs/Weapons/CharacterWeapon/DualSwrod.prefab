@@ -97,6 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b65acf0153f4a247b55acf12c144a7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  partType: 1
 --- !u!136 &1603660660
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -164,7 +165,7 @@ MonoBehaviour:
     isObjectPushDisperse: 0
     bCanMove: 0
     Power: 3
-    Distance: 2
+    Distance: 3
     StopFrame: 3
     Particle: {fileID: 0}
     ParticlePositionOffset: {x: 0, y: 0, z: 0}
@@ -220,8 +221,136 @@ MonoBehaviour:
     HitParticleScaleOffset: {x: 1, y: 1, z: 1}
     ImpulseDirection: {x: 0, y: 0, z: 1}
     ImpulseSettings: {fileID: 11400000, guid: b22b4d2aca3a32d41b05d6e1f0c115d3, type: 2}
+  IsBothHandAction: 0
+  handActionDataList:
+  - partType: 1
+    actionData:
+    - abilityType: 0
+      isObjectPushDisperse: 0
+      bCanMove: 0
+      Power: 3
+      Distance: 50
+      StopFrame: 3
+      Particle: {fileID: 0}
+      ParticlePositionOffset: {x: 0, y: 0, z: 0}
+      ParticleScaleOffset: {x: 0, y: 0, z: 0}
+      HitImpactIndex: 0
+      HitParticle: {fileID: 5024009746357069194, guid: ec3f674830402cc45bce805cf6493db7, type: 3}
+      HitParticlePositionOffset: {x: 0, y: 0, z: 0}
+      HitParticleScaleOffset: {x: 1, y: 1, z: 1}
+      ImpulseDirection: {x: 0, y: 0, z: 0}
+      ImpulseSettings: {fileID: 0}
+    - abilityType: 0
+      isObjectPushDisperse: 0
+      bCanMove: 0
+      Power: 1
+      Distance: 5
+      StopFrame: 0
+      Particle: {fileID: 0}
+      ParticlePositionOffset: {x: 0, y: 0, z: 0}
+      ParticleScaleOffset: {x: 0, y: 0, z: 0}
+      HitImpactIndex: 0
+      HitParticle: {fileID: 5024009746357069194, guid: ec3f674830402cc45bce805cf6493db7, type: 3}
+      HitParticlePositionOffset: {x: 0, y: 0, z: 0}
+      HitParticleScaleOffset: {x: 1, y: 1, z: 1}
+      ImpulseDirection: {x: 0, y: 0, z: 0}
+      ImpulseSettings: {fileID: 0}
+    - abilityType: 0
+      isObjectPushDisperse: 0
+      bCanMove: 0
+      Power: 1
+      Distance: 5
+      StopFrame: 0
+      Particle: {fileID: 0}
+      ParticlePositionOffset: {x: 0, y: 0, z: 0}
+      ParticleScaleOffset: {x: 0, y: 0, z: 0}
+      HitImpactIndex: 0
+      HitParticle: {fileID: 5024009746357069194, guid: ec3f674830402cc45bce805cf6493db7, type: 3}
+      HitParticlePositionOffset: {x: 0, y: 0, z: 0}
+      HitParticleScaleOffset: {x: 1, y: 1, z: 1}
+      ImpulseDirection: {x: 0, y: 0, z: 0}
+      ImpulseSettings: {fileID: 0}
+    - abilityType: 0
+      isObjectPushDisperse: 0
+      bCanMove: 0
+      Power: 1
+      Distance: 5
+      StopFrame: 0
+      Particle: {fileID: 0}
+      ParticlePositionOffset: {x: 0, y: 0, z: 0}
+      ParticleScaleOffset: {x: 0, y: 0, z: 0}
+      HitImpactIndex: 0
+      HitParticle: {fileID: 5024009746357069194, guid: ec3f674830402cc45bce805cf6493db7, type: 3}
+      HitParticlePositionOffset: {x: 0, y: 0, z: 0}
+      HitParticleScaleOffset: {x: 1, y: 1, z: 1}
+      ImpulseDirection: {x: 0, y: 0, z: 0}
+      ImpulseSettings: {fileID: 0}
+  - partType: 0
+    actionData:
+    - abilityType: 0
+      isObjectPushDisperse: 0
+      bCanMove: 0
+      Power: 5
+      Distance: 50
+      StopFrame: 3
+      Particle: {fileID: 0}
+      ParticlePositionOffset: {x: 0, y: 0, z: 0}
+      ParticleScaleOffset: {x: 0, y: 0, z: 0}
+      HitImpactIndex: 0
+      HitParticle: {fileID: 5024009746357069194, guid: ec3f674830402cc45bce805cf6493db7, type: 3}
+      HitParticlePositionOffset: {x: 0, y: 0, z: 0}
+      HitParticleScaleOffset: {x: 1, y: 1, z: 1}
+      ImpulseDirection: {x: 0, y: 0, z: 0}
+      ImpulseSettings: {fileID: 0}
+    - abilityType: 0
+      isObjectPushDisperse: 0
+      bCanMove: 0
+      Power: 6
+      Distance: 0
+      StopFrame: 3
+      Particle: {fileID: 0}
+      ParticlePositionOffset: {x: 0, y: 0, z: 0}
+      ParticleScaleOffset: {x: 0, y: 0, z: 0}
+      HitImpactIndex: 0
+      HitParticle: {fileID: 5024009746357069194, guid: ec3f674830402cc45bce805cf6493db7, type: 3}
+      HitParticlePositionOffset: {x: 0, y: 0, z: 0}
+      HitParticleScaleOffset: {x: 1, y: 1, z: 1}
+      ImpulseDirection: {x: 0, y: 0, z: 0}
+      ImpulseSettings: {fileID: 0}
+    - abilityType: 0
+      isObjectPushDisperse: 0
+      bCanMove: 0
+      Power: 7
+      Distance: 0
+      StopFrame: 3
+      Particle: {fileID: 0}
+      ParticlePositionOffset: {x: 0, y: 0, z: 0}
+      ParticleScaleOffset: {x: 0, y: 0, z: 0}
+      HitImpactIndex: 0
+      HitParticle: {fileID: 5024009746357069194, guid: ec3f674830402cc45bce805cf6493db7, type: 3}
+      HitParticlePositionOffset: {x: 0, y: 0, z: 0}
+      HitParticleScaleOffset: {x: 1, y: 1, z: 1}
+      ImpulseDirection: {x: 0, y: 0, z: 0}
+      ImpulseSettings: {fileID: 0}
+    - abilityType: 0
+      isObjectPushDisperse: 0
+      bCanMove: 0
+      Power: 8
+      Distance: 0
+      StopFrame: 3
+      Particle: {fileID: 0}
+      ParticlePositionOffset: {x: 0, y: 0, z: 0}
+      ParticleScaleOffset: {x: 0, y: 0, z: 0}
+      HitImpactIndex: 0
+      HitParticle: {fileID: 5024009746357069194, guid: ec3f674830402cc45bce805cf6493db7, type: 3}
+      HitParticlePositionOffset: {x: 0, y: 0, z: 0}
+      HitParticleScaleOffset: {x: 1, y: 1, z: 1}
+      ImpulseDirection: {x: 0, y: 0, z: 0}
+      ImpulseSettings: {fileID: 0}
   qSkillParticlePrefab: {fileID: 100018, guid: b93079608abf64448a86f8536c4969cf, type: 3}
   eSkillParticlePrefab: {fileID: 7343716176867868603, guid: a80f6ee60d22e3942b4391d322c9bc3d, type: 3}
+  ThreeSkillPrefab: {fileID: 0}
+  FourSkillPrefab: {fileID: 0}
   QSkillData:
     abilityType: 1
     isObjectPushDisperse: 0
@@ -268,6 +397,52 @@ MonoBehaviour:
     ColliderDuration: 1.2
     MultiHitInterval: 0.3
     MultiHitCount: 10
+  ThreeSkillData:
+    abilityType: 0
+    isObjectPushDisperse: 0
+    bCanMove: 0
+    Power: 0
+    Distance: 0
+    StopFrame: 0
+    Particle: {fileID: 0}
+    ParticlePositionOffset: {x: 0, y: 0, z: 0}
+    ParticleScaleOffset: {x: 1, y: 1, z: 1}
+    HitImpactIndex: 0
+    HitParticle: {fileID: 0}
+    HitParticlePositionOffset: {x: 0, y: 0, z: 0}
+    HitParticleScaleOffset: {x: 1, y: 1, z: 1}
+    ImpulseDirection: {x: 0, y: 0, z: 0}
+    ImpulseSettings: {fileID: 0}
+  ThreeSkillDataCoolTime:
+    CooldownTime: 0
+    RemainingCooldownTime: 0
+    ColliderDelay: 0
+    ColliderDuration: 0
+    MultiHitInterval: 0
+    MultiHitCount: 0
+  FourSkillData:
+    abilityType: 0
+    isObjectPushDisperse: 0
+    bCanMove: 0
+    Power: 0
+    Distance: 0
+    StopFrame: 0
+    Particle: {fileID: 0}
+    ParticlePositionOffset: {x: 0, y: 0, z: 0}
+    ParticleScaleOffset: {x: 1, y: 1, z: 1}
+    HitImpactIndex: 0
+    HitParticle: {fileID: 0}
+    HitParticlePositionOffset: {x: 0, y: 0, z: 0}
+    HitParticleScaleOffset: {x: 1, y: 1, z: 1}
+    ImpulseDirection: {x: 0, y: 0, z: 0}
+    ImpulseSettings: {fileID: 0}
+  FourSkillDataCoolTime:
+    CooldownTime: 0
+    RemainingCooldownTime: 0
+    ColliderDelay: 0
+    ColliderDuration: 0
+    MultiHitInterval: 0
+    MultiHitCount: 0
   particlePrefab: {fileID: 8597731318025692521, guid: 08b46908a8f7618419f11902dffee401, type: 3}
   DualSkill02_PlusPrefab: {fileID: 3657083148877114996, guid: 3cf782dab1211ae449d3de2faaedb241, type: 3}
   attack4CollisionPrefab: {fileID: 1898864829777136046, guid: 3992707f35ea4384c8439feaad146168, type: 3}
@@ -421,6 +596,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b65acf0153f4a247b55acf12c144a7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  partType: 0
 --- !u!136 &1603660658
 CapsuleCollider:
   m_ObjectHideFlags: 0
