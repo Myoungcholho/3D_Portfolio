@@ -383,4 +383,9 @@ FixedUpdate 타이밍 오차로 인한 중복 판정 문제를 해결했습니�
 시간 기반 로직으로 분리하는 구조를 설계 원칙으로 삼게 되었습니다.
 
 # 📘핵심 주요 코드
-- 
+- [캐릭터(플레이어,적,NPC)](https://github.com/Myoungcholho/3D_Portfolio/tree/master/Assets/Script/Character)
+- [사운드 풀링](https://github.com/Myoungcholho/3D_Portfolio/tree/master/Assets/Script/Sound)
+- [컴포넌트](https://github.com/Myoungcholho/3D_Portfolio/tree/master/Assets/Script/Component)
+- [AI](https://github.com/Myoungcholho/3D_Portfolio/tree/master/Assets/Script/AI)
+- [퀘스트](https://github.com/Myoungcholho/3D_Portfolio/tree/master/Assets/Script/Quest)
+
