@@ -1,76 +1,291 @@
-# 📘 Unity3D Action RPG 게임 프로젝트
-<br>
-<img align="right" width="420"
-     src="https://github.com/user-attachments/assets/f708e033-4d3c-40df-9d77-1627c117a392"
-     alt="Unity3D src" />
+# 📌프로젝트 개요
+<p align="center">
+  <img
+    width="800"
+    src="https://github.com/user-attachments/assets/ec6bebb4-e8f3-49d5-bb1b-de41042f192e"
+    alt="unity3D" />
+</p>
 
+{프로젝트 내용 소개}
 
-- 소개 영상: [포트폴리오 영상](https://www.youtube.com/watch?v=rzw9Piw8OtU&t=8s)
-- 개발 기간: 2024.06.26 ~ 2024.11.04 (131일)
-- 개발 인원: 1인
-- 핵심 요약: 유니티 엔진을 활용한 3D Action RPG 게임
-- 개발 환경:
-  - 언어: C#
-  - 엔진: Unity
+| 항목 | 내용 |
+|------|------|
+| 📹 소개 영상 | [📎포트폴리오 영상](https://www.youtube.com/watch?v=rzw9Piw8OtU&t=8s) |
+| 🕒 개발 기간 | 2024.06.26 ~ 2024.11.04 (131일) |
+| 👤 개발 인원 | 1명 |
+| 🧰 개발 환경 | C# |
+| 🛠 실행 및 디버깅 툴 | Unity |
+| 📦 라이브러리 |  |
 
-<br clear="both"/>
+</br>
 
 # 📘목차
-- [개발 계기](#개발-계기)
-- [아쉬웠던 점](#아쉬웠던-점)
-- [프로젝트에서 얻은 것](#프로젝트에서-얻은-것)
-- [구현 내용](#구현-내용)
-- [문제 해결 경험(트러블 슈팅)](#문제-해결-경험트러블-슈팅)
-- [핵심 주요 코드](#핵심-주요-코드)
+- [구현 요약 내용](#구현-요약-내용-목차-이동)
+- [핵심 주요 코드](#핵심-주요-코드-목차-이동)
+- [문제 해결 경험(트러블 슈팅)](#문제-해결-경험트러블-슈팅-목차-이동)
+- [프로젝트에서 얻은 것](#프로젝트에서-얻은-것-목차-이동)
+- [개발 계기](#개발-계기-목차-이동)
+- [구현 상세 내용](#구현-상세-내용-목차-이동)
 
-# 📘개발 계기
-### 2D를 넘어, 3D RPG 콘텐츠 개발에 도전
+</br>
 
-평소 즐겨 하던 게임들처럼 3D 애니메이션을 활용한  
-액션과 연출을 직접 구현해 보고자 했으며,  
-단순히 2D에서 구현했던 내용을 반복하는 것이 아니라  
-카메라, 애니메이션, 공간 구성 등  
-3D 환경에서만 마주할 수 있는 고민과 경험을 쌓기 위해 진행했습니다.
+# 📘구현 요약 내용 [(목차 이동)](#목차)
 
+| 상세 설명 링크 | 구현 요약 |
+|----------------------|------------------|
+| [🧱 Core Architecture](#core) |  |
+| [🌍 World / Object](#world) | |
+| [🎨 Rendering](#rendering) |  |
+| [🕺 Animation](#animation) |  |
+| [📦 Asset](#asset) | |
+| [🛠 Editor](#editor) |  |
+| [📊 Profiling](#profiling) |  |
 
-# 📘아쉬웠던 점
+</br>
 
-**요약**
-- [1. AI 군집 제어 부재에 대한 아쉬움](#weak-arch)
-- [2. 디자인 패턴의 필요성을 체감한 경험](#weak-optim)
-- [3. 폴더 구조 설계의 중요성](#teak3)
+# 📘핵심 주요 코드 [(목차 이동)](#목차)
+
+| 코드 파일 | 코드 설명 |
+|----------|-----------|
+| 파일명 [.h]() / [.cpp]() | 내용 |
+
+</br>
+
+# 📘문제 해결 경험(트러블 슈팅) [(목차 이동)](#목차)
+
+<table style="border-collapse:collapse;">
+  <tr>
+    <th width="350" style="border:2px solid #ffb3b3; background:#ffe1e1;">
+      📂 List.Contains(quest)에서 같은 퀘스트를 인식하지 못하는 문제
+    </th>
+    <th width="350" style="border:2px solid #ffd27f; background:#fff1d6;">
+      📚 자동 타겟팅 종료 후 카메라가 타겟팅 이전 회전 값으로 되돌아가는 문제
+    </th>
+    <th width="350" style="border:2px solid #c3c3ff; background:#e9e9ff;">
+      🧾 Transparent로 설정했는데 알파값을 조정해도 투명해지지 않는 문제
+    </th>
+  </tr>
+
+  <tr>
+    <td width="350" style="border:2px solid #ffb3b3; background:#ffe1e1; vertical-align:top;">
+      트러블 슈팅 간략 소개 내용
+      <br><br>
+      <a href="#t0">[상세설명]</a>
+    </td>
+    <td width="350" style="border:2px solid #ffd27f; background:#fff1d6; vertical-align:top;">
+      트러블 슈팅 간략 소개 내용
+      <br><br>
+      <a href="#t1">[상세설명]</a>
+    </td>
+    <td width="350" style="border:2px solid #c3c3ff; background:#e9e9ff; vertical-align:top;">
+      트러블 슈팅 간략 소개 내용
+      <br><br>
+      <a href="#t2">[상세설명]</a>
+    </td>
+  </tr>
+</table>
+
+<br>
+
+<table style="border-collapse:collapse;">
+  <tr>
+    <th width="350" style="border:2px solid #a8ddff; background:#e6f6ff;">
+      📘 앞으로 점프하는 Fist 스킬이 벽을 통과하거나 벽면에 딱 붙어 멈추는 문제
+    </th>
+    <th width="350" style="border:2px solid #c8ffa8; background:#ebffdf;">
+      📂 다단히트 타이밍 문제
+    </th>
+  </tr>
+
+  <tr>
+    <td width="350" style="border:2px solid #a8ddff; background:#e6f6ff; vertical-align:top;">
+      트러블 슈팅 간략 소개 내용
+      <br><br>
+      <a href="#t3">[상세설명]</a>
+    </td>
+    <td width="350" style="border:2px solid #c8ffa8; background:#ebffdf; vertical-align:top;">
+      트러블 슈팅 간략 소개 내용
+      <br><br>
+      <a href="#t4">[상세설명]</a>
+    </td>
+  </tr>
+</table>
 
 ---
 
-### 1. AI 군집 제어 부재에 대한 아쉬움 <a id="weak-arch"></a>
+## 1. 퀘스트를 인식하지 못하는 문제 <a id="t0"></a> [(트러블 슈팅 목록 이동)](#문제-해결-경험트러블-슈팅-목차-이동)
 
-군집 전투의 느낌은 냈지만, 전투에 참여하는 AI 전체를 중앙에서 관리하지 못하고  
-각 AI가 개별 로직으로만 알아서 싸우는 구조였다는 점이 아쉬움으로 남았습니다.
-
-이 아쉬움은 이후 언리얼 프로젝트에서 **중앙 토큰 관리 매니저**를 도입해  
-전투 참여 AI를 통합적으로 관리하는 구조를 설계·구현하면서 보완할 수 있었습니다.
-
+<table>
+  <tr>
+    <td style="border:2px solid #4fa3ff; border-radius:8px; padding:12px 16px; background:#050812;">
+      <strong>🧩 문제</strong>
+      <ul>
+        <li> 같은 퀘스트가 다른 참조로 인식돼 중복 등록되는 문제가 발생했다. </li>
+      </ul>
+      <strong>🔍 원인 분석</strong>
+      <ul>
+        <li> 같은 퀘스트라도 매번 새 ScriptableObject 인스턴스로 생성해 서로 다른 객체로 취급된 것이 원인이었다.</li>
+      </ul>
+      <strong>🛠 해결</strong><br>
+      <ul>
+        <li>퀘스트마다 고유 QuestID를 부여하고, 참조가 아닌 ID 기반 비교로 동일 퀘스트 여부를 판단하도록 수정했다.</li>
+      </ul>
+      <strong>✅ 결과</strong><br>
+      <ul>
+        <li>같은 퀘스트가 중복 등록되고, 인식하지 못하는 문제를 해소 </li>
+        <li>퀘스트 완료·보상 처리 로직도 의도대로 안정적으로 동작 </li>
+      </ul>
+      <strong>📚 배운 점</strong>
+      <ul>
+       <li>List 기반으로 퀘스트를 관리하면 비효율적이라는 것을 직접 겪으며, 상황에 맞는 컨테이너 선택의 중요성을 깨달음</li>
+       <li>이 경험을 바탕으로 이후 언리얼 프로젝트의 아이템 관리는 처음부터 해시 기반 컨테이너로 설계함</li>
+      </ul>
+    </td>
+  </tr>
+</table>
 
 ---
 
-### 2. 디자인 패턴의 필요성을 체감한 경험 <a id="weak-optim"></a>
+## 2. 자동 타겟팅 종료 후 카메라가 타겟팅 이전 회전 값으로 되돌아가는 문제 <a id="t1"></a> [(트러블 슈팅 목록 이동)](#문제-해결-경험트러블-슈팅-목차-이동)
 
-초기에는 UI 설계 시 UI와 로직이 1:1로 강하게 결합되어 있어,  
-UI 기능이 늘어날수록 로직 클래스도 함께 비대해지는 문제가 발생했습니다.
-
-이 경험을 계기로 이후 언리얼 프로젝트에서는 **MVVM 패턴**을 도입해  
-UI와 로직을 분리하는 방향으로 설계를 개선했습니다.
+<table>
+  <tr>
+    <td style="border:2px solid #ffd27f; border-radius:8px; padding:12px 16px; background:#120d05;">
+      <strong>🧩 문제</strong>
+      <ul>
+        <li> 자동 타겟팅 후, 원래 바라보던 방향으로 카메라가 튀듯이 되돌아가는 문제가 발생 </li>
+      </ul>
+      <strong>🔍 원인 분석</strong>
+      <ul>
+        <li> 타겟팅 동안 캐릭터 회전만 갱신되고, 마우스 입력 기준 회전 값은 갱신되지 않았던 것이 문제 </li>
+      </ul>
+      <strong>🛠 해결</strong><br>
+      <ul>
+        <li> 핵심은 회전 기준을 하나로 통일하는 것 </li>
+        <li> 타겟팅 종료 시점에, 타겟을 향해 변경된 회전 값을 내부 캐시와 실제 트랜스폼에 동시에 반영하도록 수정 </li>
+      </ul>
+      <strong>✅ 결과</strong><br>
+      <ul>
+        <li> 타겟팅 해제 시 화면 튐 현상이 사라지고, 카메라 움직임이 자연스러워짐 </li>
+      </ul>
+      <strong>📚 배운 점</strong>
+      <ul>
+        <li> 값을 억지로 동기화하기보다, 애초에 동기화 지점이 적은 구조로 설계하는 것이 더 중요하다는 걸 깨달음 </li>
+      </ul>
+    </td>
+  </tr>
+</table>
 
 ---
 
-### 3. 폴더 구조 설계의 중요성 <a id="teak3"></a>
+## 3. Transparent로 설정했는데 알파값을 조정해도 투명해지지 않는 문제 <a id="t2"></a> [(트러블 슈팅 목록 이동)](#문제-해결-경험트러블-슈팅-목차-이동)
 
-초기에는 스크립트를 역할 기준이 아니라, 그때그때 만든 **기능 단위**로 폴더를 나누다 보니  
-매니저 스크립트가 대화 관련 폴더 안에 섞이는 등 전체 구조가 복잡해지는 문제가 있었습니다.
+<table>
+  <tr>
+    <td style="border:2px solid #a8ddff; border-radius:8px; padding:12px 16px; background:#050a12;">
+      <strong>🧩 문제</strong><br>
+      <ul>
+        <li> 런타임에 머티리얼 타입을 투명으로 변경했지만, 알파 값을 조정해도 투명해지지 않는 문제가 발생 </li>
+      </ul>
+      <strong>🔍 원인 분석</strong><br>
+      <ul>
+        <li> 인스펙터에서 물체의 타입을 변경하면 다양한 렌더링 상태가 함께 변경되는 것을 공식 문서를 통해 확인함 </li>
+        <li> 즉 런타임에서 코드로 변경했을 때는 물체의 렌더링 상태가 여전히 불투명에 가까웠기 때문 </li>
+      </ul>
+      <strong>🛠 해결</strong>
+      <ul>
+        <li> 런타임에 투명 머티리얼이 정상적으로 동작하도록, 필요한 렌더 상태를 모두 명시적으로 설정함 </li>
+      </ul>
+      <strong>✅ 결과</strong><br>
+      <img width="300" height="209" alt="image" src="https://github.com/user-attachments/assets/0c2e7075-8d5e-45ed-9f90-37ec1d9a7bb0" />
+      <ul>
+        <li> 투명 처리 문제를 해결했고, 동일한 방식으로 잔상 기능에도 적용함 </li>
+      </ul>
+      <strong>📚 배운 점</strong>
+      <ul>
+        <li> 게임 프로그래머라도 콘텐츠 로직만 알아서는 부족하고, 렌더링 파이프라인 기본 이해가 필수라는 점 </li>
+      </ul>
+    </td>
+  </tr>
+</table>
 
-이 경험 이후 언리얼 액션 프로젝트에서는  
-매니저, 컴포넌트, UI 등 **역할별로 폴더를 명확히 구분**하고,  
-코드 구조를 처음부터 설계하며 진행하는 습관을 가지게 되었습니다.
+---
+
+## 4. 앞으로 점프하는 Fist 스킬이 벽을 통과하거나 벽면에 딱 붙어 멈추는 문제 <a id="t3"></a> [(트러블 슈팅 목록 이동)](#문제-해결-경험트러블-슈팅-목차-이동)
+
+<table>
+  <tr>
+    <td style="border:2px solid #4fa3ff; border-radius:8px; padding:12px 16px; background:#050812;">
+      <strong>🧩 문제</strong><br>
+      <ul>
+        <li> 돌진하는 스킬에서 캐릭터가 벽을 통과해버리거나 벽에 딱 달라붙는 등 부자연스럽게 정지하는 문제가 발생 </li>
+      </ul>
+      <strong>🔍 원인 분석</strong>
+      <ul>
+        <li> 한 프레임에 이동 거리가 너무 길어, 얇은 벽 콜라이더를 물리 엔진이 건너뛰는 터널링 현상이 문제 </li>
+        <li> 애니메이션으로 움직이는 몸의 위치를 고려하지 않은 채, 충돌 지점을 그대로 목표 지점으로 사용한 것도 문제 </li>
+      </ul>
+      <strong>🛠 해결</strong>
+      <ul>
+        <li></li>
+      </ul>
+      <strong>✅ 결과</strong><br>
+      <ul>
+        <li></li>
+        <li></li>
+      </ul>
+      <strong>📚 배운 점</strong>
+      <ul>
+        <li></li>
+        <li></li>
+      </ul>
+    </td>
+  </tr>
+</table>
+
+---
+
+## 5. 다단히트 타이밍 문제 <a id="t4"></a> [(트러블 슈팅 목록 이동)](#문제-해결-경험트러블-슈팅-목차-이동)
+
+<table>
+  <tr>
+    <td style="border:2px solid #c8ffa8; border-radius:8px; padding:12px 16px; background:#060f06;">
+      <strong>🧩 문제</strong>
+      <ul>
+        <li></li>
+      </ul>
+
+      <strong>🔍 원인 분석</strong><br>
+      <img width="570" height="315" alt="image" src="" />
+      <ul>
+        <li></li>
+      </ul>
+
+      <strong>🛠 해결</strong><br>
+      <img width="570" height="177" alt="image" src="" />
+      <ul>
+        <li></li>
+      </ul>
+
+      <strong>✅ 결과</strong><br>
+      <img alt="Animation" src="" />
+      <ul>
+        <li></li>
+      </ul>
+
+      <strong>📚 배운 점</strong>
+      <ul>
+        <li></li>
+        <li></li>
+      </ul>
+    </td>
+  </tr>
+</table>
+
+---
+
+
+
 
 # 📘프로젝트에서 얻은 것
 
@@ -386,6 +601,16 @@ FixedUpdate 타이밍 오차로 인한 중복 판정 문제를 해결했습니�
 이 일을 계기로, FixedUpdate의 역할과 한계를 다시 정리하게 되었고,  
 이후에는 물리는 충돌 신호만 담당하고, 히트 판정과 타이밍은  
 시간 기반 로직으로 분리하는 구조를 설계 원칙으로 삼게 되었습니다.
+
+# 📘개발 계기
+### 2D를 넘어, 3D RPG 콘텐츠 개발에 도전
+
+평소 즐겨 하던 게임들처럼 3D 애니메이션을 활용한  
+액션과 연출을 직접 구현해 보고자 했으며,  
+단순히 2D에서 구현했던 내용을 반복하는 것이 아니라  
+카메라, 애니메이션, 공간 구성 등  
+3D 환경에서만 마주할 수 있는 고민과 경험을 쌓기 위해 진행했습니다.
+
 
 # 📘핵심 주요 코드
 - [캐릭터(플레이어,적,NPC)](https://github.com/Myoungcholho/3D_Portfolio/tree/master/Assets/Script/Character)
